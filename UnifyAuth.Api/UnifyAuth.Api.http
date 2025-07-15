@@ -1,0 +1,6 @@
+@UnifyAuth.Api_HostAddress = http://localhost:5174
+
+GET {{UnifyAuth.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
