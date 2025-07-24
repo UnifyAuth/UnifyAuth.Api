@@ -34,9 +34,9 @@ namespace UnifyAuth.Api.Controllers
                     {
                         return BadRequest(new
                         {
-                            error = errorResult.Message,
+                            message = errorResult.Message,
                             errorType = errorResult.ErrorType,
-                            errors = errorResult.Errors
+                            messages = errorResult.Messages
                         });
                     }
                 }
@@ -60,9 +60,9 @@ namespace UnifyAuth.Api.Controllers
                     {
                         return BadRequest(new
                         {
-                            error = errorResult.Message,
+                            message = errorResult.Message,
                             errorType = errorResult.ErrorType,
-                            errors = errorResult.Errors
+                            messages = errorResult.Messages
                         });
                     }
                 }

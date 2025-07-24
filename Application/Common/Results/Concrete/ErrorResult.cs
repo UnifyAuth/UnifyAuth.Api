@@ -15,17 +15,12 @@ namespace Application.Common.Results.Concrete
         {
             ErrorType = errorType;
         }
-        public ErrorResult(string message, IDictionary<string, string[]> errors, string errorType) : base(message, false)
+        public ErrorResult(string[] messages, string errorType) : base(false)
         {
-            Errors = errors;
+            Messages = messages;
             ErrorType = errorType;
         }
-        public ErrorResult(IDictionary<string, string[]> errors, string errorType) : base(false)
-        {
-            Errors = errors;
-            ErrorType = errorType;
-        }
-        public IDictionary<string, string[]> Errors { get; }
         public string ErrorType { get; }
+        public string[] Messages { get; set; }
     }
 }

@@ -20,8 +20,13 @@ namespace Application.Common.Results.Concrete
         {
             ErrorType = errorType;
         }
-        public ErrorDataResult() : base(default, false) { }
+        public ErrorDataResult(string[] messages, string errorType) : base(default, default, false)
+        {
+            Messages = messages;
+            ErrorType = errorType;
+        }
 
         public string ErrorType { get; }
+        public string[] Messages { get; set; }
     }
 }

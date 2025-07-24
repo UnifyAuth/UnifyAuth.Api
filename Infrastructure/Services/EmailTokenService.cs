@@ -27,7 +27,12 @@ namespace Infrastructure.Services
             var identityUser = await _userManager.FindByIdAsync(confirmEmailDto.UserId.ToString());
             if (identityUser == null)
             {
-                return new ErrorResult("User not found", "BadRequest");
+                return new ErrorResult("User not found. Please register or check your mail", "BadRequest");
+            }
+
+            if ((identityUser.EmailConfirmed))
+            {
+                return new ErrorResult("Email Already Confirmed", "BadRequest");
             }
 
             var decodedToken = WebUtility.UrlDecode(confirmEmailDto.Token);

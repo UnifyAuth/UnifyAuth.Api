@@ -31,17 +31,25 @@ namespace Infrastructure.Persistence.Repositories
                 var identityUser = _mapper.Map<IdentityUserModel>(user);
                 var identityResult = await _userManager.CreateAsync(identityUser, password);
 
-                if(!identityResult.Succeeded)
+                if (!identityResult.Succeeded)
                 {
-                    var identityErrors = string.Join(Environment.NewLine, identityResult.Errors.Select(e => $"- {e.Description}"));
-                    return new ErrorDataResult<User>(identityErrors,"BadRequest");
+                    var filteredErrors = identityResult.Errors
+                        .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    if (filteredErrors.Count() == 1)
+                    {
+                        var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
+                        return new ErrorDataResult<User>(identityError, "BadRequest");
+
+                    }
+                    return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), "BadRequest");
                 }
                 user.Id = identityUser.Id;
-                return new SuccessDataResult<User>(user,"User Created Successfully");
+                return new SuccessDataResult<User>(user, "User Created Successfully");
             }
             catch (Exception ex)
             {
-                return new ErrorDataResult<User>($"Error creating user: {ex.Message}","SystemError");
+                return new ErrorDataResult<User>($"Error creating user: {ex.Message}", "SystemError");
             }
         }
 
