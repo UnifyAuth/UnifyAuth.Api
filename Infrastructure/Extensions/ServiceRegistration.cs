@@ -1,21 +1,32 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
-using Infrastructure.Common.Mappings;
+using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Common.IdentityModels;
 
 namespace Infrastructure.Extensions
 {
     public static class ServiceRegistration
     {
-        public static void AddInfrastructureServices(this IServiceCollection services)
+        public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            // Database Context
+            services.AddDbContext<UnifyAuthContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .EnableSensitiveDataLogging();
+            });
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
 

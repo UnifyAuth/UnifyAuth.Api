@@ -12,9 +12,5 @@ namespace Infrastructure.Persistence.Context
 {
     public class UnifyAuthContext : IdentityDbContext<IdentityUserModel, IdentityRole<Guid>, Guid>
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=KAAN;Database=UnifyAuthDb;integrated security=true;TrustServerCertificate=true");
-        }
     }
 }

@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Common.IdentityModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,40 +18,44 @@ namespace Infrastructure.Persistence.Repositories
     {
         private readonly UserManager<IdentityUserModel> _userManager;
         private readonly IMapper _mapper;
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(UserManager<IdentityUserModel> userManager, IMapper mapper)
+        public UserRepository(UserManager<IdentityUserModel> userManager, IMapper mapper, ILogger<UserRepository> logger)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<IDataResult<User>> CreateUserAsync(User user, string password)
         {
-            try
-            {
-                var identityUser = _mapper.Map<IdentityUserModel>(user);
-                var identityResult = await _userManager.CreateAsync(identityUser, password);
+            //Debugging log
+            _logger.LogDebug("Creating user with email: {Email}", user.Email);
 
-                if (!identityResult.Succeeded)
+            var identityUser = _mapper.Map<IdentityUserModel>(user);
+            var identityResult = await _userManager.CreateAsync(identityUser, password);
+
+            //Debugging log
+            _logger.LogDebug("Identity result for user creation: {Succeeded}, Errors: {Errors}", 
+                user.Email,
+                identityResult.Succeeded, 
+                identityResult.Errors.Select(e => e.Description).ToArray());
+
+            if (!identityResult.Succeeded)
+            {
+                var filteredErrors = identityResult.Errors
+                    .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+                if (filteredErrors.Count() == 1)
                 {
-                    var filteredErrors = identityResult.Errors
-                        .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                    if (filteredErrors.Count() == 1)
-                    {
-                        var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
-                        return new ErrorDataResult<User>(identityError, "BadRequest");
+                    var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
+                    return new ErrorDataResult<User>(identityError, "BadRequest");
 
-                    }
-                    return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), "BadRequest");
                 }
-                user.Id = identityUser.Id;
-                return new SuccessDataResult<User>(user, "User Created Successfully");
+                return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), "BadRequest");
             }
-            catch (Exception ex)
-            {
-                return new ErrorDataResult<User>($"Error creating user: {ex.Message}", "SystemError");
-            }
+            user.Id = identityUser.Id;
+            return new SuccessDataResult<User>(user, "User Created Successfully");
         }
 
         public Task<IDataResult<User>> GetUserByEmailAsync(string email)

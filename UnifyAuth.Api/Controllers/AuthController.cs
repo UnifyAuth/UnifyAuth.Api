@@ -22,25 +22,20 @@ namespace UnifyAuth.Api.Controllers
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var registerResult = await _authManager.RegisterAsync(registerDto);
-            if (!registerResult.Success)
+
+            if (registerResult is ErrorResult errorResult)
             {
-                if (registerResult is ErrorResult errorResult)
+                if (errorResult.ErrorType == "BadRequest")
                 {
-                    if (errorResult.ErrorType == "SystemError")
+                    return BadRequest(new
                     {
-                        return StatusCode(500, errorResult.Message);
-                    }
-                    else if (errorResult.ErrorType == "BadRequest")
-                    {
-                        return BadRequest(new
-                        {
-                            message = errorResult.Message,
-                            errorType = errorResult.ErrorType,
-                            messages = errorResult.Messages
-                        });
-                    }
+                        message = errorResult.Message,
+                        errorType = errorResult.ErrorType,
+                        messages = errorResult.Messages
+                    });
                 }
             }
+
             return Ok(new { Message = registerResult.Message });
         }
 
@@ -48,25 +43,20 @@ namespace UnifyAuth.Api.Controllers
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
             var result = await _emailTokenService.ConfirmEmail(confirmEmailDto);
-            if (!result.Success)
+
+            if (result is ErrorResult errorResult)
             {
-                if (result is ErrorResult errorResult)
+                if (errorResult.ErrorType == "BadRequest")
                 {
-                    if (errorResult.ErrorType == "SystemError")
+                    return BadRequest(new
                     {
-                        return StatusCode(500, errorResult.Message);
-                    }
-                    else if (errorResult.ErrorType == "BadRequest")
-                    {
-                        return BadRequest(new
-                        {
-                            message = errorResult.Message,
-                            errorType = errorResult.ErrorType,
-                            messages = errorResult.Messages
-                        });
-                    }
+                        message = errorResult.Message,
+                        errorType = errorResult.ErrorType,
+                        messages = errorResult.Messages
+                    });
                 }
             }
+
             return Ok(new { Message = result.Message });
         }
     }
