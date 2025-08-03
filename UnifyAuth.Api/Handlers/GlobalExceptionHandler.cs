@@ -1,16 +1,14 @@
 ﻿using Application.Common.Results.Concrete;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace UnifyAuth.Api.Middlewares
+namespace UnifyAuth.Api.Handlers
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
-        private readonly RequestDelegate _next;
         private readonly ILogger<GlobalExceptionHandler> _logger;
 
-        public GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptionHandler> logger)
+        public GlobalExceptionHandler( ILogger<GlobalExceptionHandler> logger)
         {
-            _next = next;
             _logger = logger;
         }
 

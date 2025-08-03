@@ -13,5 +13,6 @@ namespace Application.Interfaces.Repositories
         Task<IResult> UserExistByEmail(string email);
         Task<IDataResult<User>> GetUserByEmailAsync(string email);
         Task<IDataResult<User>> CreateUserAsync(User user, string password);
+        Task<IDataResult<User>> CheckRegisteredUserAsync(string email, string password);
     }
 }

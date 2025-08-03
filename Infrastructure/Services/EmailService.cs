@@ -20,9 +20,10 @@ namespace Infrastructure.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IConfiguration configuration)
+        public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<IResult> SendAsync(string to, string subject, string htmlContent)

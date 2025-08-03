@@ -1,5 +1,6 @@
 ﻿using Application.Common.Results.Abstracts;
 using Application.Common.Results.Concrete;
+using Application.Common.Security;
 using Application.DTOs;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
@@ -17,21 +18,79 @@ namespace Application.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IValidator<RegisterDto> _validator;
+        private readonly IValidator<RegisterDto> _registerValidator;
+        private readonly IValidator<LoginDto> _loginValidator;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IEmailTokenService _emailTokenService;
         private readonly IEMailService _emailService;
         private readonly ILogger<AuthService> _logger;
+        private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public AuthService(IValidator<RegisterDto> validator, IUserRepository userRepository, IMapper mapper, IEMailService emailService, IEmailTokenService emailTokenService, ILogger<AuthService> logger)
+        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, IEMailService emailService, IEmailTokenService emailTokenService, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
         {
-            _validator = validator;
+            _registerValidator = registerValidator;
             _userRepository = userRepository;
             _mapper = mapper;
             _emailService = emailService;
             _emailTokenService = emailTokenService;
             _logger = logger;
+            _loginValidator = loginValidator;
+            _tokenService = tokenService;
+            _refreshTokenRepository = refreshTokenRepository;
+        }
+
+        public async Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto)
+        {
+            _logger.LogDebug("User login with email: {Email}", loginDto.Email);
+
+            var validationResult = _loginValidator.Validate(loginDto);
+            if (!validationResult.IsValid)
+            {
+                _logger.LogInformation("Validation failed for {Email}: {Errors}",
+                    loginDto.Email,
+                    validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
+                return new ErrorDataResult<TokenResultDto>(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
+            }
+
+            var userChecking = await _userRepository.CheckRegisteredUserAsync(loginDto.Email, loginDto.Password);
+            if (userChecking is ErrorDataResult<User> errorDataResult)
+            {
+                if (errorDataResult.ErrorType == "NotFound")
+                {
+                    _logger.LogInformation("User not found for email: {Email}", loginDto.Email);
+                    return new ErrorDataResult<TokenResultDto>("User not found", "NotFound");
+                }
+                else if (errorDataResult.ErrorType == "Unauthorized")
+                {
+                    _logger.LogInformation("Invalid password for email: {Email}", loginDto.Email);
+                    return new ErrorDataResult<TokenResultDto>("Invalid password", "Unauthorized");
+                }
+            }
+
+            AccessToken accessToken = await _tokenService.GenerateAccessToken(userChecking.Data);
+            _logger.LogInformation("JWT token created successfully for user: {Email}", loginDto.Email);
+
+            string refreshTokenString = _tokenService.GenerateRefreshToken();
+            RefreshToken refreshToken = new RefreshToken
+            {
+                Token = refreshTokenString,
+                UserId = userChecking.Data.Id,
+                Expires = DateTime.UtcNow.AddDays(30), // Set expiration to 30 days
+                Created = DateTime.UtcNow
+            };
+            await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
+            _logger.LogInformation("Refresh token created and stored database successfully for user: {Email}", loginDto.Email);
+
+            TokenResultDto tokenResultDto = new TokenResultDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshTokenString,
+                RefreshTokenExpiration = refreshToken.Expires
+            };
+
+            return new SuccessDataResult<TokenResultDto>(tokenResultDto);
         }
 
         public async Task<IResult> RegisterAsync(RegisterDto registerDto)
@@ -39,7 +98,7 @@ namespace Application.Services
             //Debugging log
             _logger.LogDebug("Registering user with email: {Email}", registerDto.Email);
 
-            var validationResult = _validator.Validate(registerDto);
+            var validationResult = _registerValidator.Validate(registerDto);
             if (!validationResult.IsValid)
             {
                 _logger.LogInformation("Validation failed for {Email}: {Errors}",
@@ -68,13 +127,6 @@ namespace Application.Services
                 return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
             }
 
-
-            var sendEmailConfirmationResult = await SendEmailConfirmationLinkAsync(result.Data.Id, registerDto.Email);
-            if (sendEmailConfirmationResult is ErrorResult emailError)
-            {
-                return new ErrorResult(emailError.Message, emailError.ErrorType);
-            }
-
             return new SuccessResult("User registered successfully");
         }
 
@@ -82,20 +134,17 @@ namespace Application.Services
         {
             var emailConfirmationToken = await _emailTokenService.GenerateEmailConfirmationToken(userId);
             var emailContent = string.Empty;
-            if (emailConfirmationToken.Success)
+            if (emailConfirmationToken is ErrorDataResult<ConfirmEmailDto> errorDataResult)
             {
-                var frontendUrl = "http://localhost:4200/confirm-email";
-                emailContent = $"{frontendUrl}?userId={emailConfirmationToken.Data.UserId}&token={emailConfirmationToken.Data.Token}";
+                _logger.LogError("Failed to generate email confirmation token for user {UserId}: {Error}", userId, errorDataResult.Message);
+                return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
             }
-            else
-            {
-                return new ErrorResult("Failed to generate email confirmation token", "SystemError");
-            }
-            var emailResult = await _emailService.SendAsync(email, "Confirm your email", emailContent);
-            if (!emailResult.Success)
-            {
-                return new ErrorResult(emailResult.Message, "SystemError");
-            }
+
+            var frontendUrl = "http://localhost:4200/confirm-email";
+            emailContent = $"{frontendUrl}?userId={emailConfirmationToken.Data.UserId}&token={emailConfirmationToken.Data.Token}";
+
+            await _emailService.SendAsync(email, "Confirm your email", emailContent);
+
             return new SuccessResult("Email confirmation link sent successfully");
         }
     }

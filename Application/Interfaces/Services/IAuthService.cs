@@ -1,5 +1,7 @@
 ﻿using Application.Common.Results.Abstracts;
+using Application.Common.Security;
 using Application.DTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,6 @@ namespace Application.Interfaces.Services
     public interface IAuthService
     {
         Task<IResult> RegisterAsync(RegisterDto registerDto);
+        Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto);
     }
 }

@@ -72,7 +72,7 @@ namespace Infrastructure.Services
             if (string.IsNullOrEmpty(token))
             {
                 _logger.LogError("Email Confirmation Token Generation failed for User: {UserId} {Email}", identityUser.Id,identityUser.Email);
-                return new ErrorDataResult<ConfirmEmailDto>("Failed to generate email confirmation token", "SystemError");
+                return new ErrorDataResult<ConfirmEmailDto>("Failed to generate email confirmation token", "TokenGenerationError");
             }
             var encodedToken = WebUtility.UrlEncode(token);
 

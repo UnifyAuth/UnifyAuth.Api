@@ -6,13 +6,11 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Common.IdentityModels;
 
 namespace Infrastructure.Extensions
 {
@@ -23,16 +21,17 @@ namespace Infrastructure.Extensions
             // Database Context
             services.AddDbContext<UnifyAuthContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                .EnableSensitiveDataLogging();
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             //Services
             services.AddTransient<IEMailService, EmailService>();
             services.AddScoped<IEmailTokenService, EmailTokenService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
     }
 }

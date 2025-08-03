@@ -8,9 +8,10 @@ using Infrastructure.Common.Mappings;
 using Infrastructure.Extensions;
 using Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Exceptions;
+using UnifyAuth.Api.Handlers;
 using UnifyAuth.Api.Middlewares;
 
 
@@ -19,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //Serilog Configuration
-builder.Host.UseSerilog((context,loggerConfig) =>
+builder.Host.UseSerilog((context, loggerConfig) =>
 {
     loggerConfig
     .ReadFrom.Configuration(context.Configuration)
@@ -36,7 +37,8 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Application services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterDtoValidator>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddValidatorsFromAssembly(typeof(RegisterDtoValidator).Assembly);
 
 //AutoMapper configurations
 builder.Services.AddAutoMapper(cfg =>
@@ -68,7 +70,7 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 //Cors configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy("AllowDev", policy =>
     {
         policy.WithOrigins("http://localhost:4200")
             .AllowAnyHeader()
@@ -77,8 +79,30 @@ builder.Services.AddCors(options =>
     });
 });
 
+//Authentication configuration
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
 //Exception handling
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -95,10 +119,10 @@ app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
 
-app.UseCors("AllowFrontend");
-
 app.UseHttpsRedirection();
 
+app.UseCors("AllowDev");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
