@@ -14,5 +14,6 @@ namespace Application.Interfaces.Services
     {
         Task<IResult> RegisterAsync(RegisterDto registerDto);
         Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto);
+        Task<IDataResult<TokenResultDto>> RefreshAccessToken(string refreshTokenString);
     }
 }

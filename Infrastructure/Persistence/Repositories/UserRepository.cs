@@ -45,8 +45,9 @@ namespace Infrastructure.Persistence.Repositories
             if (!identityResult.Succeeded)
             {
                 var filteredErrors = identityResult.Errors
-                    .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                    .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase)) 
+                    .ToList(); // Exclude duplicate username errors because username same with email. This error handled duplicate email error.
+
                 if (filteredErrors.Count() == 1)
                 {
                     var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
@@ -62,7 +63,7 @@ namespace Infrastructure.Persistence.Repositories
         {
             //Debugging log
             _logger.LogDebug("Retrieving user by email: {Email}", email);
-            var identityUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var identityUser = await _userManager.FindByEmailAsync(email);
             if (identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");            
 
             var user = _mapper.Map<User>(identityUser);
@@ -74,7 +75,7 @@ namespace Infrastructure.Persistence.Repositories
             // Debugging log
             _logger.LogDebug("Checking registered user with email: {Email}", email);
 
-            var identityUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var identityUser = await _userManager.FindByEmailAsync(email);
             if (identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(identityUser, password);
@@ -86,6 +87,18 @@ namespace Infrastructure.Persistence.Repositories
         public Task<IResult> UserExistByEmail(string email)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IDataResult<User>> GetUserByIdAsync(string userId)
+        {
+            //Debugging log
+            _logger.LogDebug("Retrieving user by ID: {UserId}", userId);
+
+            var identityUser = await _userManager.FindByIdAsync(userId);
+            if(identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");
+
+            User user = _mapper.Map<User>(identityUser);
+            return new SuccessDataResult<User>(user, "User retrieved successfully");
         }
     }
 }

@@ -14,5 +14,6 @@ namespace Application.Interfaces.Repositories
         Task<IDataResult<User>> GetUserByEmailAsync(string email);
         Task<IDataResult<User>> CreateUserAsync(User user, string password);
         Task<IDataResult<User>> CheckRegisteredUserAsync(string email, string password);
+        Task<IDataResult<User>> GetUserByIdAsync(string userId);
     }
 }

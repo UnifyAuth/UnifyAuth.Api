@@ -1,4 +1,5 @@
-﻿using Application.Common.Security;
+﻿using Application.Common.Results.Abstracts;
+using Application.Common.Security;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Application.Interfaces.Services
     public interface ITokenService
     {
         Task<AccessToken> GenerateAccessToken(User user);
+        Task<IResult> ValidateRefreshTokenAsync(RefreshToken refreshToken);
+        Task<IResult> UpdateRefreshToken(RefreshToken refreshToken, string refreshTokenString);
         string GenerateRefreshToken();
     }
 }

@@ -1,4 +1,7 @@
-﻿using Application.Common.Security;
+﻿using Application.Common.Results.Abstracts;
+using Application.Common.Results.Concrete;
+using Application.Common.Security;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
@@ -22,12 +25,14 @@ namespace Infrastructure.Services
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly ILogger<TokenService> _logger;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public TokenService(IConfiguration configuration, IMapper mapper, ILogger<TokenService> logger)
+        public TokenService(IConfiguration configuration, IMapper mapper, ILogger<TokenService> logger, IRefreshTokenRepository refreshTokenRepository = null)
         {
             _configuration = configuration;
             _mapper = mapper;
             _logger = logger;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task<AccessToken> GenerateAccessToken(User user)
@@ -67,12 +72,45 @@ namespace Infrastructure.Services
 
         public string GenerateRefreshToken()
         {
+            // Debugging log
             _logger.LogDebug("Generating refresh token");
             var randomNumber = new byte[64];
             using var rgn = RandomNumberGenerator.Create();
             rgn.GetBytes(randomNumber);
 
             return Convert.ToBase64String(randomNumber);
+        }
+
+        public async Task<IResult> ValidateRefreshTokenAsync(RefreshToken token)
+        {
+            // Debugging log
+            _logger.LogDebug("Validating refresh token");
+
+            if (token.Expires < DateTime.UtcNow)
+            {
+                _logger.LogInformation("Refresh token expired: {Token}", token.Token);
+                return new ErrorResult("Refresh token expired", "Unauthorized");
+            }
+
+            if(token.Revoked)
+            {
+                _logger.LogWarning("Refresh token has been revoked: {Token}", token.Token);
+                return new ErrorResult("Refresh token has been revoked", "Unauthorized");
+            }
+
+            _logger.LogDebug("Refresh token is valid: {Token}", token.Token);
+            return new SuccessResult("Refresh token is valid");
+        }
+
+        public async Task<IResult> UpdateRefreshToken(RefreshToken refreshToken, string refreshTokenString)
+        {
+            // Debugging log
+            _logger.LogDebug("Updating refresh token for token: {RefreshTokenString}", refreshToken.Token);
+
+            refreshToken.Token = refreshTokenString;
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
+            _logger.LogInformation("Refresh token updated successfully new token: {RefreshTokenString}", refreshTokenString);
+            return new SuccessResult("Refresh token updated successfully");
         }
     }
 }

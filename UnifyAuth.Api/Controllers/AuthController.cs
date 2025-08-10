@@ -12,11 +12,13 @@ namespace UnifyAuth.Api.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IEmailTokenService _emailTokenService;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthService authService, IEmailTokenService emailTokenService)
+        public AuthController(IAuthService authService, IEmailTokenService emailTokenService, ITokenService tokenService)
         {
             _authService = authService;
             _emailTokenService = emailTokenService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -65,7 +67,7 @@ namespace UnifyAuth.Api.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var loginResult = await _authService.LoginAsyncWithJWT(loginDto);
-            if(loginResult is ErrorDataResult<AccessToken> errorDataResult)
+            if(loginResult is ErrorDataResult<TokenResultDto> errorDataResult)
             {
                 if (errorDataResult.ErrorType == "BadRequest")
                 {
@@ -101,7 +103,37 @@ namespace UnifyAuth.Api.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken()
         {
-            return Unauthorized();
+            var oldRefreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(oldRefreshToken))
+            {
+                return Unauthorized(new { message = "Refresh token is missing." });
+            }
+
+            var refreshToken = await _authService.RefreshAccessToken(oldRefreshToken);
+            if (refreshToken is ErrorDataResult<TokenResultDto> errorDataResult)
+            {
+                if (errorDataResult.ErrorType == "Unauthorized")
+                {
+                    return Unauthorized(new { message = errorDataResult.Message });
+                }
+            }
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = refreshToken.Data.RefreshTokenExpiration
+            };
+            Response.Cookies.Append("refreshToken", refreshToken.Data.RefreshToken, cookieOptions);
+
+            return Ok(refreshToken.Data.AccessToken);
+        }
+
+        [HttpGet("has-refresh-cookie")]
+        public IActionResult HasRefreshCookie()
+        {
+            var cookie = Request.Cookies["refreshToken"];
+            return Ok(new { hasRefreshCookie = !string.IsNullOrEmpty(cookie)});
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Application.Services
             {
                 Token = refreshTokenString,
                 UserId = userChecking.Data.Id,
-                Expires = DateTime.UtcNow.AddDays(30), // Set expiration to 30 days
+                Expires = DateTime.UtcNow.AddDays(15), // Set expiration to 15 days
                 Created = DateTime.UtcNow
             };
             await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
@@ -114,7 +114,7 @@ namespace Application.Services
             var result = await _userRepository.CreateUserAsync(user, registerDto.Password);
             if (result is ErrorDataResult<User> errorDataResult)
             {
-                if (errorDataResult.Messages != null && errorDataResult.Messages.Length > 1)
+                if (errorDataResult.Messages.Length > 1)
                 {
                     _logger.LogInformation("User creation failed for {Email} with multiple errors: {Errors}",
                         registerDto.Email,
@@ -128,6 +128,37 @@ namespace Application.Services
             }
 
             return new SuccessResult("User registered successfully");
+        }
+
+        public async Task<IDataResult<TokenResultDto>> RefreshAccessToken(string refreshTokenString)
+        {
+            _logger.LogDebug("Refreshing access token for refresh token: {RefreshToken}", refreshTokenString);
+
+            var refreshToken = await _refreshTokenRepository.GetRefreshTokenByTokenAsync(refreshTokenString);
+            if (refreshToken == null)
+            {
+                _logger.LogWarning("Refresh token not found: {Token}", refreshTokenString);
+                return new ErrorDataResult<TokenResultDto>("Refresh token not found", "Unauthorized");
+            }
+
+            var tokenValidationResult = await _tokenService.ValidateRefreshTokenAsync(refreshToken);
+            if (tokenValidationResult is ErrorResult errorResult)
+            {
+                return new ErrorDataResult<TokenResultDto>(errorResult.Message, errorResult.ErrorType);
+            }
+
+            var identityUser = await _userRepository.GetUserByIdAsync(refreshToken.UserId.ToString());
+            var user = _mapper.Map<User>(identityUser.Data);
+            var accessToken = await _tokenService.GenerateAccessToken(user);
+            var newRefreshTokenString = _tokenService.GenerateRefreshToken();
+            await _tokenService.UpdateRefreshToken(refreshToken, newRefreshTokenString);
+            
+            return new SuccessDataResult<TokenResultDto>(new TokenResultDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = newRefreshTokenString,
+                RefreshTokenExpiration = DateTime.UtcNow.AddDays(15),
+            });
         }
 
         private async Task<IResult> SendEmailConfirmationLinkAsync(Guid userId, string email)

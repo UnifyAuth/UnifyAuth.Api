@@ -1,0 +1,160 @@
+2025-08-04 15:34:03 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 3.2190 ms
+2025-08-04 15:34:04 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-04 15:34:04 [Debug] User login with email: "kaandanisment1@gmial.com"
+2025-08-04 15:34:04 [Debug] Checking registered user with email: "kaandanisment1@gmial.com"
+2025-08-04 15:34:05 [Information] User not found for email: "kaandanisment1@gmial.com"
+2025-08-04 15:34:53 [Error] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at UnifyAuth.Api.Controllers.AuthController.Login(LoginDto loginDto) in C:\Users\kaand\source\repos\UnifyAuth\UnifyAuth.Api\Controllers\AuthController.cs:line 89
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-08-04 15:34:53 [Error] An unhandled exception occurred: "Object reference not set to an instance of an object."
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at UnifyAuth.Api.Controllers.AuthController.Login(LoginDto loginDto) in C:\Users\kaand\source\repos\UnifyAuth\UnifyAuth.Api\Controllers\AuthController.cs:line 89
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-08-04 15:34:53 [Error] HTTP "POST" "/api/Auth/login" responded 500 in 49941.9458 ms
+2025-08-04 15:36:31 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 2.1765 ms
+2025-08-04 15:36:32 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-04 15:36:41 [Debug] User login with email: "kaandanisment1@gmial.com"
+2025-08-04 15:36:54 [Debug] Checking registered user with email: "kaandanisment1@gmial.com"
+2025-08-04 15:37:24 [Information] User not found for email: "kaandanisment1@gmial.com"
+2025-08-04 15:38:11 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.8702 ms
+2025-08-04 15:38:11 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-04 15:38:11 [Debug] User login with email: "kaandanisment1@gmial.com"
+2025-08-04 15:38:11 [Debug] Checking registered user with email: "kaandanisment1@gmial.com"
+2025-08-04 15:38:12 [Information] User not found for email: "kaandanisment1@gmial.com"
+2025-08-04 15:38:12 [Information] HTTP "POST" "/api/Auth/login" responded 404 in 1215.3371 ms
+2025-08-04 15:45:34 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 2.6744 ms
+2025-08-04 15:45:34 [Debug] User login with email: "kaandanisment1@gmia.com"
+2025-08-04 15:45:34 [Debug] Checking registered user with email: "kaandanisment1@gmia.com"
+2025-08-04 15:45:34 [Information] User not found for email: "kaandanisment1@gmia.com"
+2025-08-04 15:45:34 [Information] HTTP "POST" "/api/Auth/login" responded 404 in 77.5771 ms
+2025-08-04 15:45:56 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.2429 ms
+2025-08-04 15:45:56 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 15:45:56 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:45:56 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:45:56 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:45:56 [Debug] Generating refresh token
+2025-08-04 15:45:56 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 15:45:57 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:45:57 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 435.4209 ms
+2025-08-04 15:52:11 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.2785 ms
+2025-08-04 15:52:11 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 15:52:11 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:52:11 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:52:11 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:52:11 [Debug] Generating refresh token
+2025-08-04 15:52:11 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 15:52:11 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:52:11 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 93.1999 ms
+2025-08-04 15:56:55 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1124 ms
+2025-08-04 15:56:55 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 15:56:55 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:56:55 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:56:55 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:56:55 [Debug] Generating refresh token
+2025-08-04 15:56:55 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 15:56:55 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:56:55 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 102.4850 ms
+2025-08-04 15:57:47 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.0853 ms
+2025-08-04 15:57:47 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 15:57:47 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:57:47 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:57:47 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:57:47 [Debug] Generating refresh token
+2025-08-04 15:57:47 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 15:57:47 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:57:47 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 84.0311 ms
+2025-08-04 15:58:37 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1080 ms
+2025-08-04 15:58:37 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 15:58:37 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:58:37 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 15:58:37 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:58:37 [Debug] Generating refresh token
+2025-08-04 15:58:37 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 15:58:37 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 15:58:37 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 80.1519 ms
+2025-08-04 16:02:21 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.2116 ms
+2025-08-04 16:02:21 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 16:02:21 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:02:21 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:02:21 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:02:21 [Debug] Generating refresh token
+2025-08-04 16:02:21 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 16:02:21 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:02:21 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 89.4619 ms
+2025-08-04 16:09:11 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.8400 ms
+2025-08-04 16:09:11 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 16:09:11 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:09:11 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:09:11 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:09:11 [Debug] Generating refresh token
+2025-08-04 16:09:11 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 16:09:11 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:09:11 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 92.9260 ms
+2025-08-04 16:13:17 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1578 ms
+2025-08-04 16:13:17 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 16:13:17 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:13:18 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:13:18 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:13:18 [Debug] Generating refresh token
+2025-08-04 16:13:18 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 16:13:18 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:13:18 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 76.5935 ms
+2025-08-04 16:45:20 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1893 ms
+2025-08-04 16:45:20 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 16:45:20 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:45:20 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:45:20 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:45:20 [Debug] Generating refresh token
+2025-08-04 16:45:20 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 16:45:20 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:45:20 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 92.5979 ms
+2025-08-04 16:47:43 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.3294 ms
+2025-08-04 16:47:43 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 16:47:43 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:47:43 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 16:47:43 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:47:43 [Debug] Generating refresh token
+2025-08-04 16:47:43 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 16:47:43 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 16:47:43 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 74.2160 ms
+2025-08-04 17:22:45 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.2629 ms
+2025-08-04 17:22:45 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 17:22:45 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 17:22:46 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 17:22:46 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 17:22:46 [Debug] Generating refresh token
+2025-08-04 17:22:46 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 17:22:46 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 17:22:46 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 94.2214 ms
+2025-08-04 17:23:33 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.0541 ms
+2025-08-04 17:23:33 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-04 17:23:33 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-04 17:23:33 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-04 17:23:33 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 17:23:33 [Debug] Generating refresh token
+2025-08-04 17:23:33 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-04 17:23:33 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-04 17:23:33 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 81.0264 ms

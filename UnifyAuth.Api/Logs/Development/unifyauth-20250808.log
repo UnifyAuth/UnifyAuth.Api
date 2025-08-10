@@ -1,0 +1,812 @@
+2025-08-08 09:49:22 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 2.1116 ms
+2025-08-08 09:49:23 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 09:49:23 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 390.1066 ms
+2025-08-08 09:49:30 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.3659 ms
+2025-08-08 09:49:30 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 10.9440 ms
+2025-08-08 09:49:49 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0651 ms
+2025-08-08 09:49:49 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 14.4219 ms
+2025-08-08 09:51:02 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0583 ms
+2025-08-08 09:51:02 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.3733 ms
+2025-08-08 09:51:23 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1405 ms
+2025-08-08 09:51:23 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 3.1553 ms
+2025-08-08 09:52:04 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.2434 ms
+2025-08-08 09:52:04 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.3978 ms
+2025-08-08 09:53:03 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0960 ms
+2025-08-08 09:53:03 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.3972 ms
+2025-08-08 09:53:04 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.8800 ms
+2025-08-08 09:53:08 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1641 ms
+2025-08-08 09:53:08 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.0035 ms
+2025-08-08 09:53:18 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1393 ms
+2025-08-08 09:53:18 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.8706 ms
+2025-08-08 09:53:19 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.8016 ms
+2025-08-08 09:53:27 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1172 ms
+2025-08-08 09:53:27 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.9691 ms
+2025-08-08 09:59:53 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 2.6746 ms
+2025-08-08 09:59:53 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.9987 ms
+2025-08-08 09:59:54 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.0287 ms
+2025-08-08 09:59:57 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.7483 ms
+2025-08-08 09:59:58 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0524 ms
+2025-08-08 09:59:58 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.7545 ms
+2025-08-08 10:01:53 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1529 ms
+2025-08-08 10:01:53 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.9864 ms
+2025-08-08 10:04:34 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1389 ms
+2025-08-08 10:04:34 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.9861 ms
+2025-08-08 10:05:55 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1327 ms
+2025-08-08 10:05:55 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.6895 ms
+2025-08-08 10:07:01 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0461 ms
+2025-08-08 10:07:01 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.7434 ms
+2025-08-08 11:04:52 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 11:04:52 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 287.1662 ms
+2025-08-08 11:04:53 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 9.0237 ms
+2025-08-08 11:05:10 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.0274 ms
+2025-08-08 11:05:10 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 11:05:10 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:05:11 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:05:11 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:05:11 [Debug] Generating refresh token
+2025-08-08 11:05:11 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 11:05:11 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:05:11 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1571.3378 ms
+2025-08-08 11:05:11 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1025 ms
+2025-08-08 11:05:12 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:05:12 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:05:12 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 157.1222 ms
+2025-08-08 11:05:16 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 0.9011 ms
+2025-08-08 11:05:26 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.0656 ms
+2025-08-08 11:07:49 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 11:07:49 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 240.5338 ms
+2025-08-08 11:08:06 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.0434 ms
+2025-08-08 11:08:06 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 11:08:06 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:08:08 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:08:08 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:08:08 [Debug] Generating refresh token
+2025-08-08 11:08:08 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 11:08:08 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:08:08 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1305.7263 ms
+2025-08-08 11:08:08 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.0847 ms
+2025-08-08 11:08:08 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:08:08 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:08:08 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 150.4595 ms
+2025-08-08 11:08:20 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 9.7527 ms
+2025-08-08 11:09:18 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 0.9959 ms
+2025-08-08 11:09:19 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.7134 ms
+2025-08-08 11:10:15 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 6.3431 ms
+2025-08-08 11:10:36 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 0.9777 ms
+2025-08-08 11:22:15 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 7.5704 ms
+2025-08-08 11:22:16 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.3578 ms
+2025-08-08 11:23:49 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 11:23:49 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 270.3060 ms
+2025-08-08 11:24:04 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.2562 ms
+2025-08-08 11:24:04 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 11:24:04 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:24:05 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:24:05 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:24:05 [Debug] Generating refresh token
+2025-08-08 11:24:05 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 11:24:05 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:24:05 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1411.9427 ms
+2025-08-08 11:24:05 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1361 ms
+2025-08-08 11:24:05 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:24:05 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:24:05 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 155.1448 ms
+2025-08-08 11:24:09 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 15.8340 ms
+2025-08-08 11:24:31 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.6694 ms
+2025-08-08 11:24:33 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.4274 ms
+2025-08-08 11:24:40 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.0393 ms
+2025-08-08 11:24:48 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1847 ms
+2025-08-08 11:24:57 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1105 ms
+2025-08-08 11:33:55 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 7.5128 ms
+2025-08-08 11:33:58 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1443 ms
+2025-08-08 11:35:56 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 9.3105 ms
+2025-08-08 11:36:09 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.0117 ms
+2025-08-08 11:36:10 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.2221 ms
+2025-08-08 11:39:20 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 11:39:20 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 239.0791 ms
+2025-08-08 11:39:30 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 10.0377 ms
+2025-08-08 11:39:47 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.0076 ms
+2025-08-08 11:39:48 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 11:39:48 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:39:49 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 11:39:49 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:39:49 [Debug] Generating refresh token
+2025-08-08 11:39:49 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 11:39:49 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 11:39:49 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1382.9568 ms
+2025-08-08 11:39:49 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.0836 ms
+2025-08-08 11:39:49 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:39:49 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 11:39:49 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 139.6328 ms
+2025-08-08 11:39:51 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1978 ms
+2025-08-08 11:39:51 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0771 ms
+2025-08-08 11:39:51 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 31.0253 ms
+2025-08-08 11:39:54 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1431 ms
+2025-08-08 11:39:54 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 1.4953 ms
+2025-08-08 11:39:55 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1197 ms
+2025-08-08 11:39:55 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.8694 ms
+2025-08-08 11:39:58 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.3077 ms
+2025-08-08 11:39:58 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0724 ms
+2025-08-08 11:39:58 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 0.6913 ms
+2025-08-08 11:40:05 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1477 ms
+2025-08-08 11:40:06 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.3670 ms
+2025-08-08 11:40:28 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1294 ms
+2025-08-08 11:40:32 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.1285 ms
+2025-08-08 11:40:54 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.0482 ms
+2025-08-08 16:34:10 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 16:34:10 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 409.1221 ms
+2025-08-08 16:34:18 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 13.6539 ms
+2025-08-08 16:34:37 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.9932 ms
+2025-08-08 16:34:37 [Debug] User login with email: "kaandaniment1@gmail.com"
+2025-08-08 16:34:37 [Debug] Checking registered user with email: "kaandaniment1@gmail.com"
+2025-08-08 16:34:38 [Information] User not found for email: "kaandaniment1@gmail.com"
+2025-08-08 16:34:38 [Information] HTTP "POST" "/api/Auth/login" responded 404 in 1364.3608 ms
+2025-08-08 16:34:46 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1096 ms
+2025-08-08 16:34:46 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 16:34:46 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:34:46 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:34:46 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:34:46 [Debug] Generating refresh token
+2025-08-08 16:34:46 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:34:46 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:34:46 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 412.8997 ms
+2025-08-08 16:34:46 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.0801 ms
+2025-08-08 16:34:46 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:34:46 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:34:46 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 140.9726 ms
+2025-08-08 16:34:50 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.2270 ms
+2025-08-08 16:34:50 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0939 ms
+2025-08-08 16:34:50 [Debug] Refreshing access token for refresh token: "VZcUHct356fJk84eddnXKvgYavVB1eI7CRXqP7NHPnOA5OoOi9kKprpERi0XQGddsVjn3T3QMQdxb0zt3vaOsg=="
+2025-08-08 16:34:50 [Debug] Retrieving refresh token for token: "VZcUHct356fJk84eddnXKvgYavVB1eI7CRXqP7NHPnOA5OoOi9kKprpERi0XQGddsVjn3T3QMQdxb0zt3vaOsg=="
+2025-08-08 16:34:50 [Debug] Validating refresh token
+2025-08-08 16:34:50 [Debug] Refresh token is valid: "VZcUHct356fJk84eddnXKvgYavVB1eI7CRXqP7NHPnOA5OoOi9kKprpERi0XQGddsVjn3T3QMQdxb0zt3vaOsg=="
+2025-08-08 16:34:50 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:34:50 [Error] An unhandled exception has occurred while executing the request.
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SuccessDataResult`1 -> User
+Application.Common.Results.Concrete.SuccessDataResult`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> Domain.Entities.User
+   at lambda_method334(Closure, Object, User, ResolutionContext)
+   at Application.Services.AuthService.RefreshAccessToken(String refreshTokenString) in C:\Users\kaand\source\repos\UnifyAuth\Application\Services\AuthService.cs:line 151
+   at UnifyAuth.Api.Controllers.AuthController.RefreshToken() in C:\Users\kaand\source\repos\UnifyAuth\UnifyAuth.Api\Controllers\AuthController.cs:line 112
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-08-08 16:34:50 [Error] An unhandled exception occurred: "Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SuccessDataResult`1 -> User
+Application.Common.Results.Concrete.SuccessDataResult`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> Domain.Entities.User"
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SuccessDataResult`1 -> User
+Application.Common.Results.Concrete.SuccessDataResult`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> Domain.Entities.User
+   at lambda_method334(Closure, Object, User, ResolutionContext)
+   at Application.Services.AuthService.RefreshAccessToken(String refreshTokenString) in C:\Users\kaand\source\repos\UnifyAuth\Application\Services\AuthService.cs:line 151
+   at UnifyAuth.Api.Controllers.AuthController.RefreshToken() in C:\Users\kaand\source\repos\UnifyAuth\UnifyAuth.Api\Controllers\AuthController.cs:line 112
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-08-08 16:34:50 [Error] HTTP "POST" "/api/Auth/refresh-token" responded 500 in 175.4744 ms
+2025-08-08 16:35:17 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.6640 ms
+2025-08-08 16:35:49 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.0928 ms
+2025-08-08 16:35:49 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 16:35:49 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:35:49 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:35:49 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:35:49 [Debug] Generating refresh token
+2025-08-08 16:35:49 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:35:49 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:35:49 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 88.7737 ms
+2025-08-08 16:35:49 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1141 ms
+2025-08-08 16:35:49 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:35:49 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:35:49 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 12.4273 ms
+2025-08-08 16:35:51 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 0.9014 ms
+2025-08-08 16:35:51 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1274 ms
+2025-08-08 16:36:42 [Debug] Refreshing access token for refresh token: "d0loRdNXLMTJtN4cTnawFBmER81Hy42FCzb/b26l61H61JgD7HjuN/BVpTizJn+lLNUS2GVCR7JYpxr9W3jIOQ=="
+2025-08-08 16:36:52 [Debug] Retrieving refresh token for token: "d0loRdNXLMTJtN4cTnawFBmER81Hy42FCzb/b26l61H61JgD7HjuN/BVpTizJn+lLNUS2GVCR7JYpxr9W3jIOQ=="
+2025-08-08 16:37:13 [Debug] Validating refresh token
+2025-08-08 16:37:13 [Debug] Refresh token is valid: "d0loRdNXLMTJtN4cTnawFBmER81Hy42FCzb/b26l61H61JgD7HjuN/BVpTizJn+lLNUS2GVCR7JYpxr9W3jIOQ=="
+2025-08-08 16:37:31 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:37:48 [Error] An unhandled exception has occurred while executing the request.
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SuccessDataResult`1 -> User
+Application.Common.Results.Concrete.SuccessDataResult`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> Domain.Entities.User
+   at lambda_method334(Closure, Object, User, ResolutionContext)
+   at Application.Services.AuthService.RefreshAccessToken(String refreshTokenString) in C:\Users\kaand\source\repos\UnifyAuth\Application\Services\AuthService.cs:line 151
+   at UnifyAuth.Api.Controllers.AuthController.RefreshToken() in C:\Users\kaand\source\repos\UnifyAuth\UnifyAuth.Api\Controllers\AuthController.cs:line 112
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-08-08 16:37:48 [Error] An unhandled exception occurred: "Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SuccessDataResult`1 -> User
+Application.Common.Results.Concrete.SuccessDataResult`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> Domain.Entities.User"
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SuccessDataResult`1 -> User
+Application.Common.Results.Concrete.SuccessDataResult`1[[Domain.Entities.User, Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> Domain.Entities.User
+   at lambda_method334(Closure, Object, User, ResolutionContext)
+   at Application.Services.AuthService.RefreshAccessToken(String refreshTokenString) in C:\Users\kaand\source\repos\UnifyAuth\Application\Services\AuthService.cs:line 151
+   at UnifyAuth.Api.Controllers.AuthController.RefreshToken() in C:\Users\kaand\source\repos\UnifyAuth\UnifyAuth.Api\Controllers\AuthController.cs:line 112
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-08-08 16:37:48 [Error] HTTP "POST" "/api/Auth/refresh-token" responded 500 in 116596.1632 ms
+2025-08-08 16:39:29 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 2.5078 ms
+2025-08-08 16:39:29 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 16:39:29 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 16:39:29 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:39:30 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:39:30 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:39:30 [Debug] Generating refresh token
+2025-08-08 16:39:30 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:39:30 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:39:30 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1617.0818 ms
+2025-08-08 16:39:30 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.3979 ms
+2025-08-08 16:39:30 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:39:30 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:39:30 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 151.6037 ms
+2025-08-08 16:39:32 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 9.4973 ms
+2025-08-08 16:39:32 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.2558 ms
+2025-08-08 16:39:35 [Debug] Refreshing access token for refresh token: "+ZXwFxEiXk8MUyeC8DuF4vanxQZwsMB6o+MuQLynQWWaf/uz8+QOg7Tr1nArkLpuwANZ5P9+LtlsJZtWfIhl+w=="
+2025-08-08 16:39:35 [Debug] Retrieving refresh token for token: "+ZXwFxEiXk8MUyeC8DuF4vanxQZwsMB6o+MuQLynQWWaf/uz8+QOg7Tr1nArkLpuwANZ5P9+LtlsJZtWfIhl+w=="
+2025-08-08 16:39:36 [Debug] Validating refresh token
+2025-08-08 16:39:36 [Debug] Refresh token is valid: "+ZXwFxEiXk8MUyeC8DuF4vanxQZwsMB6o+MuQLynQWWaf/uz8+QOg7Tr1nArkLpuwANZ5P9+LtlsJZtWfIhl+w=="
+2025-08-08 16:39:36 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:39:36 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:39:36 [Debug] Generating refresh token
+2025-08-08 16:39:36 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:39:36 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:39:36 [Information] Refresh token updated successfully for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:39:36 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 3761.3207 ms
+2025-08-08 16:55:25 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.4054 ms
+2025-08-08 16:55:25 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 16:55:25 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:55:25 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:55:25 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:55:25 [Debug] Generating refresh token
+2025-08-08 16:55:25 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:55:25 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 16:55:25 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 94.9367 ms
+2025-08-08 16:55:25 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1150 ms
+2025-08-08 16:55:25 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:55:25 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:55:25 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 12.1283 ms
+2025-08-08 16:55:37 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 2.5572 ms
+2025-08-08 16:55:37 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0753 ms
+2025-08-08 16:55:37 [Debug] Refreshing access token for refresh token: "6a16TYtvWzkrfoAWhJEZQR0b9IJcqsNUf8pEpr/V/41MVX9HlvsoZzJWMmIH7IiFg7VO2Xp0BC6dV0Eph/vw3g=="
+2025-08-08 16:55:37 [Debug] Retrieving refresh token for token: "6a16TYtvWzkrfoAWhJEZQR0b9IJcqsNUf8pEpr/V/41MVX9HlvsoZzJWMmIH7IiFg7VO2Xp0BC6dV0Eph/vw3g=="
+2025-08-08 16:55:37 [Debug] Validating refresh token
+2025-08-08 16:55:37 [Debug] Refresh token is valid: "6a16TYtvWzkrfoAWhJEZQR0b9IJcqsNUf8pEpr/V/41MVX9HlvsoZzJWMmIH7IiFg7VO2Xp0BC6dV0Eph/vw3g=="
+2025-08-08 16:55:37 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 16:55:37 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 16:55:37 [Debug] Generating refresh token
+2025-08-08 16:55:37 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:55:37 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:55:37 [Information] Refresh token updated successfully for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 16:55:37 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 36.5540 ms
+2025-08-08 16:55:50 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.2184 ms
+2025-08-08 17:07:43 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 2.2301 ms
+2025-08-08 17:07:43 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 17:07:43 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 17:07:43 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:07:44 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:07:44 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:07:44 [Debug] Generating refresh token
+2025-08-08 17:07:44 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:07:44 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:07:44 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1599.9210 ms
+2025-08-08 17:07:44 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 1.2643 ms
+2025-08-08 17:07:45 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:07:45 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:07:45 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 147.6737 ms
+2025-08-08 17:07:47 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 10.0843 ms
+2025-08-08 17:07:47 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.2781 ms
+2025-08-08 17:08:19 [Debug] Refreshing access token for refresh token: "w1GaDLTeicxITenXJugigKndqtAJfZGERQdRKbROe+QRnMAUZ7ztzUWCQSLRhhoGpn68xiwpjZs4wIKevQcIYQ=="
+2025-08-08 17:08:22 [Debug] Retrieving refresh token for token: "w1GaDLTeicxITenXJugigKndqtAJfZGERQdRKbROe+QRnMAUZ7ztzUWCQSLRhhoGpn68xiwpjZs4wIKevQcIYQ=="
+2025-08-08 17:08:41 [Debug] Validating refresh token
+2025-08-08 17:08:41 [Debug] Refresh token is valid: "w1GaDLTeicxITenXJugigKndqtAJfZGERQdRKbROe+QRnMAUZ7ztzUWCQSLRhhoGpn68xiwpjZs4wIKevQcIYQ=="
+2025-08-08 17:08:53 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:09:02 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:09:15 [Debug] Generating refresh token
+2025-08-08 17:09:49 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:13:52 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 2.6143 ms
+2025-08-08 17:13:52 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 17:13:52 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 17:13:52 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:13:53 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:13:53 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:13:53 [Debug] Generating refresh token
+2025-08-08 17:13:53 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:13:53 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:13:53 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1697.6336 ms
+2025-08-08 17:13:53 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 1.1947 ms
+2025-08-08 17:13:53 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:13:53 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:13:53 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 152.9402 ms
+2025-08-08 17:13:56 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 9.8212 ms
+2025-08-08 17:13:56 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.3947 ms
+2025-08-08 17:13:56 [Debug] Refreshing access token for refresh token: "nwgbRZxs5FQnugFZaAqMCWYpv+BAR32PTA9zDLWMYemReg61tX1c0deVZZ6D/7ck7fYpA43HU4+5kEwV4aYFSA=="
+2025-08-08 17:13:56 [Debug] Retrieving refresh token for token: "nwgbRZxs5FQnugFZaAqMCWYpv+BAR32PTA9zDLWMYemReg61tX1c0deVZZ6D/7ck7fYpA43HU4+5kEwV4aYFSA=="
+2025-08-08 17:13:56 [Debug] Validating refresh token
+2025-08-08 17:13:56 [Debug] Refresh token is valid: "nwgbRZxs5FQnugFZaAqMCWYpv+BAR32PTA9zDLWMYemReg61tX1c0deVZZ6D/7ck7fYpA43HU4+5kEwV4aYFSA=="
+2025-08-08 17:13:56 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:13:56 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:13:56 [Debug] Generating refresh token
+2025-08-08 17:13:56 [Debug] Updating refresh token for token: "nwgbRZxs5FQnugFZaAqMCWYpv+BAR32PTA9zDLWMYemReg61tX1c0deVZZ6D/7ck7fYpA43HU4+5kEwV4aYFSA=="
+2025-08-08 17:13:56 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:13:56 [Information] Refresh token updated successfully new token: "g1WoT/AvvlWbwbNzYX5oz8G/uBIm+TawLwhUsixCs+RmabCaY7dQQN4BOzjfvYXVGW5Nc8TNHxmxLEiw3mx3Hg=="
+2025-08-08 17:13:56 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 84.3435 ms
+2025-08-08 17:14:46 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1920 ms
+2025-08-08 17:14:46 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 17:14:46 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:14:46 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:14:46 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:14:46 [Debug] Generating refresh token
+2025-08-08 17:14:46 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:14:46 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:14:46 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 77.1365 ms
+2025-08-08 17:14:46 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.0773 ms
+2025-08-08 17:14:46 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:14:46 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:14:46 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 11.0711 ms
+2025-08-08 17:15:11 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 0.8300 ms
+2025-08-08 17:15:11 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.2869 ms
+2025-08-08 17:15:11 [Debug] Refreshing access token for refresh token: "J2LXpvanMAyzKnoP9F3tnoCehpGPrhgx1N1c1WRl0mkPZpszWGYkq22XcIuFHIlhuRtuGrHt37Qtilp1MjH7tw=="
+2025-08-08 17:15:11 [Debug] Retrieving refresh token for token: "J2LXpvanMAyzKnoP9F3tnoCehpGPrhgx1N1c1WRl0mkPZpszWGYkq22XcIuFHIlhuRtuGrHt37Qtilp1MjH7tw=="
+2025-08-08 17:15:11 [Debug] Validating refresh token
+2025-08-08 17:15:11 [Debug] Refresh token is valid: "J2LXpvanMAyzKnoP9F3tnoCehpGPrhgx1N1c1WRl0mkPZpszWGYkq22XcIuFHIlhuRtuGrHt37Qtilp1MjH7tw=="
+2025-08-08 17:15:11 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:15:11 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:15:11 [Debug] Generating refresh token
+2025-08-08 17:15:11 [Debug] Updating refresh token for token: "J2LXpvanMAyzKnoP9F3tnoCehpGPrhgx1N1c1WRl0mkPZpszWGYkq22XcIuFHIlhuRtuGrHt37Qtilp1MjH7tw=="
+2025-08-08 17:15:11 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:15:11 [Information] Refresh token updated successfully new token: "kZuIpDQtPSXpgoMpAUoiOXmQqyiRMGtwkzct8WZuvo7jA7bTBwgPOQ5R0HCZVHiwUtkVzqUEPJtf+iUDrWeyPA=="
+2025-08-08 17:15:11 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 29.5546 ms
+2025-08-08 17:18:51 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 17:18:51 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 303.2267 ms
+2025-08-08 17:20:56 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.3358 ms
+2025-08-08 17:20:56 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 17:20:56 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:20:57 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:20:57 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:20:57 [Debug] Generating refresh token
+2025-08-08 17:20:57 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:20:57 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 17:20:57 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 1327.9664 ms
+2025-08-08 17:20:57 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1531 ms
+2025-08-08 17:20:57 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:20:57 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:20:57 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 144.0258 ms
+2025-08-08 17:22:03 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1484 ms
+2025-08-08 17:22:03 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 20.8228 ms
+2025-08-08 17:22:03 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.0862 ms
+2025-08-08 17:22:03 [Debug] Refreshing access token for refresh token: "ldPWw103kPzOmk8Ya5YuOsC+ByLnPq5JY6ekz4RIXs07ATlyGtMp19dtS5085BiAODP7OF8+JcK+b1hx76yfIg=="
+2025-08-08 17:22:03 [Debug] Retrieving refresh token for token: "ldPWw103kPzOmk8Ya5YuOsC+ByLnPq5JY6ekz4RIXs07ATlyGtMp19dtS5085BiAODP7OF8+JcK+b1hx76yfIg=="
+2025-08-08 17:22:03 [Debug] Validating refresh token
+2025-08-08 17:22:03 [Debug] Refresh token is valid: "ldPWw103kPzOmk8Ya5YuOsC+ByLnPq5JY6ekz4RIXs07ATlyGtMp19dtS5085BiAODP7OF8+JcK+b1hx76yfIg=="
+2025-08-08 17:22:03 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 17:22:03 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 17:22:03 [Debug] Generating refresh token
+2025-08-08 17:22:03 [Debug] Updating refresh token for token: "ldPWw103kPzOmk8Ya5YuOsC+ByLnPq5JY6ekz4RIXs07ATlyGtMp19dtS5085BiAODP7OF8+JcK+b1hx76yfIg=="
+2025-08-08 17:22:03 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 17:22:03 [Information] Refresh token updated successfully new token: "LKFIrD9V7cb84/tgtdr0NZVokz6hwVvsem3JC49vrJF89V/fctna7TE8oKCp7rKSHulIr335oc27Be6zxOTXlA=="
+2025-08-08 17:22:03 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 143.7940 ms
+2025-08-08 17:22:03 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 3.4633 ms
+2025-08-08 17:22:13 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 0.6626 ms
+2025-08-08 17:22:13 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1116 ms
+2025-08-08 17:22:13 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 7.1636 ms
+2025-08-08 21:09:08 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 21:09:08 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 627.4318 ms
+2025-08-08 21:09:58 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.6650 ms
+2025-08-08 21:09:58 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 21:09:58 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:10:00 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:10:00 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:10:00 [Debug] Generating refresh token
+2025-08-08 21:10:00 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:10:01 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:10:01 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 2520.8488 ms
+2025-08-08 21:10:18 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 31.0018 ms
+2025-08-08 21:10:18 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1620 ms
+2025-08-08 21:10:18 [Debug] Refreshing access token for refresh token: "rJFMLQWWTPSXyAWo+ShVkf+No2Ugg0gYR3lauHo1G5DiwuunLEXqmMjv1DPzhWULOwSCvA0vV0ncXxv+MpP/EQ=="
+2025-08-08 21:10:18 [Debug] Retrieving refresh token for token: "rJFMLQWWTPSXyAWo+ShVkf+No2Ugg0gYR3lauHo1G5DiwuunLEXqmMjv1DPzhWULOwSCvA0vV0ncXxv+MpP/EQ=="
+2025-08-08 21:10:18 [Debug] Validating refresh token
+2025-08-08 21:10:18 [Debug] Refresh token is valid: "rJFMLQWWTPSXyAWo+ShVkf+No2Ugg0gYR3lauHo1G5DiwuunLEXqmMjv1DPzhWULOwSCvA0vV0ncXxv+MpP/EQ=="
+2025-08-08 21:10:18 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:10:18 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:10:18 [Debug] Generating refresh token
+2025-08-08 21:10:18 [Debug] Updating refresh token for token: "rJFMLQWWTPSXyAWo+ShVkf+No2Ugg0gYR3lauHo1G5DiwuunLEXqmMjv1DPzhWULOwSCvA0vV0ncXxv+MpP/EQ=="
+2025-08-08 21:10:18 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:10:18 [Information] Refresh token updated successfully new token: "Jt9kSVGK9jS4+5/gq8iyToOE2UchsS73RaaMstqqArVIthzJLRcRE+AE1+I6pSsIk2cvSd+dbRPbuu3dhUqMpQ=="
+2025-08-08 21:10:18 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 253.5983 ms
+2025-08-08 21:12:15 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 11.9863 ms
+2025-08-08 21:14:14 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 21:14:14 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:14:14 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:14:14 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:14:14 [Debug] Generating refresh token
+2025-08-08 21:14:14 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:14:14 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:14:14 [Information] HTTP "POST" "/api/auth/login" responded 200 in 221.6437 ms
+2025-08-08 21:14:40 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:14:40 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:14:40 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 174.5172 ms
+2025-08-08 21:15:53 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 10.1787 ms
+2025-08-08 21:16:13 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.1096 ms
+2025-08-08 21:16:13 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 21:16:13 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:16:13 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:16:13 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:16:13 [Debug] Generating refresh token
+2025-08-08 21:16:13 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:16:13 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:16:13 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 224.5832 ms
+2025-08-08 21:16:35 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 2.0164 ms
+2025-08-08 21:16:35 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1320 ms
+2025-08-08 21:16:35 [Debug] Refreshing access token for refresh token: "HV5v7ZQ2OTspw1+qPnTzgj7bBguAvZjk9itScApsEzQoEalFdltugmRK1IljYheDUqsYQbrRHrTrbOwIBPfmSw=="
+2025-08-08 21:16:35 [Debug] Retrieving refresh token for token: "HV5v7ZQ2OTspw1+qPnTzgj7bBguAvZjk9itScApsEzQoEalFdltugmRK1IljYheDUqsYQbrRHrTrbOwIBPfmSw=="
+2025-08-08 21:16:35 [Debug] Validating refresh token
+2025-08-08 21:16:35 [Debug] Refresh token is valid: "HV5v7ZQ2OTspw1+qPnTzgj7bBguAvZjk9itScApsEzQoEalFdltugmRK1IljYheDUqsYQbrRHrTrbOwIBPfmSw=="
+2025-08-08 21:16:35 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:16:35 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:16:35 [Debug] Generating refresh token
+2025-08-08 21:16:35 [Debug] Updating refresh token for token: "HV5v7ZQ2OTspw1+qPnTzgj7bBguAvZjk9itScApsEzQoEalFdltugmRK1IljYheDUqsYQbrRHrTrbOwIBPfmSw=="
+2025-08-08 21:16:35 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:16:35 [Information] Refresh token updated successfully new token: "NUQWRbX4T51Gof9ZXDiqC+kVP/Ew+R53rr+YU2p94tSeL7/tpiNKZ2e47gUFiasgt1os9IKs6rhcVi1SmK50oQ=="
+2025-08-08 21:16:35 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 57.1490 ms
+2025-08-08 21:16:43 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 2.1980 ms
+2025-08-08 21:17:00 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.0744 ms
+2025-08-08 21:17:00 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 21:17:00 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:17:01 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:17:01 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:17:01 [Debug] Generating refresh token
+2025-08-08 21:17:01 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:17:01 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:17:01 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 176.7050 ms
+2025-08-08 21:17:01 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.2026 ms
+2025-08-08 21:17:01 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:17:01 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:17:01 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 19.0817 ms
+2025-08-08 21:17:11 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 2.0267 ms
+2025-08-08 21:17:11 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1457 ms
+2025-08-08 21:17:11 [Debug] Refreshing access token for refresh token: "cNEXjg4NVu8Np+U0ZVkKlss8yf4fLNGwMbmygKpy5CX2zPU7R5vuf2JilYmOArSrQ7TUCdVeX6UaAWFD1qjxhA=="
+2025-08-08 21:17:11 [Debug] Retrieving refresh token for token: "cNEXjg4NVu8Np+U0ZVkKlss8yf4fLNGwMbmygKpy5CX2zPU7R5vuf2JilYmOArSrQ7TUCdVeX6UaAWFD1qjxhA=="
+2025-08-08 21:17:11 [Debug] Validating refresh token
+2025-08-08 21:17:11 [Debug] Refresh token is valid: "cNEXjg4NVu8Np+U0ZVkKlss8yf4fLNGwMbmygKpy5CX2zPU7R5vuf2JilYmOArSrQ7TUCdVeX6UaAWFD1qjxhA=="
+2025-08-08 21:17:11 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:17:11 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:17:11 [Debug] Generating refresh token
+2025-08-08 21:17:11 [Debug] Updating refresh token for token: "cNEXjg4NVu8Np+U0ZVkKlss8yf4fLNGwMbmygKpy5CX2zPU7R5vuf2JilYmOArSrQ7TUCdVeX6UaAWFD1qjxhA=="
+2025-08-08 21:17:11 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:17:11 [Information] Refresh token updated successfully new token: "ckoZlG1Ea2jaNJ2BydWxrbhHKHvscOn+M/XM3MdL3yGhYPX6RdLw5uLkpy+iQrOmVyTKgh4YooeS1JK4og8gAA=="
+2025-08-08 21:17:11 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 59.8259 ms
+2025-08-08 21:20:29 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 17.8238 ms
+2025-08-08 21:21:25 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 1.9346 ms
+2025-08-08 21:21:25 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 21:21:25 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:21:25 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:21:25 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:21:25 [Debug] Generating refresh token
+2025-08-08 21:21:25 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:21:25 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:21:25 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 155.5576 ms
+2025-08-08 21:21:26 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.1236 ms
+2025-08-08 21:21:26 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:21:26 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:21:26 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 20.8679 ms
+2025-08-08 21:21:31 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.2501 ms
+2025-08-08 21:21:32 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1101 ms
+2025-08-08 21:21:32 [Debug] Refreshing access token for refresh token: "kwzIRZoKpgcuaMJ+YUWul6IjYH9/5JCIn8uUZka+sra2oialtB+gsHfiTdxw1qTin5qWjhsl4kUXiSZAKu6PoA=="
+2025-08-08 21:21:32 [Debug] Retrieving refresh token for token: "kwzIRZoKpgcuaMJ+YUWul6IjYH9/5JCIn8uUZka+sra2oialtB+gsHfiTdxw1qTin5qWjhsl4kUXiSZAKu6PoA=="
+2025-08-08 21:21:32 [Debug] Validating refresh token
+2025-08-08 21:21:32 [Debug] Refresh token is valid: "kwzIRZoKpgcuaMJ+YUWul6IjYH9/5JCIn8uUZka+sra2oialtB+gsHfiTdxw1qTin5qWjhsl4kUXiSZAKu6PoA=="
+2025-08-08 21:21:32 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:21:32 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:21:32 [Debug] Generating refresh token
+2025-08-08 21:21:32 [Debug] Updating refresh token for token: "kwzIRZoKpgcuaMJ+YUWul6IjYH9/5JCIn8uUZka+sra2oialtB+gsHfiTdxw1qTin5qWjhsl4kUXiSZAKu6PoA=="
+2025-08-08 21:21:32 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:21:32 [Information] Refresh token updated successfully new token: "JdqTRCBLht8JBhS7QvdXhWmPgPBHWQT3rf+VR6G3KoYMk32ulJH/rOD60/WtY9JbUi/FLgk3xTlAFAF+xb04/A=="
+2025-08-08 21:21:32 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 53.9068 ms
+2025-08-08 21:22:15 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 21:22:15 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:22:15 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:22:15 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:22:15 [Debug] Generating refresh token
+2025-08-08 21:22:15 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:22:15 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 21:22:15 [Information] HTTP "POST" "/api/auth/login" responded 200 in 166.2122 ms
+2025-08-08 21:23:24 [Information] HTTP "GET" "/api/Auth/refresh-token" responded 405 in 0.3341 ms
+2025-08-08 21:24:05 [Debug] Refreshing access token for refresh token: "yksHo1/GZdzdrWCg+HKo56FXNbiDPTJ+5i1PYEqb4hPk/Hwkyw/lWC6l3H9zAj1I66BqjjPyNAsoYKaMl6EHPQ=="
+2025-08-08 21:24:05 [Debug] Retrieving refresh token for token: "yksHo1/GZdzdrWCg+HKo56FXNbiDPTJ+5i1PYEqb4hPk/Hwkyw/lWC6l3H9zAj1I66BqjjPyNAsoYKaMl6EHPQ=="
+2025-08-08 21:24:05 [Debug] Validating refresh token
+2025-08-08 21:24:05 [Debug] Refresh token is valid: "yksHo1/GZdzdrWCg+HKo56FXNbiDPTJ+5i1PYEqb4hPk/Hwkyw/lWC6l3H9zAj1I66BqjjPyNAsoYKaMl6EHPQ=="
+2025-08-08 21:24:05 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:24:05 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 21:24:05 [Debug] Generating refresh token
+2025-08-08 21:24:05 [Debug] Updating refresh token for token: "yksHo1/GZdzdrWCg+HKo56FXNbiDPTJ+5i1PYEqb4hPk/Hwkyw/lWC6l3H9zAj1I66BqjjPyNAsoYKaMl6EHPQ=="
+2025-08-08 21:24:05 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 21:24:05 [Information] Refresh token updated successfully new token: "xUKWX3QCZeGm2Fu+ukzoXsO8SZNn5lTLZroRpXKk+LDGUJzUTzXeyplmmLHollVM6HvwOh+JYE1hsF3P8eirjA=="
+2025-08-08 21:24:05 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 93.4182 ms
+2025-08-08 21:24:37 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 16.3109 ms
+2025-08-08 21:24:49 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:24:49 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 21:24:49 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 26.8827 ms
+2025-08-08 22:06:22 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 22:06:22 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 22:06:22 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:06:23 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:06:23 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:06:23 [Debug] Generating refresh token
+2025-08-08 22:06:23 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:06:24 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:06:24 [Information] HTTP "POST" "/api/auth/login" responded 200 in 1446.5611 ms
+2025-08-08 22:06:55 [Debug] Refreshing access token for refresh token: "7/M8x31w19sgRYi36ILPY4nT5fC/PQW4V3c2eB61BDGkC4t+JEFT9cRZ1S7XGMvJFcGIC0pcqMk9xygrUoCxEA=="
+2025-08-08 22:06:55 [Debug] Retrieving refresh token for token: "7/M8x31w19sgRYi36ILPY4nT5fC/PQW4V3c2eB61BDGkC4t+JEFT9cRZ1S7XGMvJFcGIC0pcqMk9xygrUoCxEA=="
+2025-08-08 22:06:55 [Debug] Validating refresh token
+2025-08-08 22:06:55 [Debug] Refresh token is valid: "7/M8x31w19sgRYi36ILPY4nT5fC/PQW4V3c2eB61BDGkC4t+JEFT9cRZ1S7XGMvJFcGIC0pcqMk9xygrUoCxEA=="
+2025-08-08 22:06:55 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:06:55 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:06:55 [Debug] Generating refresh token
+2025-08-08 22:06:55 [Debug] Updating refresh token for token: "7/M8x31w19sgRYi36ILPY4nT5fC/PQW4V3c2eB61BDGkC4t+JEFT9cRZ1S7XGMvJFcGIC0pcqMk9xygrUoCxEA=="
+2025-08-08 22:06:55 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:06:55 [Information] Refresh token updated successfully new token: "nIhgETgVSxZ0NpOb3L3hiCqZvv1bJHNXEz/KHZKc882jFxHs3js4rBaEWLj21Xh7NjoNLAj/vzTnbMkN1nkG0g=="
+2025-08-08 22:06:55 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 128.1666 ms
+2025-08-08 22:07:20 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:07:20 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:07:20 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 84.9514 ms
+2025-08-08 22:07:25 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 9.0326 ms
+2025-08-08 22:07:30 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 2.4886 ms
+2025-08-08 22:08:04 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 0.9780 ms
+2025-08-08 22:08:06 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 1.0055 ms
+2025-08-08 22:08:30 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 22:08:30 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:08:30 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:08:30 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:08:30 [Debug] Generating refresh token
+2025-08-08 22:08:30 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:08:30 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:08:30 [Information] HTTP "POST" "/api/auth/login" responded 200 in 86.7585 ms
+2025-08-08 22:08:37 [Debug] Refreshing access token for refresh token: "Gko36QTFFF2Ir4Hv1abwbmQEv6dXksTiRWo2VhyjsinjoD1DNmel+DJpmGNPVP/WyYTWqAcVn0zsZADLSd7gjw=="
+2025-08-08 22:08:37 [Debug] Retrieving refresh token for token: "Gko36QTFFF2Ir4Hv1abwbmQEv6dXksTiRWo2VhyjsinjoD1DNmel+DJpmGNPVP/WyYTWqAcVn0zsZADLSd7gjw=="
+2025-08-08 22:08:37 [Debug] Validating refresh token
+2025-08-08 22:08:37 [Debug] Refresh token is valid: "Gko36QTFFF2Ir4Hv1abwbmQEv6dXksTiRWo2VhyjsinjoD1DNmel+DJpmGNPVP/WyYTWqAcVn0zsZADLSd7gjw=="
+2025-08-08 22:08:37 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:08:37 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:08:37 [Debug] Generating refresh token
+2025-08-08 22:08:37 [Debug] Updating refresh token for token: "Gko36QTFFF2Ir4Hv1abwbmQEv6dXksTiRWo2VhyjsinjoD1DNmel+DJpmGNPVP/WyYTWqAcVn0zsZADLSd7gjw=="
+2025-08-08 22:08:37 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:08:37 [Information] Refresh token updated successfully new token: "6tgvfoGNYrfl+dlQwxgvSKpeeyEblDlDzq8Vgb3etmwpKL+4N+KqSd6ujTF7QrMG6yhVOe1oKNuk25HPc4lKIQ=="
+2025-08-08 22:08:37 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 25.8107 ms
+2025-08-08 22:09:08 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:08 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:08 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 7.0836 ms
+2025-08-08 22:09:10 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:10 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:10 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 7.3574 ms
+2025-08-08 22:09:20 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 22:09:20 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:09:20 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:09:20 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:09:20 [Debug] Generating refresh token
+2025-08-08 22:09:20 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:09:20 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:09:20 [Information] HTTP "POST" "/api/auth/login" responded 200 in 72.5158 ms
+2025-08-08 22:09:24 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:24 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:24 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 6.9216 ms
+2025-08-08 22:09:25 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:25 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:25 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 6.3869 ms
+2025-08-08 22:09:27 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:27 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:09:27 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 7.2033 ms
+2025-08-08 22:15:18 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 22:15:19 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 22:15:19 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:15:20 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:15:20 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:15:20 [Debug] Generating refresh token
+2025-08-08 22:15:20 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:15:20 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:15:20 [Information] HTTP "POST" "/api/auth/login" responded 200 in 1540.7798 ms
+2025-08-08 22:15:45 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:15:45 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:15:46 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 151.8700 ms
+2025-08-08 22:16:04 [Debug] Refreshing access token for refresh token: "wI4d48Zi1nbg+nfJBDF+cdOrruGeT9oNxUx2rO7f57XaCLyXf9yDeCNZB0iHDJiY457hpr1Ic9LWpFTaAUe60A=="
+2025-08-08 22:16:04 [Debug] Retrieving refresh token for token: "wI4d48Zi1nbg+nfJBDF+cdOrruGeT9oNxUx2rO7f57XaCLyXf9yDeCNZB0iHDJiY457hpr1Ic9LWpFTaAUe60A=="
+2025-08-08 22:16:04 [Debug] Validating refresh token
+2025-08-08 22:16:04 [Debug] Refresh token is valid: "wI4d48Zi1nbg+nfJBDF+cdOrruGeT9oNxUx2rO7f57XaCLyXf9yDeCNZB0iHDJiY457hpr1Ic9LWpFTaAUe60A=="
+2025-08-08 22:16:04 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:16:04 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:16:04 [Debug] Generating refresh token
+2025-08-08 22:16:04 [Debug] Updating refresh token for token: "wI4d48Zi1nbg+nfJBDF+cdOrruGeT9oNxUx2rO7f57XaCLyXf9yDeCNZB0iHDJiY457hpr1Ic9LWpFTaAUe60A=="
+2025-08-08 22:16:04 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:16:04 [Information] Refresh token updated successfully new token: "QC43HWqS5PmMXg4qHoy0kGcVvkPWA+5pHAtkiyiA0xJ1OQaaKE2pq9DO77xjh+tc6ITTBi+7wFzVsTllnInqEw=="
+2025-08-08 22:16:04 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 72.3001 ms
+2025-08-08 22:16:15 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:16:15 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:16:15 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 19.2944 ms
+2025-08-08 22:16:16 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:16:16 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:16:16 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 15.8722 ms
+2025-08-08 22:45:39 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 22:45:39 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 22:45:39 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:45:40 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:45:40 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:45:40 [Debug] Generating refresh token
+2025-08-08 22:45:40 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:45:41 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:45:41 [Information] HTTP "POST" "/api/auth/login" responded 200 in 1590.6048 ms
+2025-08-08 22:46:10 [Debug] Refreshing access token for refresh token: "xsCRVmYHoidBDPlCo/7JyI78Z21gg81aOxsoqU/5uqFcrJkKkU8XOFQgZJaGeIhuw27dYh+ACasrCpCS2Nsxyw=="
+2025-08-08 22:46:10 [Debug] Retrieving refresh token for token: "xsCRVmYHoidBDPlCo/7JyI78Z21gg81aOxsoqU/5uqFcrJkKkU8XOFQgZJaGeIhuw27dYh+ACasrCpCS2Nsxyw=="
+2025-08-08 22:46:11 [Debug] Validating refresh token
+2025-08-08 22:46:11 [Debug] Refresh token is valid: "xsCRVmYHoidBDPlCo/7JyI78Z21gg81aOxsoqU/5uqFcrJkKkU8XOFQgZJaGeIhuw27dYh+ACasrCpCS2Nsxyw=="
+2025-08-08 22:46:11 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:46:11 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:46:11 [Debug] Generating refresh token
+2025-08-08 22:46:11 [Debug] Updating refresh token for token: "xsCRVmYHoidBDPlCo/7JyI78Z21gg81aOxsoqU/5uqFcrJkKkU8XOFQgZJaGeIhuw27dYh+ACasrCpCS2Nsxyw=="
+2025-08-08 22:46:11 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:46:11 [Information] Refresh token updated successfully new token: "1aYADGjHco5qemtO/8PwX60SrcATUye71vvNZ+8YP7mPpxnt5PQqhAVenAmWFsryC/FR1vfvH1l9sMSHH+nx1Q=="
+2025-08-08 22:46:11 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 141.2167 ms
+2025-08-08 22:46:24 [Information] HTTP "GET" "/api/Account/profile" responded 401 in 61.9540 ms
+2025-08-08 22:46:52 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:46:52 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:46:52 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 47.0967 ms
+2025-08-08 22:47:13 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:47:13 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:47:13 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 15.5259 ms
+2025-08-08 22:47:32 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 401 in 12.3890 ms
+2025-08-08 22:47:58 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 22:47:58 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:47:58 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:47:58 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:47:58 [Debug] Generating refresh token
+2025-08-08 22:47:58 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:47:58 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 22:47:58 [Information] HTTP "POST" "/api/auth/login" responded 200 in 115.1729 ms
+2025-08-08 22:49:07 [Debug] Refreshing access token for refresh token: "eeKReFZT9hpTn+qpFunxDb0u37tZR1drn3Y1jfBKbuxKXgNsL/jtIBDsePYubd2In5mxwQsYaO+Ird+0RgPSrw=="
+2025-08-08 22:49:13 [Debug] Retrieving refresh token for token: "eeKReFZT9hpTn+qpFunxDb0u37tZR1drn3Y1jfBKbuxKXgNsL/jtIBDsePYubd2In5mxwQsYaO+Ird+0RgPSrw=="
+2025-08-08 22:49:41 [Debug] Validating refresh token
+2025-08-08 22:49:41 [Debug] Refresh token is valid: "eeKReFZT9hpTn+qpFunxDb0u37tZR1drn3Y1jfBKbuxKXgNsL/jtIBDsePYubd2In5mxwQsYaO+Ird+0RgPSrw=="
+2025-08-08 22:49:50 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 22:50:06 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 22:50:19 [Debug] Generating refresh token
+2025-08-08 22:50:55 [Debug] Updating refresh token for token: "eeKReFZT9hpTn+qpFunxDb0u37tZR1drn3Y1jfBKbuxKXgNsL/jtIBDsePYubd2In5mxwQsYaO+Ird+0RgPSrw=="
+2025-08-08 22:50:55 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 22:50:55 [Information] Refresh token updated successfully new token: "nlV+Fseer3u7PGdQHCZVgdopQ4xl9YM0QozJLaLHAkItFWuXgBP5zAqs2/xypxeu2k/MobxP0e4qklIPCtgVsA=="
+2025-08-08 22:52:52 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 284381.5590 ms
+2025-08-08 23:08:50 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 23:08:50 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 23:08:50 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:08:51 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:08:51 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 23:08:51 [Debug] Generating refresh token
+2025-08-08 23:08:51 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:08:52 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 23:08:52 [Information] HTTP "POST" "/api/auth/login" responded 200 in 1496.4208 ms
+2025-08-08 23:09:01 [Debug] Refreshing access token for refresh token: "MnHvrY5p0Pu/2keUu5hvf3uL6N5tqvuiFLrtyrk/wWCnTP+o96stX+Sbj0vyoyenxfnzze5DmhpanEvhl+rbfg=="
+2025-08-08 23:09:01 [Debug] Retrieving refresh token for token: "MnHvrY5p0Pu/2keUu5hvf3uL6N5tqvuiFLrtyrk/wWCnTP+o96stX+Sbj0vyoyenxfnzze5DmhpanEvhl+rbfg=="
+2025-08-08 23:09:01 [Debug] Validating refresh token
+2025-08-08 23:09:01 [Debug] Refresh token is valid: "MnHvrY5p0Pu/2keUu5hvf3uL6N5tqvuiFLrtyrk/wWCnTP+o96stX+Sbj0vyoyenxfnzze5DmhpanEvhl+rbfg=="
+2025-08-08 23:09:01 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:09:01 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:09:01 [Debug] Generating refresh token
+2025-08-08 23:09:01 [Debug] Updating refresh token for token: "MnHvrY5p0Pu/2keUu5hvf3uL6N5tqvuiFLrtyrk/wWCnTP+o96stX+Sbj0vyoyenxfnzze5DmhpanEvhl+rbfg=="
+2025-08-08 23:09:01 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:09:01 [Information] Refresh token updated successfully new token: "SagPBnYB1bfXyspGDBd92NNRoe4Ss8s+Z+BcoZ92P2Q4jhzCrtUqSwPEa+eb4MLa7HJtYN31ARvZ2Fe2TruQoA=="
+2025-08-08 23:09:01 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 157.3838 ms
+2025-08-08 23:29:16 [Warning] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-08-08 23:29:16 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 23:29:16 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:29:18 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:29:18 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 23:29:18 [Debug] Generating refresh token
+2025-08-08 23:29:18 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:29:18 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 23:29:18 [Information] HTTP "POST" "/api/auth/login" responded 200 in 1512.5373 ms
+2025-08-08 23:29:29 [Debug] Refreshing access token for refresh token: "UDYZSI3aR0QAjnyvqSK6dYHLdhBWcztkIIrUq/903/aYdfk7a9PbTh0c15/sCYUZUcKgCunneP0d211KG0kZdg=="
+2025-08-08 23:29:29 [Debug] Retrieving refresh token for token: "UDYZSI3aR0QAjnyvqSK6dYHLdhBWcztkIIrUq/903/aYdfk7a9PbTh0c15/sCYUZUcKgCunneP0d211KG0kZdg=="
+2025-08-08 23:29:29 [Debug] Validating refresh token
+2025-08-08 23:29:29 [Debug] Refresh token is valid: "UDYZSI3aR0QAjnyvqSK6dYHLdhBWcztkIIrUq/903/aYdfk7a9PbTh0c15/sCYUZUcKgCunneP0d211KG0kZdg=="
+2025-08-08 23:29:29 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:29:29 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:29:29 [Debug] Generating refresh token
+2025-08-08 23:29:29 [Debug] Updating refresh token for token: "UDYZSI3aR0QAjnyvqSK6dYHLdhBWcztkIIrUq/903/aYdfk7a9PbTh0c15/sCYUZUcKgCunneP0d211KG0kZdg=="
+2025-08-08 23:29:29 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:29:29 [Information] Refresh token updated successfully new token: "kTTIUpO15egqQKEwsCADtebrD3N2FS6BImM3kl0sr8FplUzapPu6uxJ89JFrBMS76u4g2jMYcbzcG8xty5vJtA=="
+2025-08-08 23:29:29 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 119.8244 ms
+2025-08-08 23:30:11 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 16.4641 ms
+2025-08-08 23:30:32 [Information] HTTP "OPTIONS" "/api/Auth/login" responded 204 in 0.8077 ms
+2025-08-08 23:30:32 [Debug] User login with email: "kaandanisment1@gmail.com"
+2025-08-08 23:30:32 [Debug] Checking registered user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:30:32 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:30:32 [Information] JWT token created successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 23:30:32 [Debug] Generating refresh token
+2025-08-08 23:30:32 [Debug] Adding refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:30:32 [Information] Refresh token created and stored database successfully for user: "kaandanisment1@gmail.com"
+2025-08-08 23:30:32 [Information] HTTP "POST" "/api/Auth/login" responded 200 in 95.7781 ms
+2025-08-08 23:30:32 [Information] HTTP "OPTIONS" "/api/Account/profile" responded 204 in 0.0830 ms
+2025-08-08 23:30:32 [Debug] Retrieving user info for userId: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:30:32 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:30:32 [Information] HTTP "GET" "/api/Account/profile" responded 200 in 88.1258 ms
+2025-08-08 23:30:41 [Information] HTTP "GET" "/api/Auth/has-refresh-cookie" responded 200 in 1.4693 ms
+2025-08-08 23:30:41 [Information] HTTP "OPTIONS" "/api/Auth/refresh-token" responded 204 in 0.1042 ms
+2025-08-08 23:30:41 [Debug] Refreshing access token for refresh token: "AUXb5mwPGmU6zaCyYV/pCggkmakL4qGmQN+8qDFw48LyX+jFkv8oOSIpavD3EPl1Fyl3mtMODjvsi641IBx0bA=="
+2025-08-08 23:30:41 [Debug] Retrieving refresh token for token: "AUXb5mwPGmU6zaCyYV/pCggkmakL4qGmQN+8qDFw48LyX+jFkv8oOSIpavD3EPl1Fyl3mtMODjvsi641IBx0bA=="
+2025-08-08 23:30:41 [Debug] Validating refresh token
+2025-08-08 23:30:41 [Debug] Refresh token is valid: "AUXb5mwPGmU6zaCyYV/pCggkmakL4qGmQN+8qDFw48LyX+jFkv8oOSIpavD3EPl1Fyl3mtMODjvsi641IBx0bA=="
+2025-08-08 23:30:41 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:30:41 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:30:41 [Debug] Generating refresh token
+2025-08-08 23:30:41 [Debug] Updating refresh token for token: "AUXb5mwPGmU6zaCyYV/pCggkmakL4qGmQN+8qDFw48LyX+jFkv8oOSIpavD3EPl1Fyl3mtMODjvsi641IBx0bA=="
+2025-08-08 23:30:41 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:30:41 [Information] Refresh token updated successfully new token: "LSAw6DY2ZMQYnCyhM/ypHy3bik/5f0daV+dduwXuxG+MZ5ujx+HXam/DZBP6C3OlAQkG74fGEZu/GmpwZC4avQ=="
+2025-08-08 23:30:41 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 30.5604 ms
+2025-08-08 23:31:35 [Debug] Refreshing access token for refresh token: "kTTIUpO15egqQKEwsCADtebrD3N2FS6BImM3kl0sr8FplUzapPu6uxJ89JFrBMS76u4g2jMYcbzcG8xty5vJtA=="
+2025-08-08 23:31:35 [Debug] Retrieving refresh token for token: "kTTIUpO15egqQKEwsCADtebrD3N2FS6BImM3kl0sr8FplUzapPu6uxJ89JFrBMS76u4g2jMYcbzcG8xty5vJtA=="
+2025-08-08 23:31:35 [Debug] Validating refresh token
+2025-08-08 23:31:35 [Debug] Refresh token is valid: "kTTIUpO15egqQKEwsCADtebrD3N2FS6BImM3kl0sr8FplUzapPu6uxJ89JFrBMS76u4g2jMYcbzcG8xty5vJtA=="
+2025-08-08 23:31:35 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:31:35 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:31:35 [Debug] Generating refresh token
+2025-08-08 23:31:35 [Debug] Updating refresh token for token: "kTTIUpO15egqQKEwsCADtebrD3N2FS6BImM3kl0sr8FplUzapPu6uxJ89JFrBMS76u4g2jMYcbzcG8xty5vJtA=="
+2025-08-08 23:31:35 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:31:35 [Information] Refresh token updated successfully new token: "YoygHGYejfZMx+YeuxMZaVHZE1UaB7817ekwPgj7ozjB/2Sio7Bo4pbQi5tkXvgH+H0KfgubydsAoVAQrsguqA=="
+2025-08-08 23:31:35 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 26.4463 ms
+2025-08-08 23:31:37 [Debug] Refreshing access token for refresh token: "YoygHGYejfZMx+YeuxMZaVHZE1UaB7817ekwPgj7ozjB/2Sio7Bo4pbQi5tkXvgH+H0KfgubydsAoVAQrsguqA=="
+2025-08-08 23:31:37 [Debug] Retrieving refresh token for token: "YoygHGYejfZMx+YeuxMZaVHZE1UaB7817ekwPgj7ozjB/2Sio7Bo4pbQi5tkXvgH+H0KfgubydsAoVAQrsguqA=="
+2025-08-08 23:31:37 [Debug] Validating refresh token
+2025-08-08 23:31:37 [Debug] Refresh token is valid: "YoygHGYejfZMx+YeuxMZaVHZE1UaB7817ekwPgj7ozjB/2Sio7Bo4pbQi5tkXvgH+H0KfgubydsAoVAQrsguqA=="
+2025-08-08 23:31:37 [Debug] Retrieving user by ID: "cb1c885b-4b54-412d-b6da-08ddcf5c5972"
+2025-08-08 23:31:37 [Debug] Creating JWT token for user with email: "kaandanisment1@gmail.com"
+2025-08-08 23:31:37 [Debug] Generating refresh token
+2025-08-08 23:31:37 [Debug] Updating refresh token for token: "YoygHGYejfZMx+YeuxMZaVHZE1UaB7817ekwPgj7ozjB/2Sio7Bo4pbQi5tkXvgH+H0KfgubydsAoVAQrsguqA=="
+2025-08-08 23:31:37 [Debug] Updating refresh token for user ID: cb1c885b-4b54-412d-b6da-08ddcf5c5972
+2025-08-08 23:31:37 [Information] Refresh token updated successfully new token: "tTh5oQOyBoSsGql+fcFXQfAARrh5WRnwtEalvcOJaE3XpCGCORNrmqoYl+n/mzacX5BTDbeydwf9SMxAlaOvWg=="
+2025-08-08 23:31:37 [Information] HTTP "POST" "/api/Auth/refresh-token" responded 200 in 17.4170 ms
