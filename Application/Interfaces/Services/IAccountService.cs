@@ -11,5 +11,7 @@ namespace Application.Interfaces.Services
     public interface IAccountService
     {
         Task<IDataResult<UserDto>> GetUserInfos(string userId);
+        Task<IResult> UpdateUserAsync(UserDto userDto);
+        Task<IResult> SendEmailConfirmationLinkAsync(Guid userId, string email);
     }
 }

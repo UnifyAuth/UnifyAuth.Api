@@ -22,19 +22,15 @@ namespace Application.Services
         private readonly IValidator<LoginDto> _loginValidator;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly IEmailTokenService _emailTokenService;
-        private readonly IEMailService _emailService;
         private readonly ILogger<AuthService> _logger;
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, IEMailService emailService, IEmailTokenService emailTokenService, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
+        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
         {
             _registerValidator = registerValidator;
             _userRepository = userRepository;
             _mapper = mapper;
-            _emailService = emailService;
-            _emailTokenService = emailTokenService;
             _logger = logger;
             _loginValidator = loginValidator;
             _tokenService = tokenService;
@@ -101,16 +97,13 @@ namespace Application.Services
             var validationResult = _registerValidator.Validate(registerDto);
             if (!validationResult.IsValid)
             {
-                _logger.LogInformation("Validation failed for {Email}: {Errors}",
+                _logger.LogInformation("Validation failed for register: {Email} {Errors}",
                     registerDto.Email,
                     validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
                 return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
             }
 
-            //Debugging log
-            _logger.LogDebug("Mapping RegisterDto to User entity for {Email}", registerDto.Email);
             User user = _mapper.Map<User>(registerDto);
-
             var result = await _userRepository.CreateUserAsync(user, registerDto.Password);
             if (result is ErrorDataResult<User> errorDataResult)
             {
@@ -126,7 +119,8 @@ namespace Application.Services
                     errorDataResult.Message);
                 return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
             }
-
+            
+            _logger.LogInformation("User registered successfully with Email: {Email}", registerDto.Email);
             return new SuccessResult("User registered successfully");
         }
 
@@ -151,8 +145,12 @@ namespace Application.Services
             var user = _mapper.Map<User>(identityUser.Data);
             var accessToken = await _tokenService.GenerateAccessToken(user);
             var newRefreshTokenString = _tokenService.GenerateRefreshToken();
-            await _tokenService.UpdateRefreshToken(refreshToken, newRefreshTokenString);
-            
+
+            refreshToken.Token = newRefreshTokenString;
+            refreshToken.Expires = DateTime.UtcNow.AddDays(15); // Set expiration to 15 days
+
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
+
             return new SuccessDataResult<TokenResultDto>(new TokenResultDto
             {
                 AccessToken = accessToken,
@@ -161,22 +159,15 @@ namespace Application.Services
             });
         }
 
-        private async Task<IResult> SendEmailConfirmationLinkAsync(Guid userId, string email)
+        public async Task<IResult> Logout(string refreshTokenString)
         {
-            var emailConfirmationToken = await _emailTokenService.GenerateEmailConfirmationToken(userId);
-            var emailContent = string.Empty;
-            if (emailConfirmationToken is ErrorDataResult<ConfirmEmailDto> errorDataResult)
-            {
-                _logger.LogError("Failed to generate email confirmation token for user {UserId}: {Error}", userId, errorDataResult.Message);
-                return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
-            }
+            _logger.LogDebug("Logging out for refresh token: {RefreshToken}", refreshTokenString);
+            var refreshToken = await _refreshTokenRepository.GetRefreshTokenByTokenAsync(refreshTokenString);
+            if(refreshToken is null) return new ErrorResult("No refresh token found for user", "NotFound");
 
-            var frontendUrl = "http://localhost:4200/confirm-email";
-            emailContent = $"{frontendUrl}?userId={emailConfirmationToken.Data.UserId}&token={emailConfirmationToken.Data.Token}";
-
-            await _emailService.SendAsync(email, "Confirm your email", emailContent);
-
-            return new SuccessResult("Email confirmation link sent successfully");
+            refreshToken.Revoked = true;
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
+            return new SuccessResult("User logged out successfully");
         }
     }
 }

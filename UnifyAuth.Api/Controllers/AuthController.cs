@@ -2,7 +2,11 @@
 using Application.Common.Security;
 using Application.DTOs;
 using Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace UnifyAuth.Api.Controllers
 {
@@ -40,27 +44,6 @@ namespace UnifyAuth.Api.Controllers
             }
 
             return Ok(new { Message = registerResult.Message });
-        }
-
-        [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
-        {
-            var result = await _emailTokenService.ConfirmEmail(confirmEmailDto);
-
-            if (result is ErrorResult errorResult)
-            {
-                if (errorResult.ErrorType == "BadRequest")
-                {
-                    return BadRequest(new
-                    {
-                        message = errorResult.Message,
-                        errorType = errorResult.ErrorType,
-                        messages = errorResult.Messages
-                    });
-                }
-            }
-
-            return Ok(new { Message = result.Message });
         }
 
         [HttpPost("login")]
@@ -134,6 +117,32 @@ namespace UnifyAuth.Api.Controllers
         {
             var cookie = Request.Cookies["refreshToken"];
             return Ok(new { hasRefreshCookie = !string.IsNullOrEmpty(cookie)});
+        }
+
+        [HttpPost("logout")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Logout()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+                return NoContent();
+
+            var logoutResult = await _authService.Logout(refreshToken);
+            if(logoutResult is ErrorResult errorResult)
+            {
+                if(errorResult.ErrorType == "NotFound")
+                    return NoContent();
+            }
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTimeOffset.UnixEpoch
+            };
+            Response.Cookies.Append("refreshToken", string.Empty, cookieOptions);
+
+            return NoContent();
         }
     }
 }

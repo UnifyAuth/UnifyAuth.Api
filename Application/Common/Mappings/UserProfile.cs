@@ -26,6 +26,7 @@ namespace Application.Common.Mappings
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.Preferred2FAProvider, opt => opt.MapFrom(src => src.Preferred2FAProvider))
+                .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.EmailConfirmed))
                 .ForMember(dest => dest.ExternalProvider, opt => opt.MapFrom(src => src.ExternalProvider))
                 .ReverseMap();
         }

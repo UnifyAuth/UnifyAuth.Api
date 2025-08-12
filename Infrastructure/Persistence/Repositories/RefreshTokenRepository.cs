@@ -44,7 +44,6 @@ namespace Infrastructure.Persistence.Repositories
         public async Task UpdateRefreshTokenAsync(RefreshToken refreshToken)
         {
             _logger.LogDebug("Updating refresh token for user ID: {UserId}", refreshToken.UserId);
-            _context.RefreshTokens.Update(refreshToken);
             await _context.SaveChangesAsync();
         }
     }

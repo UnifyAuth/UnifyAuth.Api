@@ -34,7 +34,7 @@ namespace Infrastructure.Services
             if (identityUser == null)
             {
                 _logger.LogInformation("User not found with UserId: {UserId}", confirmEmailDto.UserId);
-                return new ErrorResult("User not found. Please register or check your mail", "BadRequest");
+                return new ErrorResult("User not found. Please register or check your mail", "NotFound");
             }
 
             if ((identityUser.EmailConfirmed))
@@ -48,9 +48,20 @@ namespace Infrastructure.Services
 
             if (!result.Succeeded)
             {
-                var errors = string.Join(Environment.NewLine, result.Errors.Select(e => e.Description));
-                _logger.LogWarning("Email confirmation failed for UserId: {UserId} with errors: {Errors}", confirmEmailDto.UserId, errors);
-                return new ErrorResult($"Email confirmation failed \n{errors}","SystemError");
+                if(result.Errors.Any(e => e.Code == "InvalidToken"))
+                {
+                    _logger.LogWarning("Invalid token for UserId: {UserId}", confirmEmailDto.UserId);
+                    return new ErrorResult("Invalid token. Please request a new confirmation link.", "InvalidToken");
+                }
+                else if(result.Errors.Any(e => e.Code == "ConcurrencyFailure"))
+                {
+                    _logger.LogWarning("Concurrency failure for UserId: {UserId}", confirmEmailDto.UserId);
+                    return new ErrorResult("Concurrency failure. Please try again later.", "ConcurrencyFailure");
+                }
+                _logger.LogWarning("Email confirmation failed for UserId: {UserId} with error: {Error}", 
+                    confirmEmailDto.UserId, 
+                    result.Errors.Select(e => e.Code.FirstOrDefault()));
+                return new ErrorResult("An error occurred while email confirmation. Please try again later","SystemError");
             }
 
             _logger.LogInformation("Email confirmed successfully for UserId: {UserId}", confirmEmailDto.UserId);
