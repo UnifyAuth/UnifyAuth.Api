@@ -13,10 +13,12 @@ namespace Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string? PasswordHash { get; set; }
         public string PhoneNumber { get; set; }
         public AuthenticationProviderType Preferred2FAProvider { get; set; }
-        public bool EmailConfirmed { get; set; }
+        public bool? EmailConfirmed { get; set; }
         public string? ExternalProvider { get; set; }
         public string? ExternalProviderId { get; set; }
+        public string? SecurityStamp { get; set; }
     }
 }

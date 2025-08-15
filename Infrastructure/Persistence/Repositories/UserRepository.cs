@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Common.IdentityModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -72,14 +73,19 @@ namespace Infrastructure.Persistence.Repositories
             if (identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(identityUser, password);
-            if(!isPasswordValid) return new ErrorDataResult<User>("Invalid password", "Unauthorized");
+            if(!isPasswordValid) return new ErrorDataResult<User>("Invalid password", "BadRequest");
 
             User user = _mapper.Map<User>(identityUser);
             return new SuccessDataResult<User>(user);
         }
-        public Task<IResult> UserExistByEmail(string email)
+        public async Task<IResult> UserExistByEmail(string email)
         {
-            throw new NotImplementedException();
+            // Debugging log
+            _logger.LogDebug("Checking if user exists with email: {Email}", email);
+            var identityUser = await _userManager.Users.AnyAsync(u => u.Email == email);
+            if (!identityUser) return new ErrorResult("User not found", "NotFound");
+
+            return new SuccessResult("User exists");
         }
 
         public async Task<IDataResult<User>> GetUserByIdAsync(string userId)

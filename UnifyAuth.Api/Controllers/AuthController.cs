@@ -50,7 +50,7 @@ namespace UnifyAuth.Api.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var loginResult = await _authService.LoginAsyncWithJWT(loginDto);
-            if(loginResult is ErrorDataResult<TokenResultDto> errorDataResult)
+            if (loginResult is ErrorDataResult<TokenResultDto> errorDataResult)
             {
                 if (errorDataResult.ErrorType == "BadRequest")
                 {
@@ -65,9 +65,9 @@ namespace UnifyAuth.Api.Controllers
                 {
                     return NotFound(new { message = errorDataResult.Message });
                 }
-                else if(errorDataResult.ErrorType == "Unauthorized")
+                else if (errorDataResult.ErrorType == "BadRequest")
                 {
-                    return Unauthorized(new { message = errorDataResult.Message });
+                    return BadRequest(new { message = errorDataResult.Message });
                 }
             }
 
@@ -116,7 +116,7 @@ namespace UnifyAuth.Api.Controllers
         public IActionResult HasRefreshCookie()
         {
             var cookie = Request.Cookies["refreshToken"];
-            return Ok(new { hasRefreshCookie = !string.IsNullOrEmpty(cookie)});
+            return Ok(new { hasRefreshCookie = !string.IsNullOrEmpty(cookie) });
         }
 
         [HttpPost("logout")]
@@ -128,9 +128,9 @@ namespace UnifyAuth.Api.Controllers
                 return NoContent();
 
             var logoutResult = await _authService.Logout(refreshToken);
-            if(logoutResult is ErrorResult errorResult)
+            if (logoutResult is ErrorResult errorResult)
             {
-                if(errorResult.ErrorType == "NotFound")
+                if (errorResult.ErrorType == "NotFound")
                     return NoContent();
             }
             var cookieOptions = new CookieOptions
@@ -143,6 +143,54 @@ namespace UnifyAuth.Api.Controllers
             Response.Cookies.Append("refreshToken", string.Empty, cookieOptions);
 
             return NoContent();
+        }
+
+        [HttpPost("send-reset-password-link")]
+        public async Task<IActionResult> SendResetPasswordLink(EmailDto emailDto)
+        {
+            if (string.IsNullOrEmpty(emailDto.Email))
+            {
+                return BadRequest(new { message = "Email is required." });
+            }
+            var result = await _authService.SendResetPasswordLink(emailDto.Email);
+            if (result is ErrorResult errorResult)
+            {
+                if (errorResult.ErrorType == "NotFound")
+                {
+                    return NotFound(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "TokenGenerationError")
+                {
+                    return StatusCode(500, new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "EmailError")
+                {
+                    return StatusCode(500, new { message = errorResult.Message });
+                }
+            }
+            return Ok(new { message = "Reset password link sent successfully." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            if (resetPasswordDto == null || string.IsNullOrEmpty(resetPasswordDto.Token) || string.IsNullOrEmpty(resetPasswordDto.NewPassword))
+            {
+                return BadRequest(new { message = "Invalid reset password data." });
+            }
+            var result = await _authService.ResetPassword(resetPasswordDto);
+            if (result is ErrorResult errorResult)
+            {
+                if (errorResult.ErrorType == "BadRequest")
+                {
+                    return BadRequest(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "NotFound")
+                {
+                    return NotFound(new { message = errorResult.Message });
+                }
+            }
+            return Ok(new { message = "Password reset successfully." });
         }
     }
 }

@@ -20,13 +20,17 @@ namespace Application.Services
     {
         private readonly IValidator<RegisterDto> _registerValidator;
         private readonly IValidator<LoginDto> _loginValidator;
+        private readonly IValidator<ResetPasswordDto> _resetPasswordValidator;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthService> _logger;
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IEMailService _emailService;
+        private readonly IEmailTokenService _emailTokenService;
+        private readonly IPasswordService _passwordService;
 
-        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
+        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository, IEMailService emailService, IEmailTokenService emailTokenService, IPasswordService passwordService, IValidator<ResetPasswordDto> resetPasswordValidator)
         {
             _registerValidator = registerValidator;
             _userRepository = userRepository;
@@ -35,6 +39,10 @@ namespace Application.Services
             _loginValidator = loginValidator;
             _tokenService = tokenService;
             _refreshTokenRepository = refreshTokenRepository;
+            _emailService = emailService;
+            _emailTokenService = emailTokenService;
+            _passwordService = passwordService;
+            _resetPasswordValidator = resetPasswordValidator;
         }
 
         public async Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto)
@@ -52,18 +60,8 @@ namespace Application.Services
 
             var userChecking = await _userRepository.CheckRegisteredUserAsync(loginDto.Email, loginDto.Password);
             if (userChecking is ErrorDataResult<User> errorDataResult)
-            {
-                if (errorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogInformation("User not found for email: {Email}", loginDto.Email);
-                    return new ErrorDataResult<TokenResultDto>("User not found", "NotFound");
-                }
-                else if (errorDataResult.ErrorType == "Unauthorized")
-                {
-                    _logger.LogInformation("Invalid password for email: {Email}", loginDto.Email);
-                    return new ErrorDataResult<TokenResultDto>("Invalid password", "Unauthorized");
-                }
-            }
+               return new ErrorDataResult<TokenResultDto>(errorDataResult.Message, errorDataResult.ErrorType);
+            
 
             AccessToken accessToken = await _tokenService.GenerateAccessToken(userChecking.Data);
             _logger.LogInformation("JWT token created successfully for user: {Email}", loginDto.Email);
@@ -168,6 +166,62 @@ namespace Application.Services
             refreshToken.Revoked = true;
             await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
             return new SuccessResult("User logged out successfully");
+        }
+
+        public async Task<IResult> SendResetPasswordLink(string email)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            if (user is ErrorDataResult<User> userErrorDataResult)
+            {
+                if (userErrorDataResult.ErrorType == "NotFound")
+                {
+                    _logger.LogInformation("User not found with email: {Email}", email);
+                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
+                }
+            }
+
+            var resetPasswordToken = await _emailTokenService.GenerateResetPasswordToken(user.Data);
+            if (resetPasswordToken is ErrorDataResult<ResetPasswordLinkDto> tokenErrorDataResult)
+                return new ErrorResult(tokenErrorDataResult.Message, tokenErrorDataResult.ErrorType);
+
+            var frontendUrl = "http://localhost:4200/reset-password";
+            var emailContent = string.Empty;
+            emailContent = $"{frontendUrl}?userId={resetPasswordToken.Data.UserId}&token={resetPasswordToken.Data.Token}";
+
+            var emailResult = await _emailService.SendAsync(email, "Reset Password", emailContent);
+            if (emailResult is ErrorResult mailErrorResult) return new ErrorResult(mailErrorResult.Message, mailErrorResult.ErrorType);
+
+            return new SuccessResult("Reset password link sent successfully");
+        }
+
+        public async Task<IResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var validationResult = _resetPasswordValidator.Validate(resetPasswordDto);
+            if (!validationResult.IsValid)
+            {
+                _logger.LogInformation("Validation failed for reset password: {Errors}",
+                    validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
+                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
+            }
+            var user = await _userRepository.GetUserByIdAsync(resetPasswordDto.UserId);
+            if(user is ErrorDataResult<User> userErrorDataResult)
+            {
+                if(userErrorDataResult.ErrorType == "NotFound")
+                {
+                    _logger.LogWarning("User not found with UserId: {UserId}", resetPasswordDto.UserId);
+                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
+                }
+            }
+
+            var resetPasswordResult = await _passwordService.ResetPassword(user.Data,resetPasswordDto.Token,resetPasswordDto.NewPassword);
+            if(resetPasswordResult is ErrorResult resetPasswordErrorResult)
+            {
+                if(resetPasswordErrorResult.ErrorType == "BadRequest")
+                {
+                    return new ErrorResult(resetPasswordErrorResult.Message, resetPasswordErrorResult.ErrorType);
+                }
+            }
+            return new SuccessResult("Password reset successfully");
         }
     }
 }

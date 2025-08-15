@@ -2,6 +2,8 @@
 using Application.Common.Results.Concrete;
 using Application.DTOs;
 using Application.Interfaces.Services;
+using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Common.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -18,11 +20,13 @@ namespace Infrastructure.Services
     {
         private readonly UserManager<IdentityUserModel> _userManager;
         private readonly ILogger<EmailTokenService> _logger;
+        private readonly IMapper _mapper;
 
-        public EmailTokenService(UserManager<IdentityUserModel> userManager, ILogger<EmailTokenService> logger)
+        public EmailTokenService(UserManager<IdentityUserModel> userManager, ILogger<EmailTokenService> logger, IMapper mapper)
         {
             _userManager = userManager;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<IResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
@@ -43,7 +47,7 @@ namespace Infrastructure.Services
                 return new ErrorResult("Email Already Confirmed", "BadRequest");
             }
 
-            var decodedToken = WebUtility.UrlDecode(confirmEmailDto.Token);
+            var decodedToken = Uri.UnescapeDataString(confirmEmailDto.Token);
             var result = await _userManager.ConfirmEmailAsync(identityUser, decodedToken);
 
             if (!result.Succeeded)
@@ -68,17 +72,12 @@ namespace Infrastructure.Services
             return new SuccessResult("Email confirmation successful");
         }
 
-        public async Task<IDataResult<ConfirmEmailDto>> GenerateEmailConfirmationToken(Guid userId)
+        public async Task<IDataResult<ConfirmEmailDto>> GenerateEmailConfirmationToken(User user)
         {
             //Debugging log
-            _logger.LogDebug("Generating Email Confirmation Token with UserId: {UserId}", userId);
+            _logger.LogDebug("Generating Email Confirmation Token with UserEmail: {UserEmail}", user.Email);
 
-            var identityUser = await _userManager.FindByIdAsync(userId.ToString());
-            if(identityUser == null)
-            {
-                _logger.LogInformation("User not found with UserId: {UserId}", userId);
-                return new ErrorDataResult<ConfirmEmailDto>("User not found", "NotFound");
-            }
+            IdentityUserModel identityUser = _mapper.Map<IdentityUserModel>(user);
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(identityUser);
             if (string.IsNullOrEmpty(token))
             {
@@ -89,11 +88,33 @@ namespace Infrastructure.Services
 
             ConfirmEmailDto confirmEmailDto = new ConfirmEmailDto
             {
-                UserId = userId,
+                UserId = identityUser.Id,
                 Token = encodedToken
             };
-            _logger.LogInformation("Email Confirmation Token Generated Successfully for UserId: {UserId}", userId.ToString());
+            _logger.LogInformation("Email Confirmation Token Generated Successfully for UserEmail: {UserEmail}", identityUser.Email);
             return new SuccessDataResult<ConfirmEmailDto>(confirmEmailDto, "Email confirmation token generated successfully");
+        }
+
+        public async Task<IDataResult<ResetPasswordLinkDto>> GenerateResetPasswordToken(User user)
+        {
+            //Debugging log
+            _logger.LogDebug("Generating Reset Password Token with UserEmail: {UserEmail}", user.Email);
+           
+            IdentityUserModel identityUser = _mapper.Map<IdentityUserModel>(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+            if (string.IsNullOrEmpty(token))
+            {
+                _logger.LogError("Reset Password Token Generation failed for User: {UserId} {Email}", identityUser.Id, identityUser.Email);
+                return new ErrorDataResult<ResetPasswordLinkDto>("Failed to generate reset password token", "TokenGenerationError");
+            }
+            var encodedToken = WebUtility.UrlEncode(token);
+            ResetPasswordLinkDto resetPasswordDto = new ResetPasswordLinkDto
+            {
+                UserId = user.Id,
+                Token = encodedToken
+            };
+            _logger.LogInformation("Reset Password Token Generated Successfully for UserEmail: {UserEmail}", user.Email);
+            return new SuccessDataResult<ResetPasswordLinkDto>(resetPasswordDto, "Reset password token generated successfully");
         }
     }
 }

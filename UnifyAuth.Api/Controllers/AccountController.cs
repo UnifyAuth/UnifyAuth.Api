@@ -92,13 +92,16 @@ namespace UnifyAuth.Api.Controllers
                     return StatusCode(500, new { message = errorResult.Message });
                 }
             }
-
             return Ok(new { message = "Email confirmation link sent successfully" });
         }
 
         [HttpPost("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
+            if (confirmEmailDto == null || string.IsNullOrEmpty(confirmEmailDto.UserId.ToString()) || string.IsNullOrEmpty(confirmEmailDto.Token))
+            {
+                return BadRequest(new { message = "Invalid confirmation data" });
+            }
             var result = await _emailTokenService.ConfirmEmail(confirmEmailDto);
 
             if (result is ErrorResult errorResult)

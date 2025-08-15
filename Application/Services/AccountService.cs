@@ -69,7 +69,7 @@ namespace Application.Services
                         errorResult.Messages);
                     return new ErrorResult(errorResult.Messages, errorResult.ErrorType);
                 }
-                _logger.LogInformation("User updatimg failed for {Email} with error: {Error}",
+                _logger.LogInformation("User updating failed for {Email} with error: {Error}",
                     userDto.Email,
                     errorResult.Message);
                 return new ErrorResult(errorResult.Message, errorResult.ErrorType);
@@ -81,21 +81,29 @@ namespace Application.Services
 
         public async Task<IResult> SendEmailConfirmationLinkAsync(Guid userId, string email)
         {
-            var emailConfirmationToken = await _emailTokenService.GenerateEmailConfirmationToken(userId);
-            var emailContent = string.Empty;
+            var user = await _userRepository.GetUserByIdAsync(userId.ToString());
+            if(user is ErrorDataResult<User> userErrorDataResult)
+            {
+                if(userErrorDataResult.ErrorType == "NotFound")
+                {
+                    _logger.LogWarning("User not found for Id: {UserId}", userId);
+                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
+                }
+            }
+            var emailConfirmationToken = await _emailTokenService.GenerateEmailConfirmationToken(user.Data);
             if (emailConfirmationToken is ErrorDataResult<ConfirmEmailDto> errorDataResult)
             {
-                _logger.LogError("Failed to generate email confirmation token for user {UserId}: {Error}", userId, errorDataResult.Message);
                 return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
             }
 
             var frontendUrl = "http://localhost:4200/confirm-email";
+            var emailContent = string.Empty;
             emailContent = $"{frontendUrl}?userId={emailConfirmationToken.Data.UserId}&token={emailConfirmationToken.Data.Token}";
 
             var emailResult = await _emailService.SendAsync(email, "Confirm your email", emailContent);
-            if(emailResult is ErrorResult errorResult)
+            if(emailResult is ErrorResult mailErrorResult)
             {
-                return new ErrorResult(errorResult.Message, errorResult.ErrorType);
+                return new ErrorResult(mailErrorResult.Message, mailErrorResult.ErrorType);
             }
 
             return new SuccessResult("Email confirmation link sent successfully");

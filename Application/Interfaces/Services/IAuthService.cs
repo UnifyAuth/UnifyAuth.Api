@@ -16,5 +16,7 @@ namespace Application.Interfaces.Services
         Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto);
         Task<IDataResult<TokenResultDto>> RefreshAccessToken(string refreshTokenString);
         Task<IResult> Logout(string refreshTokenString);
+        Task<IResult> SendResetPasswordLink(string email);
+        Task<IResult> ResetPassword(ResetPasswordDto resetPasswordDto);
     }
 }
