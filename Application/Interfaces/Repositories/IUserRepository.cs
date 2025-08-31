@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results.Abstracts;
+using Application.DTOs;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,6 @@ namespace Application.Interfaces.Repositories
         Task<IDataResult<User>> CreateUserAsync(User user, string password);
         Task<IDataResult<User>> CheckRegisteredUserAsync(string email, string password);
         Task<IDataResult<User>> GetUserByIdAsync(string userId);
-        Task<IResult> UpdateUserAsync(User user);
+        Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto);
     }
 }

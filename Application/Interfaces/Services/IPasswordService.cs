@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results.Abstracts;
+using Application.DTOs;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Application.Interfaces.Services
 {
     public interface IPasswordService
     {
-       Task<IResult> ResetPassword(User user, string token, string newPassword);
+        Task<IResult> ResetPassword(User user, string token, string newPassword);
+        Task<IDataResult<ResetPasswordLinkDto>> GenerateResetPasswordToken(User user);
     }
 }

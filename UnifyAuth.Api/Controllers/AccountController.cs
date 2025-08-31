@@ -2,10 +2,12 @@
 using Application.DTOs;
 using Application.Interfaces.Services;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 
 namespace UnifyAuth.Api.Controllers
@@ -45,13 +47,13 @@ namespace UnifyAuth.Api.Controllers
         }
 
         [HttpPut("edit-profile")]
-        public async Task<IActionResult> UpdateUserProfile([FromBody] UserDto userDto)
+        public async Task<IActionResult> UpdateUserProfile([FromBody] UserUpdateDto userUpdateDto)
         {
-            if (userDto == null || string.IsNullOrEmpty(userDto.Id.ToString()) || userDto.Id.ToString() == "00000000-0000-0000-0000-000000000000")
+            if (userUpdateDto == null || string.IsNullOrEmpty(userUpdateDto.Id.ToString()) || userUpdateDto.Id.ToString() == "00000000-0000-0000-0000-000000000000")
             {
                 return BadRequest(new { message = "Invalid user data" });
             }
-            var result = await _accountService.UpdateUserAsync(userDto);
+            var result = await _accountService.UpdateUserAsync(userUpdateDto);
 
             if (result is ErrorResult errorResult)
             {
@@ -126,6 +128,58 @@ namespace UnifyAuth.Api.Controllers
             }
 
             return Ok(new { Message = result.Message });
+        }
+
+        [HttpPost("configure-2fa")]
+        public async Task<IActionResult> ConfigureTwoFactorAuthentication([FromQuery, BindRequired] AuthenticationProviderType provider)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            var result = await _accountService.ConfigureTwoFactorAsync(userId, provider);
+            if(result is ErrorDataResult<TwoFactorConfigurationDto> errorDataResult)
+            {
+                if (errorDataResult.ErrorType == "NotFound")
+                {
+                    return NotFound(new { message = errorDataResult.Message });
+                }
+                else if (errorDataResult.ErrorType == "BadRequest")
+                {
+                    return BadRequest(new { message = errorDataResult.Message });
+                }
+                else if (errorDataResult.ErrorType == "SystemError")
+                {
+                    return StatusCode(500, new { message = errorDataResult.Message });
+                }
+            }
+            return Ok(result.Data);
+        }
+
+        [HttpPost("verify-2fa-configuration")]
+        public async Task<IActionResult> VerifyTwoFactorAuthentication([FromBody] VerifyTwoFactorDto verifyTwoFactorDto)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            if(userId == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            var twoFactorVerifyResult = await _accountService.VerifyTwoFactorAuthentication(userId, verifyTwoFactorDto);
+            if (twoFactorVerifyResult is ErrorResult errorResult)
+            {
+                if (errorResult.ErrorType == "NotFound")
+                {
+                    return NotFound(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "InvalidToken")
+                {
+                    return BadRequest(new { message = errorResult.Message });
+                }
+            }
+            return Ok(new { message = "Two-factor authentication verified successfully" });
         }
     }
 }

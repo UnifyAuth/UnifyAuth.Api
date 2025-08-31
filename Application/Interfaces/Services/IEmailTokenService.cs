@@ -13,6 +13,5 @@ namespace Application.Interfaces.Services
     {
         Task<IDataResult<ConfirmEmailDto>> GenerateEmailConfirmationToken(User user);
         Task<IResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto);
-        Task<IDataResult<ResetPasswordLinkDto>> GenerateResetPasswordToken(User user);
     }
 }

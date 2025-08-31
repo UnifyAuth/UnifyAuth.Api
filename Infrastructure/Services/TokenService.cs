@@ -97,8 +97,6 @@ namespace Infrastructure.Services
                 _logger.LogWarning("Refresh token has been revoked: {Token}", token.Token);
                 return new ErrorResult("Refresh token has been revoked", "Unauthorized");
             }
-
-            _logger.LogDebug("Refresh token is valid: {Token}", token.Token);
             return new SuccessResult("Refresh token is valid");
         }
 

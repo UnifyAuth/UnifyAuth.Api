@@ -33,6 +33,7 @@ namespace Infrastructure.Extensions
             services.AddScoped<IEmailTokenService, EmailTokenService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPasswordService, PasswordService>();
+            services.AddScoped<ITwoFactorService, TwoFactorService>();
         }
     }
 }

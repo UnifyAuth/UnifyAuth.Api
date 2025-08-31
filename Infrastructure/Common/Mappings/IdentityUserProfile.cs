@@ -23,9 +23,11 @@ namespace Infrastructure.Common.Mappings
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.Preferred2FAProvider, opt => opt.MapFrom(src => src.Preferred2FAProvider))
                 .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.EmailConfirmed))
+                .ForMember(dest => dest.PhoneNumberConfirmed, opt => opt.MapFrom(src => src.PhoneNumberConfirmed))
                 .ForMember(dest => dest.ExternalProvider, opt => opt.MapFrom(src => src.ExternalProvider))
                 .ForMember(dest => dest.ExternalProviderId, opt => opt.MapFrom(src => src.ExternalProviderId))
                 .ForMember(dest => dest.SecurityStamp, opt => opt.MapFrom(src => src.SecurityStamp))
+                .ForMember(dest => dest.TwoFactorEnabled, opt => opt.MapFrom(src => src.TwoFactorEnabled))
                 .ReverseMap();
         }
     }

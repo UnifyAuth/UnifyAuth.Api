@@ -8,8 +8,9 @@ namespace Domain.Enums
 {
     public enum AuthenticationProviderType
     {
+        None = 0,
         Email = 1,
-        Sms = 2,
-        AuthenticatorApp = 3,
+        Phone = 2,
+        Authenticator = 3,
     }
 }

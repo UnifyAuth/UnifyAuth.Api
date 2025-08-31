@@ -1,8 +1,10 @@
 ﻿using Application.Common.Results.Abstracts;
 using Application.Common.Results.Concrete;
+using Application.DTOs;
 using Application.Interfaces.Repositories;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Common.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -70,10 +72,10 @@ namespace Infrastructure.Persistence.Repositories
             _logger.LogDebug("Checking registered user with email: {Email}", email);
 
             var identityUser = await _userManager.FindByEmailAsync(email);
-            if (identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");
+            if (identityUser == null) return new ErrorDataResult<User>("Email or password incorrect", "NotFound");
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(identityUser, password);
-            if(!isPasswordValid) return new ErrorDataResult<User>("Invalid password", "BadRequest");
+            if(!isPasswordValid) return new ErrorDataResult<User>("Email or password incorrect", "BadRequest");
 
             User user = _mapper.Map<User>(identityUser);
             return new SuccessDataResult<User>(user);
@@ -100,29 +102,26 @@ namespace Infrastructure.Persistence.Repositories
             return new SuccessDataResult<User>(user, "User retrieved successfully");
         }
 
-        public async Task<IResult> UpdateUserAsync(User user)
+        public async Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto)
         {
-            //Debugging log
-            _logger.LogDebug("Updating user with Email: {Email}", user.Email);
-            IdentityUserModel identityUser = await _userManager.FindByIdAsync(user.Id.ToString());
+            IdentityUserModel identityUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
 
-            if (identityUser == null){_logger.LogWarning("User with ID: {UserId} not found for update", user.Id); return new ErrorResult("User not found", "NotFound");}
+            if (identityUser == null)
+            {
+                _logger.LogWarning("User with ID: {UserId} not found for update", userUpdateDto.Id); 
+                return new ErrorResult("User not found", "NotFound");
+            }
 
-            identityUser.FirstName = user.FirstName;
-            identityUser.LastName = user.LastName;
-            identityUser.Email = user.Email;
-            identityUser.UserName = user.Email;
-            identityUser.PhoneNumber = user.PhoneNumber;
-            identityUser.Preferred2FAProvider = user.Preferred2FAProvider;
-            identityUser.ExternalProvider = user.ExternalProvider;
-            identityUser.ExternalProviderId = user.ExternalProviderId;
+            identityUser.FirstName = userUpdateDto.FirstName;
+            identityUser.LastName = userUpdateDto.LastName;
+            identityUser.PhoneNumber = userUpdateDto.PhoneNumber;
 
             var identityResult = await _userManager.UpdateAsync(identityUser);
             if (!identityResult.Succeeded)
             {
                 var filteredErrors = identityResult.Errors
                     .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
-                    .ToList(); // Exclude duplicate username errors because username same with email. This error handled duplicate email error.
+                    .ToList(); // Exclude duplicate username errors because username same with email.
 
                 if (filteredErrors.Count() == 1)
                 {

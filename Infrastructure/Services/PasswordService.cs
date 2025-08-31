@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,6 +57,28 @@ namespace Infrastructure.Services
             }
 
             return new SuccessResult("Password reset successfully");
+        }
+
+        public async Task<IDataResult<ResetPasswordLinkDto>> GenerateResetPasswordToken(User user)
+        {
+            //Debugging log
+            _logger.LogDebug("Generating Reset Password Token with UserEmail: {UserEmail}", user.Email);
+
+            IdentityUserModel identityUser = _mapper.Map<IdentityUserModel>(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+            if (string.IsNullOrEmpty(token))
+            {
+                _logger.LogError("Reset Password Token Generation failed for User: {UserId} {Email}", identityUser.Id, identityUser.Email);
+                return new ErrorDataResult<ResetPasswordLinkDto>("Failed to generate reset password token", "TokenGenerationError");
+            }
+            var encodedToken = WebUtility.UrlEncode(token);
+            ResetPasswordLinkDto resetPasswordDto = new ResetPasswordLinkDto
+            {
+                UserId = user.Id,
+                Token = encodedToken
+            };
+            _logger.LogInformation("Reset Password Token Generated Successfully for UserEmail: {UserEmail}", user.Email);
+            return new SuccessDataResult<ResetPasswordLinkDto>(resetPasswordDto, "Reset password token generated successfully");
         }
     }
 }

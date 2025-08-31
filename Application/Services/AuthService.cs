@@ -61,7 +61,7 @@ namespace Application.Services
             var userChecking = await _userRepository.CheckRegisteredUserAsync(loginDto.Email, loginDto.Password);
             if (userChecking is ErrorDataResult<User> errorDataResult)
                return new ErrorDataResult<TokenResultDto>(errorDataResult.Message, errorDataResult.ErrorType);
-            
+
 
             AccessToken accessToken = await _tokenService.GenerateAccessToken(userChecking.Data);
             _logger.LogInformation("JWT token created successfully for user: {Email}", loginDto.Email);
@@ -124,7 +124,7 @@ namespace Application.Services
 
         public async Task<IDataResult<TokenResultDto>> RefreshAccessToken(string refreshTokenString)
         {
-            _logger.LogDebug("Refreshing access token for refresh token: {RefreshToken}", refreshTokenString);
+            _logger.LogDebug("Refreshing access token");
 
             var refreshToken = await _refreshTokenRepository.GetRefreshTokenByTokenAsync(refreshTokenString);
             if (refreshToken == null)
@@ -180,7 +180,7 @@ namespace Application.Services
                 }
             }
 
-            var resetPasswordToken = await _emailTokenService.GenerateResetPasswordToken(user.Data);
+            var resetPasswordToken = await _passwordService.GenerateResetPasswordToken(user.Data);
             if (resetPasswordToken is ErrorDataResult<ResetPasswordLinkDto> tokenErrorDataResult)
                 return new ErrorResult(tokenErrorDataResult.Message, tokenErrorDataResult.ErrorType);
 
