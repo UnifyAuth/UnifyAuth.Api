@@ -1,65 +1,54 @@
 ﻿using Application.Common.Results.Abstracts;
 using Application.Common.Results.Concrete;
 using Application.Interfaces.Services;
+using Azure;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
+using Org.BouncyCastle.Crypto;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Infrastructure.Services
 {
     public class EmailService : IEMailService
     {
+        private readonly ISendGridClient _client;
         private readonly IConfiguration _configuration;
         private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
+        public EmailService(IConfiguration configuration, ILogger<EmailService> logger, ISendGridClient client)
         {
             _configuration = configuration;
             _logger = logger;
+            _client = client;
         }
 
-        public async Task<IResult> SendAsync(string to, string subject, string htmlContent)
+
+        public async Task<IResult> SendAsync(string to, string subject, string emailContent)
         {
-            //Debugging log
-            _logger.LogDebug("Sending email to {To} with subject {Subject} and with {htmlContent}", to, subject,htmlContent);
-
-            var email = new MimeMessage();
-            var emailSettings = _configuration.GetSection("EmailSettings");
-            var from = emailSettings["From"];
-
-            email.From.Add(MailboxAddress.Parse(from));
-            email.To.Add(MailboxAddress.Parse(to));
-            email.Subject = subject;
-            email.Body = new TextPart(TextFormat.Plain) { Text = htmlContent };
-
-            SmtpClient smtp = new SmtpClient();
-            try
+            var from = new EmailAddress(_configuration["SendGrid:FromEmail"], _configuration["SendGrid:FromName"]);
+            var toAddress = new EmailAddress(to);
+            var msg = MailHelper.CreateSingleEmail(from,toAddress,subject,emailContent,emailContent);
+            var result = await _client.SendEmailAsync(msg);
+            if (!result.IsSuccessStatusCode)
             {
-                await smtp.ConnectAsync(emailSettings["Host"], int.Parse(emailSettings["Port"]), SecureSocketOptions.StartTls);
-                await smtp.AuthenticateAsync(emailSettings["From"], emailSettings["Password"]);
-                await smtp.SendAsync(email);
-                await smtp.DisconnectAsync(true);
-
-                _logger.LogInformation("Email sent successfully to {To} with subject {Subject}", to, subject);
-                return new SuccessResult("Email sent successfully");
+                var body = await result.Body.ReadAsStringAsync();
+                result.Headers.TryGetValues("X-Message-Id", out var ids);
+                _logger.LogError("SendGrid failed. To={To} Status={StatusCode} MsgId={MsgId} Body={Body}",to, (int)result.StatusCode, ids?.FirstOrDefault(), body);
+                throw new Exception($"Email send failed ({(int)result.StatusCode}).");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to send email to {To} with subject {Subject}", to, subject);
-                return new ErrorResult($"Failed to send email: {ex.Message}", "EmailError");
-            }
-            finally
-            {
-                smtp.Dispose();
-            }
+            _logger.LogInformation("Email sent successfully to {To} with subject {Subject}", to, subject);
+            return new SuccessResult("Email sent successfully.");
         }
     }
 }

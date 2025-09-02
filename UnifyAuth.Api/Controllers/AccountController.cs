@@ -154,6 +154,10 @@ namespace UnifyAuth.Api.Controllers
                 {
                     return StatusCode(500, new { message = errorDataResult.Message });
                 }
+                else if(errorDataResult.ErrorType == "EmailError")
+                {
+                    return StatusCode(500, new {message = errorDataResult.Message });
+                }
             }
             return Ok(result.Data);
         }

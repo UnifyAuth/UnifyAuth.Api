@@ -10,6 +10,6 @@ namespace Application.Interfaces.Services
 {
     public interface IEMailService
     {
-        Task<IResult> SendAsync(string to, string subject, string htmlContent);
+        Task<IResult> SendAsync(string to, string subject, string emailContent);
     }
 }
