@@ -11,7 +11,9 @@ namespace Application.Interfaces.Services
 {
     public interface IEmailTokenService
     {
-        Task<IDataResult<ConfirmEmailDto>> GenerateEmailConfirmationToken(User user);
-        Task<IResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto);
+        Task<IDataResult<ConfirmEmailTokenDto>> GenerateEmailConfirmationToken(User user);
+        Task<IResult> ConfirmEmail(ConfirmEmailTokenDto confirmEmailDto);
+        Task<IDataResult<ConfirmEmailTokenDto>> GenerateChangeEmailToken(User user, string newEmail);
+        Task<IResult> VerifyChangeEmailToken(ChangeEmailTokenDto changeEmailTokenDto);
     }
 }

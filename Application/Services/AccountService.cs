@@ -54,9 +54,9 @@ namespace Application.Services
         public async Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto)
         {
             var user = await _userRepository.GetUserByIdAsync(userUpdateDto.Id.ToString());
-            if(user is ErrorDataResult<User> userErrorDataResult)
+            if (user is ErrorDataResult<User> userErrorDataResult)
             {
-                if(userErrorDataResult.ErrorType == "NotFound")
+                if (userErrorDataResult.ErrorType == "NotFound")
                 {
                     _logger.LogWarning("User not found for update with Id: {UserId}", userUpdateDto.Id);
                     return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
@@ -91,9 +91,9 @@ namespace Application.Services
             return new SuccessResult("User updated successfully");
         }
 
-        public async Task<IResult> SendEmailConfirmationLinkAsync(Guid userId, string email)
+        public async Task<IResult> SendEmailConfirmationLinkAsync(string userId, string email)
         {
-            var user = await _userRepository.GetUserByIdAsync(userId.ToString());
+            var user = await _userRepository.GetUserByIdAsync(userId);
             if (user is ErrorDataResult<User> userErrorDataResult)
             {
                 if (userErrorDataResult.ErrorType == "NotFound")
@@ -102,8 +102,18 @@ namespace Application.Services
                     return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
                 }
             }
+            if (user.Data.Email != email)
+            {
+                _logger.LogWarning("Email mismatch for provided email {ProvidedEmail}, registered email {RegisteredEmail}", email, user.Data.Email);
+                return new ErrorResult("This email is not your registered email", "BadRequest");
+            }
+            if (user.Data.EmailConfirmed == true)
+            {
+                _logger.LogWarning("Email already confirmed for email: {Email}", user.Data.Email);
+                return new ErrorResult("Email already confirmed", "BadRequest");
+            }
             var emailConfirmationToken = await _emailTokenService.GenerateEmailConfirmationToken(user.Data);
-            if (emailConfirmationToken is ErrorDataResult<ConfirmEmailDto> errorDataResult)
+            if (emailConfirmationToken is ErrorDataResult<ConfirmEmailTokenDto> errorDataResult)
             {
                 return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
             }
@@ -136,16 +146,16 @@ namespace Application.Services
             switch (provider)
             {
                 case AuthenticationProviderType.None:
-                    if(user.Data.Preferred2FAProvider == AuthenticationProviderType.None)
+                    if (user.Data.Preferred2FAProvider == AuthenticationProviderType.None)
                     {
                         return new ErrorDataResult<TwoFactorConfigurationDto>("You have not an authenticator option already", "BadRequest");
                     }
                     var disableResult = await _twoFactorService.DisableUserTwoFactorAuthentication(userId);
-                    if(disableResult is ErrorResult errorResult)
+                    if (disableResult is ErrorResult errorResult)
                     {
                         return new ErrorDataResult<TwoFactorConfigurationDto>(errorResult.Message, errorResult.ErrorType);
                     }
-                    return new SuccessDataResult<TwoFactorConfigurationDto>(new TwoFactorConfigurationDto(),disableResult.Message);
+                    return new SuccessDataResult<TwoFactorConfigurationDto>(new TwoFactorConfigurationDto(), disableResult.Message);
 
                 case AuthenticationProviderType.Authenticator:
                     if (user.Data.Preferred2FAProvider == AuthenticationProviderType.Authenticator)
@@ -220,7 +230,7 @@ namespace Application.Services
         public async Task<IResult> VerifyTwoFactorAuthentication(string userId, VerifyTwoFactorDto verifyTwoFactorDto)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
-            if(user is ErrorDataResult<User> userErrorDataResult)
+            if (user is ErrorDataResult<User> userErrorDataResult)
             {
                 if (userErrorDataResult.ErrorType == "NotFound")
                 {
@@ -230,12 +240,48 @@ namespace Application.Services
             }
 
             var verificationResult = await _twoFactorService.VerifyTwoFactorAuthenticationKey(userId, verifyTwoFactorDto);
-            if(verificationResult is ErrorResult errorResult)
+            if (verificationResult is ErrorResult errorResult)
             {
                 return new ErrorResult(errorResult.Message, errorResult.ErrorType);
             }
 
             return new SuccessResult("Two-factor authentication verified successfully");
+        }
+
+        public async Task<IResult> SendChangeEmailLinkAsync(string userId, string email)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user is ErrorDataResult<User> userErrorDataResult)
+            {
+                _logger.LogWarning("User not found for Id: {UserId}", userId);
+                return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
+            }
+            if (user.Data.Email == email)
+            {
+                return new ErrorResult("This email is the same as your email", "BadRequest");
+            }
+            var userExist = await _userRepository.UserExistByEmail(email); // Check if the new email is already registered
+            if (userExist.Success)
+            {
+                return new ErrorResult("This email has been registered", "BadRequest");
+            }
+
+            var changeEmailToken = await _emailTokenService.GenerateChangeEmailToken(user.Data, email);
+            if (changeEmailToken is ErrorDataResult<ConfirmEmailTokenDto> errorDataResult)
+            {
+                return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
+            }
+
+            var frontendUrl = "http://localhost:4200/settings/change-email/change-email-confirmation";
+            var emailContent = string.Empty;
+            emailContent = $"{frontendUrl}?userId={changeEmailToken.Data.UserId}&token={changeEmailToken.Data.Token}";
+
+            var emailResult = await _emailService.SendAsync(email, "Change your email", emailContent);
+            if (emailResult is ErrorResult mailErrorResult)
+            {
+                return new ErrorResult(mailErrorResult.Message, mailErrorResult.ErrorType);
+            }
+            return new SuccessResult("Change email link sent successfully");
         }
     }
 }

@@ -30,9 +30,9 @@ namespace UnifyAuth.Api.Controllers
         public async Task<IActionResult> GetUserProfile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if(string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
             {
-                return NotFound(new { message = "User nof found" });
+                return NotFound(new { message = "User not found" });
             }
             var result = await _accountService.GetUserInfos(userId);
 
@@ -61,7 +61,7 @@ namespace UnifyAuth.Api.Controllers
                 {
                     return NotFound(new { message = errorResult.Message });
                 }
-                else if(errorResult.ErrorType == "BadRequest")
+                else if (errorResult.ErrorType == "BadRequest")
                 {
                     return BadRequest(new { message = errorResult.Messages });
                 }
@@ -78,7 +78,7 @@ namespace UnifyAuth.Api.Controllers
                 return NotFound(new { message = "User not found" });
             }
 
-            var result = await _accountService.SendEmailConfirmationLinkAsync(Guid.Parse(userId), emailDto.Email);
+            var result = await _accountService.SendEmailConfirmationLinkAsync(userId, emailDto.Email);
             if (result is ErrorResult errorResult)
             {
                 if (errorResult.ErrorType == "NotFound")
@@ -93,12 +93,16 @@ namespace UnifyAuth.Api.Controllers
                 {
                     return StatusCode(500, new { message = errorResult.Message });
                 }
+                else if (errorResult.ErrorType == "BadRequest")
+                {
+                    return BadRequest(new { message = errorResult.Message });
+                }
             }
             return Ok(new { message = "Email confirmation link sent successfully" });
         }
 
         [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailTokenDto confirmEmailDto)
         {
             if (confirmEmailDto == null || string.IsNullOrEmpty(confirmEmailDto.UserId.ToString()) || string.IsNullOrEmpty(confirmEmailDto.Token))
             {
@@ -110,9 +114,9 @@ namespace UnifyAuth.Api.Controllers
             {
                 if (errorResult.ErrorType == "BadRequest")
                 {
-                    return BadRequest(new { message = errorResult.Message});
+                    return BadRequest(new { message = errorResult.Message });
                 }
-                else if(errorResult.ErrorType == "NotFound")
+                else if (errorResult.ErrorType == "NotFound")
                 {
                     return NotFound(new { message = errorResult.Message });
                 }
@@ -120,7 +124,7 @@ namespace UnifyAuth.Api.Controllers
                 {
                     return BadRequest(new { message = errorResult.Message });
                 }
-                else if(errorResult.ErrorType == "ConcurrencyFailure")
+                else if (errorResult.ErrorType == "ConcurrencyFailure")
                 {
                     return StatusCode(409, new { message = errorResult.Message });
                 }
@@ -140,7 +144,7 @@ namespace UnifyAuth.Api.Controllers
             }
 
             var result = await _accountService.ConfigureTwoFactorAsync(userId, provider);
-            if(result is ErrorDataResult<TwoFactorConfigurationDto> errorDataResult)
+            if (result is ErrorDataResult<TwoFactorConfigurationDto> errorDataResult)
             {
                 if (errorDataResult.ErrorType == "NotFound")
                 {
@@ -154,9 +158,9 @@ namespace UnifyAuth.Api.Controllers
                 {
                     return StatusCode(500, new { message = errorDataResult.Message });
                 }
-                else if(errorDataResult.ErrorType == "EmailError")
+                else if (errorDataResult.ErrorType == "EmailError")
                 {
-                    return StatusCode(500, new {message = errorDataResult.Message });
+                    return StatusCode(500, new { message = errorDataResult.Message });
                 }
             }
             return Ok(result.Data);
@@ -166,7 +170,7 @@ namespace UnifyAuth.Api.Controllers
         public async Task<IActionResult> VerifyTwoFactorAuthentication([FromBody] VerifyTwoFactorDto verifyTwoFactorDto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            if(userId == null)
+            if (userId == null)
             {
                 return NotFound(new { message = "User not found" });
             }
@@ -184,6 +188,66 @@ namespace UnifyAuth.Api.Controllers
                 }
             }
             return Ok(new { message = "Two-factor authentication verified successfully" });
+        }
+
+        [HttpPost("send-change-email-link")]
+        public async Task<IActionResult> SendChangeEmailLink(EmailDto email)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            if (userId == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            var result = await _accountService.SendChangeEmailLinkAsync(userId, email.Email);
+            if (result is ErrorResult errorResult)
+            {
+                if (errorResult.ErrorType == "NotFound")
+                {
+                    return NotFound(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "BadRequest")
+                {
+                    return BadRequest(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "TokenGenerationError")
+                {
+                    return StatusCode(500, new { message = errorResult.Message });
+                }
+            }
+            return Ok(new { message = "Change email link sent successfully" });
+        }
+
+        [HttpPost("verify-change-email")]
+        public async Task<IActionResult> VerifyChangeEmail(ChangeEmailTokenDto changeEmailTokenDto)
+        {
+            if (changeEmailTokenDto == null || string.IsNullOrEmpty(changeEmailTokenDto.UserId.ToString()) || string.IsNullOrEmpty(changeEmailTokenDto.Token))
+            {
+                return BadRequest(new { message = "Invalid confirmation data" });
+            }
+            var result = await _emailTokenService.VerifyChangeEmailToken(changeEmailTokenDto);
+            if (result is ErrorResult errorResult)
+            {
+                if (errorResult.ErrorType == "BadRequest")
+                {
+                    return BadRequest(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "NotFound")
+                {
+                    return NotFound(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "InvalidToken")
+                {
+                    return BadRequest(new { message = errorResult.Message });
+                }
+                else if (errorResult.ErrorType == "ConcurrencyFailure")
+                {
+                    return StatusCode(409, new { message = errorResult.Message });
+                }
+                return StatusCode(500, new { message = errorResult.Message });
+            }
+
+            return Ok(new { Message = result.Message }); 
         }
     }
 }
