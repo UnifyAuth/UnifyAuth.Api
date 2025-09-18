@@ -8,11 +8,7 @@ namespace Application.Common.Results.Concrete
 {
     public class SuccessResult : Result
     {
-        public SuccessResult(bool success) : base(success)
-        {
-        }
-
-        public SuccessResult(string message) : base(message, true)
+        public SuccessResult(string message) : base(message, true, default)
         {
         }
     }

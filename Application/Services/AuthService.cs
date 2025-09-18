@@ -47,30 +47,25 @@ namespace Application.Services
 
         public async Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto)
         {
-            _logger.LogDebug("User login with email: {Email}", loginDto.Email);
-
             var validationResult = _loginValidator.Validate(loginDto);
             if (!validationResult.IsValid)
             {
                 _logger.LogInformation("Validation failed for {Email}: {Errors}",
                     loginDto.Email,
                     validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
-                return new ErrorDataResult<TokenResultDto>(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
+                return new ErrorDataResult<TokenResultDto>(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), AppError.BadRequest());
             }
 
             var userChecking = await _userRepository.CheckRegisteredUserAsync(loginDto.Email, loginDto.Password);
             if (userChecking is ErrorDataResult<User> errorDataResult)
-               return new ErrorDataResult<TokenResultDto>(errorDataResult.Message, errorDataResult.ErrorType);
+                return new ErrorDataResult<TokenResultDto>(errorDataResult.Message!, errorDataResult.ErrorType!);
 
-
-            AccessToken accessToken = await _tokenService.GenerateAccessToken(userChecking.Data);
-            _logger.LogInformation("JWT token created successfully for user: {Email}", loginDto.Email);
-
+            AccessToken accessToken = _tokenService.GenerateAccessToken(userChecking.Data!);
             string refreshTokenString = _tokenService.GenerateRefreshToken();
             RefreshToken refreshToken = new RefreshToken
             {
                 Token = refreshTokenString,
-                UserId = userChecking.Data.Id,
+                UserId = userChecking.Data!.Id,
                 Expires = DateTime.UtcNow.AddDays(15), // Set expiration to 15 days
                 Created = DateTime.UtcNow
             };
@@ -89,82 +84,71 @@ namespace Application.Services
 
         public async Task<IResult> RegisterAsync(RegisterDto registerDto)
         {
-            //Debugging log
-            _logger.LogDebug("Registering user with email: {Email}", registerDto.Email);
-
             var validationResult = _registerValidator.Validate(registerDto);
             if (!validationResult.IsValid)
             {
                 _logger.LogInformation("Validation failed for register: {Email} {Errors}",
                     registerDto.Email,
                     validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
-                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
+                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), AppError.BadRequest());
             }
 
             User user = _mapper.Map<User>(registerDto);
             var result = await _userRepository.CreateUserAsync(user, registerDto.Password);
             if (result is ErrorDataResult<User> errorDataResult)
             {
-                if (errorDataResult.Messages.Length > 1)
+                if (errorDataResult.Messages != null && errorDataResult.Messages!.Length > 1)
                 {
                     _logger.LogInformation("User creation failed for {Email} with multiple errors: {Errors}",
                         registerDto.Email,
                         errorDataResult.Messages);
-                    return new ErrorResult(errorDataResult.Messages, errorDataResult.ErrorType);
+                    return new ErrorResult(errorDataResult.Messages, errorDataResult.ErrorType!);
                 }
                 _logger.LogInformation("User creation failed for {Email} with error: {Error}",
                     registerDto.Email,
                     errorDataResult.Message);
-                return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
+                return new ErrorResult(errorDataResult.Message!, errorDataResult.ErrorType!);
             }
-            
+
             _logger.LogInformation("User registered successfully with Email: {Email}", registerDto.Email);
             return new SuccessResult("User registered successfully");
         }
 
         public async Task<IDataResult<TokenResultDto>> RefreshAccessToken(string refreshTokenString)
         {
-            _logger.LogDebug("Refreshing access token");
-
             var refreshToken = await _refreshTokenRepository.GetRefreshTokenByTokenAsync(refreshTokenString);
-            if (refreshToken == null)
-            {
-                _logger.LogWarning("Refresh token not found: {Token}", refreshTokenString);
-                return new ErrorDataResult<TokenResultDto>("Refresh token not found", "Unauthorized");
-            }
+            if (refreshToken is ErrorDataResult<RefreshToken> errorDataResult)
+                return new ErrorDataResult<TokenResultDto>(errorDataResult.Message!, errorDataResult.ErrorType!);
 
-            var tokenValidationResult = await _tokenService.ValidateRefreshTokenAsync(refreshToken);
+            var tokenValidationResult = _tokenService.ValidateRefreshTokenAsync(refreshToken.Data!);
             if (tokenValidationResult is ErrorResult errorResult)
-            {
-                return new ErrorDataResult<TokenResultDto>(errorResult.Message, errorResult.ErrorType);
-            }
+                return new ErrorDataResult<TokenResultDto>(errorResult.Message!, errorResult.ErrorType!);
 
-            var identityUser = await _userRepository.GetUserByIdAsync(refreshToken.UserId.ToString());
-            var user = _mapper.Map<User>(identityUser.Data);
-            var accessToken = await _tokenService.GenerateAccessToken(user);
+            var user = await _userRepository.GetUserByIdAsync(refreshToken.Data!.UserId.ToString());
+            if (user is ErrorDataResult<User> userErrorDataResult)
+                return new ErrorDataResult<TokenResultDto>(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
+
+            var accessToken = _tokenService.GenerateAccessToken(user.Data!);
             var newRefreshTokenString = _tokenService.GenerateRefreshToken();
-
-            refreshToken.Token = newRefreshTokenString;
-            refreshToken.Expires = DateTime.UtcNow.AddDays(15); // Set expiration to 15 days
-
-            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
+            refreshToken.Data.Token = newRefreshTokenString;
+            refreshToken.Data.Expires = DateTime.UtcNow.AddDays(15); // Set expiration to 15 days
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken.Data);
 
             return new SuccessDataResult<TokenResultDto>(new TokenResultDto
             {
                 AccessToken = accessToken,
-                RefreshToken = newRefreshTokenString,
-                RefreshTokenExpiration = DateTime.UtcNow.AddDays(15),
+                RefreshToken = refreshToken.Data.Token,
+                RefreshTokenExpiration = refreshToken.Data.Expires,
             });
         }
 
         public async Task<IResult> Logout(string refreshTokenString)
         {
-            _logger.LogDebug("Logging out for refresh token: {RefreshToken}", refreshTokenString);
             var refreshToken = await _refreshTokenRepository.GetRefreshTokenByTokenAsync(refreshTokenString);
-            if(refreshToken is null) return new ErrorResult("No refresh token found for user", "NotFound");
+            if (refreshToken is null) return new ErrorResult("No refresh token found for user", AppError.NotFound());
 
-            refreshToken.Revoked = true;
-            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
+            refreshToken.Data!.Revoked = true;
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken.Data);
             return new SuccessResult("User logged out successfully");
         }
 
@@ -172,24 +156,13 @@ namespace Application.Services
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
             if (user is ErrorDataResult<User> userErrorDataResult)
-            {
-                if (userErrorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogInformation("User not found with email: {Email}", email);
-                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-                }
-            }
+                return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
 
-            var resetPasswordToken = await _passwordService.GenerateResetPasswordToken(user.Data);
-            if (resetPasswordToken is ErrorDataResult<ResetPasswordLinkDto> tokenErrorDataResult)
-                return new ErrorResult(tokenErrorDataResult.Message, tokenErrorDataResult.ErrorType);
-
+            var resetPasswordToken = await _passwordService.GenerateResetPasswordToken(user.Data!);
             var frontendUrl = "http://localhost:4200/reset-password";
             var emailContent = string.Empty;
-            emailContent = $"{frontendUrl}?userId={resetPasswordToken.Data.UserId}&token={resetPasswordToken.Data.Token}";
-
-            var emailResult = await _emailService.SendAsync(email, "Reset Password", emailContent);
-            if (emailResult is ErrorResult mailErrorResult) return new ErrorResult(mailErrorResult.Message, mailErrorResult.ErrorType);
+            emailContent = $"{frontendUrl}?userId={resetPasswordToken.Data!.UserId}&token={resetPasswordToken.Data.Token}";
+            await _emailService.SendAsync(email, "Reset Password", emailContent);
 
             return new SuccessResult("Reset password link sent successfully");
         }
@@ -201,25 +174,17 @@ namespace Application.Services
             {
                 _logger.LogInformation("Validation failed for reset password: {Errors}",
                     validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
-                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
+                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), AppError.Validation());
             }
             var user = await _userRepository.GetUserByIdAsync(resetPasswordDto.UserId);
-            if(user is ErrorDataResult<User> userErrorDataResult)
-            {
-                if(userErrorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogWarning("User not found with UserId: {UserId}", resetPasswordDto.UserId);
-                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-                }
-            }
+            if (user is ErrorDataResult<User> userErrorDataResult)
+                return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
 
-            var resetPasswordResult = await _passwordService.ResetPassword(user.Data,resetPasswordDto.Token,resetPasswordDto.NewPassword);
-            if(resetPasswordResult is ErrorResult resetPasswordErrorResult)
+
+            var resetPasswordResult = await _passwordService.ResetPassword(user.Data!, resetPasswordDto.Token, resetPasswordDto.NewPassword);
+            if (resetPasswordResult is ErrorResult resetPasswordErrorResult)
             {
-                if(resetPasswordErrorResult.ErrorType == "BadRequest")
-                {
-                    return new ErrorResult(resetPasswordErrorResult.Message, resetPasswordErrorResult.ErrorType);
-                }
+                return new ErrorResult(resetPasswordErrorResult.Message!, resetPasswordErrorResult.ErrorType!);
             }
             return new SuccessResult("Password reset successfully");
         }

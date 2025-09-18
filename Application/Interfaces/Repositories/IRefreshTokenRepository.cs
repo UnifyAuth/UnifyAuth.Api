@@ -11,8 +11,8 @@ namespace Application.Interfaces.Repositories
     public interface IRefreshTokenRepository
     {
         Task AddRefreshTokenAsync(RefreshToken refreshToken);
-        Task<RefreshToken> GetRefreshTokenByTokenAsync(string token);
-        Task<IEnumerable<RefreshToken>> GetRefreshTokenByUserIdAsync(Guid userId);
+        Task<IDataResult<RefreshToken>> GetRefreshTokenByTokenAsync(string token);
+        Task<IDataResult<IEnumerable<RefreshToken>>> GetRefreshTokenByUserIdAsync(Guid userId);
         Task UpdateRefreshTokenAsync(RefreshToken refreshToken);
 
     }

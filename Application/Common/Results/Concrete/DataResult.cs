@@ -9,14 +9,18 @@ namespace Application.Common.Results.Concrete
 {
     public class DataResult<T> : Result, IDataResult<T>
     {
-        public DataResult(T data, bool succcess) : base(succcess)
+        public DataResult(T? data, bool success) : base(success)
         {
             Data = data;
         }
-        public DataResult(T data, string message, bool success) : base(message, success)
+        public DataResult(T? data, string? message, bool success, AppError? errorType) : base(message, success, errorType)
         {
             Data = data;
         }
-        public T Data { get; }
+        public DataResult(T? data, string[]? messages, bool success, AppError? errorType) : base(messages, success, errorType)
+        {
+            Data = data;
+        }
+        public T? Data { get; }
     }
 }

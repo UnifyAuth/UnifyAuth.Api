@@ -1,5 +1,6 @@
 ﻿using Application.Common.Results.Concrete;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace UnifyAuth.Api.Handlers
 {
@@ -14,14 +15,17 @@ namespace UnifyAuth.Api.Handlers
 
         public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+            _logger.LogError(exception, "Exception occurred: {Message}", exception.Message);
 
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status500InternalServerError,
+                Title = "Server Error.",
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+            };
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.ContentType = "application/json";
 
-            var error = new ErrorResult("An unexpected error occurred. Please try again later.", "SystemError");
-
-            await context.Response.WriteAsJsonAsync(error, cancellationToken);
+            await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
             return true;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results.Abstracts;
+using Application.Common.Results.Concrete;
 using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Infrastructure.Persistence.Context;
@@ -28,14 +29,22 @@ namespace Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<RefreshToken> GetRefreshTokenByTokenAsync(string token)
+        public async Task<IDataResult<RefreshToken>> GetRefreshTokenByTokenAsync(string token)
         {
-            return await _context.RefreshTokens.Where(rt => rt.Token == token).FirstOrDefaultAsync();            
+            var result = await _context.RefreshTokens.Where(rt => rt.Token == token).FirstOrDefaultAsync();
+            if (result == null)
+            {
+                _logger.LogWarning("Refresh token not found: {Token}", token);
+                return new ErrorDataResult<RefreshToken>("Refresh token not found", AppError.NotFound());
+            }
+            return new SuccessDataResult<RefreshToken>(result);
         }
 
-        public async Task<IEnumerable<RefreshToken>> GetRefreshTokenByUserIdAsync(Guid userId)
+        public async Task<IDataResult<IEnumerable<RefreshToken>>> GetRefreshTokenByUserIdAsync(Guid userId)
         {
-            return await _context.RefreshTokens.Where(rt => rt.UserId == userId).ToListAsync();
+            var result = await _context.RefreshTokens.Where(rt => rt.UserId == userId).ToListAsync();
+            if(result == null || result.Count == 0) return new ErrorDataResult<IEnumerable<RefreshToken>>("Refresh tokens not found for the user", AppError.NotFound());
+            return new SuccessDataResult<IEnumerable<RefreshToken>>(result);
         }
 
         public async Task UpdateRefreshTokenAsync(RefreshToken refreshToken)

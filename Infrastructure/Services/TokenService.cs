@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -27,7 +28,7 @@ namespace Infrastructure.Services
         private readonly ILogger<TokenService> _logger;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public TokenService(IConfiguration configuration, IMapper mapper, ILogger<TokenService> logger, IRefreshTokenRepository refreshTokenRepository = null)
+        public TokenService(IConfiguration configuration, IMapper mapper, ILogger<TokenService> logger, IRefreshTokenRepository refreshTokenRepository)
         {
             _configuration = configuration;
             _mapper = mapper;
@@ -35,34 +36,47 @@ namespace Infrastructure.Services
             _refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<AccessToken> GenerateAccessToken(User user)
+        public AccessToken GenerateAccessToken(User user)
         {
-            // Debugging log
-            _logger.LogDebug("Creating JWT token for user with email: {Email}", user.Email);
+            // Validate configuration settings
+            var jwtSecretKey = _configuration["Jwt:Key"];
+            var jwtIssuer = _configuration["Jwt:Issuer"];
+            var jwtAudience = _configuration["Jwt:Audience"];
+            var expirationSetting = _configuration["Jwt:AccessTokenExpiration"];
 
-            var identityUser = _mapper.Map<IdentityUserModel>(user);
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            if (string.IsNullOrEmpty(jwtSecretKey))
+                throw new InvalidOperationException("JWT Key is not configured in application settings.");
+            if (string.IsNullOrEmpty(jwtIssuer))
+                throw new InvalidOperationException("JWT Issuer is not configured in application settings.");
+            if (string.IsNullOrEmpty(jwtAudience))
+                throw new InvalidOperationException("JWT Audience is not configured in application settings.");
+            if (string.IsNullOrEmpty(expirationSetting))
+                throw new InvalidOperationException("JWT AccessTokenExpiration is not configured in application settings.");
+
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, identityUser.Id.ToString()),
-                new Claim(ClaimTypes.Email, identityUser.Email),
-                new Claim(ClaimTypes.Name, identityUser.FirstName),
-                new Claim(ClaimTypes.Surname, identityUser.LastName)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName)
             };
 
             var jwt = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: jwtIssuer,
+                audience: jwtAudience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:AccessTokenExpiration"])),
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(expirationSetting)),
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials
                 );
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.WriteToken(jwt);
 
+            _logger.LogInformation("Access token generated for user: {UserEmail}", user.Email);
             return new AccessToken
             {
                 Token = token,
@@ -72,8 +86,6 @@ namespace Infrastructure.Services
 
         public string GenerateRefreshToken()
         {
-            // Debugging log
-            _logger.LogDebug("Generating refresh token");
             var randomNumber = new byte[64];
             using var rgn = RandomNumberGenerator.Create();
             rgn.GetBytes(randomNumber);
@@ -81,21 +93,18 @@ namespace Infrastructure.Services
             return Convert.ToBase64String(randomNumber);
         }
 
-        public async Task<IResult> ValidateRefreshTokenAsync(RefreshToken token)
+        public IResult ValidateRefreshTokenAsync(RefreshToken token)
         {
-            // Debugging log
-            _logger.LogDebug("Validating refresh token");
-
             if (token.Expires < DateTime.UtcNow)
             {
                 _logger.LogInformation("Refresh token expired: {Token}", token.Token);
-                return new ErrorResult("Refresh token expired", "Unauthorized");
+                return new ErrorResult("Refresh token expired", AppError.Unauthorized());
             }
 
-            if(token.Revoked)
+            if (token.Revoked)
             {
-                _logger.LogWarning("Refresh token has been revoked: {Token}", token.Token);
-                return new ErrorResult("Refresh token has been revoked", "Unauthorized");
+                _logger.LogInformation("Refresh token has been revoked: {Token}", token.Token);
+                return new ErrorResult("Refresh token has been revoked", AppError.Unauthorized());
             }
             return new SuccessResult("Refresh token is valid");
         }

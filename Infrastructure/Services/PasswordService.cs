@@ -31,29 +31,32 @@ namespace Infrastructure.Services
 
         public async Task<IResult> ResetPassword(User user, string token, string newPassword)
         {
-            // Debugging log
-            _logger.LogDebug("Resetting password for Email: {Email} with Token: {Token}", user.Email, token);
             var identityUser = await _userManager.FindByIdAsync(user.Id.ToString());
             if (identityUser == null)
             {
-                _logger.LogInformation("User not found with UserId: {UserId}", user.Id);
-                return new ErrorResult("User not found. Please register or check your mail", "NotFound");
+                _logger.LogWarning("User not while resetting password found with UserId: {UserId}", user.Id);
+                return new ErrorResult("User not found. Please register or check your mail", AppError.NotFound());
             }
 
             var isSame = await _userManager.CheckPasswordAsync(identityUser, newPassword);
             if (isSame)
             {
-                _logger.LogDebug("The new password is the same as the old password for Email: {Email}", user.Email);
-                return new ErrorResult("The new password cannot to be the same as the old password","BadRequest");
+                return new ErrorResult("The new password cannot to be the same as the old password", AppError.BadRequest());
             }
 
             var result = await _userManager.ResetPasswordAsync(identityUser, token, newPassword);
             if (!result.Succeeded)
             {
+                if (result.Errors.Any(e => e.Code == "InvalidToken"))
+                {
+                    _logger.LogWarning("Failed to reset password for Email: {Email} due to an invalid token.", user.Email);
+                    return new ErrorResult("The password reset link is invalid or has expired. Please request a new one.", AppError.BadRequest());
+                }
+
                 _logger.LogWarning("Failed to reset password for Email: {Email} with error: {Error}", 
                     user.Email, 
                     result.Errors.Select(e => e.Description).FirstOrDefault());
-                return new ErrorResult(result.Errors.Select(e => e.Description).FirstOrDefault(), "BadRequest");
+                return new ErrorResult(result.Errors.Select(e => e.Description).FirstOrDefault()!, AppError.BadRequest());
             }
 
             return new SuccessResult("Password reset successfully");
@@ -61,16 +64,8 @@ namespace Infrastructure.Services
 
         public async Task<IDataResult<ResetPasswordLinkDto>> GenerateResetPasswordToken(User user)
         {
-            //Debugging log
-            _logger.LogDebug("Generating Reset Password Token with UserEmail: {UserEmail}", user.Email);
-
             IdentityUserModel identityUser = _mapper.Map<IdentityUserModel>(user);
             var token = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
-            if (string.IsNullOrEmpty(token))
-            {
-                _logger.LogError("Reset Password Token Generation failed for User: {UserId} {Email}", identityUser.Id, identityUser.Email);
-                return new ErrorDataResult<ResetPasswordLinkDto>("Failed to generate reset password token", "TokenGenerationError");
-            }
             var encodedToken = WebUtility.UrlEncode(token);
             ResetPasswordLinkDto resetPasswordDto = new ResetPasswordLinkDto
             {
@@ -78,7 +73,7 @@ namespace Infrastructure.Services
                 Token = encodedToken
             };
             _logger.LogInformation("Reset Password Token Generated Successfully for UserEmail: {UserEmail}", user.Email);
-            return new SuccessDataResult<ResetPasswordLinkDto>(resetPasswordDto, "Reset password token generated successfully");
+            return new SuccessDataResult<ResetPasswordLinkDto>(resetPasswordDto);
         }
     }
 }

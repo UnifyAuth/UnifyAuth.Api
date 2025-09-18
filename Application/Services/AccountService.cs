@@ -42,52 +42,35 @@ namespace Application.Services
         {
             var result = await _userRepository.GetUserByIdAsync(userId);
             if (result is ErrorDataResult<User> errorDataResult)
-            {
-                _logger.LogInformation("Error retrieving user info for userId {UserId}: {Error}", userId, errorDataResult.Message);
-                return new ErrorDataResult<UserDto>(errorDataResult.Message, errorDataResult.ErrorType);
-            }
+                return new ErrorDataResult<UserDto>(errorDataResult.Message!, errorDataResult.ErrorType!);
 
             UserDto userDto = _mapper.Map<UserDto>(result.Data);
-            return new SuccessDataResult<UserDto>(userDto, "User information retrieved successfully");
+            return new SuccessDataResult<UserDto>(userDto);
         }
 
         public async Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto)
         {
             var user = await _userRepository.GetUserByIdAsync(userUpdateDto.Id.ToString());
             if (user is ErrorDataResult<User> userErrorDataResult)
-            {
-                if (userErrorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogWarning("User not found for update with Id: {UserId}", userUpdateDto.Id);
-                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-                }
-            }
+                return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
+
             var validationResult = _userUpdateDtoValidator.Validate(userUpdateDto);
             if (!validationResult.IsValid)
             {
                 _logger.LogInformation("Validation failed for user update: {Email} {Errors}",
-                    user.Data.Email,
+                    user.Data!.Email,
                     validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
-                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), "BadRequest");
+                return new ErrorResult(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), AppError.Validation());
             }
 
             var result = await _userRepository.UpdateUserAsync(userUpdateDto);
             if (result is ErrorResult errorResult)
             {
-                if (errorResult.Messages.Length > 1)
-                {
-                    _logger.LogInformation("User updating failed for {Email} with multiple errors: {Errors}",
-                        user.Data.Email,
-                        errorResult.Messages);
-                    return new ErrorResult(errorResult.Messages, errorResult.ErrorType);
-                }
-                _logger.LogInformation("User updating failed for {Email} with error: {Error}",
-                    user.Data.Email,
-                    errorResult.Message);
-                return new ErrorResult(errorResult.Message, errorResult.ErrorType);
-            }
+                if (errorResult.Messages != null)
+                    return new ErrorResult(errorResult.Messages, errorResult.ErrorType!);
 
-            _logger.LogInformation("User updated successfully with Email: {Email}", user.Data.Email);
+                return new ErrorResult(errorResult.Message!, errorResult.ErrorType!);
+            }
             return new SuccessResult("User updated successfully");
         }
 
@@ -95,38 +78,23 @@ namespace Application.Services
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user is ErrorDataResult<User> userErrorDataResult)
-            {
-                if (userErrorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogWarning("User not found for Id: {UserId}", userId);
-                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-                }
-            }
-            if (user.Data.Email != email)
+                return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
+
+            if (user.Data!.Email != email)
             {
                 _logger.LogWarning("Email mismatch for provided email {ProvidedEmail}, registered email {RegisteredEmail}", email, user.Data.Email);
-                return new ErrorResult("This email is not your registered email", "BadRequest");
+                return new ErrorResult("This email is not your registered email", AppError.BadRequest());
             }
             if (user.Data.EmailConfirmed == true)
             {
-                _logger.LogWarning("Email already confirmed for email: {Email}", user.Data.Email);
-                return new ErrorResult("Email already confirmed", "BadRequest");
+                _logger.LogInformation("Email already confirmed for email: {Email}", user.Data.Email);
+                return new ErrorResult("Email already confirmed", AppError.BadRequest());
             }
+
             var emailConfirmationToken = await _emailTokenService.GenerateEmailConfirmationToken(user.Data);
-            if (emailConfirmationToken is ErrorDataResult<ConfirmEmailTokenDto> errorDataResult)
-            {
-                return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
-            }
-
             var frontendUrl = "http://localhost:4200/confirm-email";
-            var emailContent = string.Empty;
-            emailContent = $"{frontendUrl}?userId={emailConfirmationToken.Data.UserId}&token={emailConfirmationToken.Data.Token}";
-
+            var emailContent = $"{frontendUrl}?userId={emailConfirmationToken.Data!.UserId}&token={emailConfirmationToken.Data.Token}";
             var emailResult = await _emailService.SendAsync(email, "Confirm your email", emailContent);
-            if (emailResult is ErrorResult mailErrorResult)
-            {
-                return new ErrorResult(mailErrorResult.Message, mailErrorResult.ErrorType);
-            }
 
             return new SuccessResult("Email confirmation link sent successfully");
         }
@@ -135,68 +103,43 @@ namespace Application.Services
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user is ErrorDataResult<User> userErrorDataResult)
-            {
-                if (userErrorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogWarning("User not found for Id: {UserId}", userId);
-                    return new ErrorDataResult<TwoFactorConfigurationDto>(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-                }
-            }
+                return new ErrorDataResult<TwoFactorConfigurationDto>(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
+
 
             switch (provider)
             {
                 case AuthenticationProviderType.None:
-                    if (user.Data.Preferred2FAProvider == AuthenticationProviderType.None)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>("You have not an authenticator option already", "BadRequest");
-                    }
+                    if (user.Data!.Preferred2FAProvider == AuthenticationProviderType.None)
+                        return new ErrorDataResult<TwoFactorConfigurationDto>("You have not an authenticator option already", AppError.BadRequest());
+
                     var disableResult = await _twoFactorService.DisableUserTwoFactorAuthentication(userId);
-                    if (disableResult is ErrorResult errorResult)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>(errorResult.Message, errorResult.ErrorType);
-                    }
-                    return new SuccessDataResult<TwoFactorConfigurationDto>(new TwoFactorConfigurationDto(), disableResult.Message);
+                    return new SuccessDataResult<TwoFactorConfigurationDto>(new TwoFactorConfigurationDto());
 
                 case AuthenticationProviderType.Authenticator:
-                    if (user.Data.Preferred2FAProvider == AuthenticationProviderType.Authenticator)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>("Authenticator app is already set as the preferred two-factor authentication method.", "BadRequest");
-                    }
+                    if (user.Data!.Preferred2FAProvider == AuthenticationProviderType.Authenticator)
+                        return new ErrorDataResult<TwoFactorConfigurationDto>("Authenticator app is already set as the preferred two-factor authentication method.", AppError.BadRequest());
+
                     var authenticatorResult = await _twoFactorService.GenerateAuthenticatorKeyAndQrAsync(userId);
-                    if (authenticatorResult is ErrorDataResult<AuthenticatorAppDto> errorDataResult)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>(errorDataResult.Message, errorDataResult.ErrorType);
-                    }
                     var twoFactorConfigurationDto = new TwoFactorConfigurationDto
                     {
-                        SharedKey = authenticatorResult.Data.SharedKey,
+                        SharedKey = authenticatorResult.Data!.SharedKey,
                         QrCodeUri = authenticatorResult.Data.QrCodeUri,
                         Provider = provider
                     };
                     return new SuccessDataResult<TwoFactorConfigurationDto>(twoFactorConfigurationDto);
 
                 case AuthenticationProviderType.Email:
-                    if (user.Data.Preferred2FAProvider == AuthenticationProviderType.Email)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>("Email is already set as the preferred two-factor authentication method.", "BadRequest");
-                    }
+                    if (user.Data!.Preferred2FAProvider == AuthenticationProviderType.Email)
+                        return new ErrorDataResult<TwoFactorConfigurationDto>("Email is already set as the preferred two-factor authentication method.", AppError.BadRequest());
+
                     bool emailConfirmed = user.Data.EmailConfirmed ?? false;
                     if (!emailConfirmed)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>("Email not confirmed. Please confirm your email before setting up two-factor authentication.", "BadRequest");
-                    }
+                        return new ErrorDataResult<TwoFactorConfigurationDto>("Email not confirmed. Please confirm your email before setting up two-factor authentication.", AppError.BadRequest());
+
+
                     var emailToken = await _twoFactorService.GenerateAuthenticationKey(user.Data, provider);
-                    if (emailToken is ErrorDataResult<string> emailErrorDataResult)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>(emailErrorDataResult.Message, emailErrorDataResult.ErrorType);
-                    }
                     var emailContent = $"Your email verification code is: {emailToken.Data}. Please use this code to complete your two-factor authentication setup.";
                     var emailResult = await _emailService.SendAsync(user.Data.Email, "Two-Factor Authentication Code", emailContent);
-                    if (emailResult is ErrorResult emailErrorResult)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>(emailErrorResult.Message, emailErrorResult.ErrorType);
-                    }
-
                     var emailTwoFactorConfigurationDto = new TwoFactorConfigurationDto
                     {
                         SharedKey = "Check your email!",
@@ -205,15 +148,14 @@ namespace Application.Services
                     return new SuccessDataResult<TwoFactorConfigurationDto>(emailTwoFactorConfigurationDto);
 
                 case AuthenticationProviderType.Phone:
-                    if (user.Data.Preferred2FAProvider == AuthenticationProviderType.Phone)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>("Phone is already set as the preferred two-factor authentication method.", "BadRequest");
-                    }
+                    if (user.Data!.Preferred2FAProvider == AuthenticationProviderType.Phone)
+                        return new ErrorDataResult<TwoFactorConfigurationDto>("Phone is already set as the preferred two-factor authentication method.", AppError.BadRequest());
+
                     bool isPhoneNumberConfirmed = user.Data.PhoneNumberConfirmed ?? false;
                     if (!isPhoneNumberConfirmed)
-                    {
-                        return new ErrorDataResult<TwoFactorConfigurationDto>("Phone number not confirmed. Please confirm your phone number before setting up two-factor authentication.", "BadRequest");
-                    }
+                        return new ErrorDataResult<TwoFactorConfigurationDto>
+                            ("Phone number not confirmed. Please confirm your phone number before setting up two-factor authentication.", AppError.BadRequest());
+
                     return new SuccessDataResult<TwoFactorConfigurationDto>(
                         new TwoFactorConfigurationDto
                         {
@@ -222,7 +164,7 @@ namespace Application.Services
                         });
                 default:
                     _logger.LogWarning("Unsupported two-factor authentication provider: {Provider}", provider);
-                    return new ErrorDataResult<TwoFactorConfigurationDto>("Unsupported two-factor authentication provider", "BadRequest");
+                    return new ErrorDataResult<TwoFactorConfigurationDto>("Unsupported two-factor authentication provider", AppError.BadRequest());
 
             }
         }
@@ -231,20 +173,13 @@ namespace Application.Services
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user is ErrorDataResult<User> userErrorDataResult)
-            {
-                if (userErrorDataResult.ErrorType == "NotFound")
-                {
-                    _logger.LogWarning("User not found for Id: {UserId}", userId);
-                    return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-                }
-            }
+                return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
 
             var verificationResult = await _twoFactorService.VerifyTwoFactorAuthenticationKey(userId, verifyTwoFactorDto);
             if (verificationResult is ErrorResult errorResult)
             {
-                return new ErrorResult(errorResult.Message, errorResult.ErrorType);
+                return new ErrorResult(errorResult.Message!, errorResult.ErrorType!);
             }
-
             return new SuccessResult("Two-factor authentication verified successfully");
         }
 
@@ -252,35 +187,20 @@ namespace Application.Services
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user is ErrorDataResult<User> userErrorDataResult)
-            {
-                _logger.LogWarning("User not found for Id: {UserId}", userId);
-                return new ErrorResult(userErrorDataResult.Message, userErrorDataResult.ErrorType);
-            }
-            if (user.Data.Email == email)
-            {
-                return new ErrorResult("This email is the same as your email", "BadRequest");
-            }
+                return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
+            
+            if (user.Data!.Email == email)
+                return new ErrorResult("This email is the same as your email", AppError.BadRequest());
+
             var userExist = await _userRepository.UserExistByEmail(email); // Check if the new email is already registered
             if (userExist.Success)
-            {
-                return new ErrorResult("This email has been registered", "BadRequest");
-            }
+                return new ErrorResult("This email has been registered", AppError.BadRequest());
 
             var changeEmailToken = await _emailTokenService.GenerateChangeEmailToken(user.Data, email);
-            if (changeEmailToken is ErrorDataResult<ConfirmEmailTokenDto> errorDataResult)
-            {
-                return new ErrorResult(errorDataResult.Message, errorDataResult.ErrorType);
-            }
-
             var frontendUrl = "http://localhost:4200/settings/change-email/change-email-confirmation";
             var emailContent = string.Empty;
-            emailContent = $"{frontendUrl}?userId={changeEmailToken.Data.UserId}&token={changeEmailToken.Data.Token}";
-
+            emailContent = $"{frontendUrl}?userId={changeEmailToken.Data!.UserId}&token={changeEmailToken.Data.Token}";
             var emailResult = await _emailService.SendAsync(email, "Change your email", emailContent);
-            if (emailResult is ErrorResult mailErrorResult)
-            {
-                return new ErrorResult(mailErrorResult.Message, mailErrorResult.ErrorType);
-            }
             return new SuccessResult("Change email link sent successfully");
         }
     }

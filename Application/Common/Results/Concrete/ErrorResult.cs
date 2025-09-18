@@ -8,19 +8,11 @@ namespace Application.Common.Results.Concrete
 {
     public class ErrorResult : Result
     {
-        public ErrorResult(string message) : base(message, false)
+        public ErrorResult(string message, AppError errorType) : base(message, false, errorType)
         {
         }
-        public ErrorResult(string message, string errorType) : base(message, false)
+        public ErrorResult(string[] messages, AppError errorType) : base(messages,false, errorType)
         {
-            ErrorType = errorType;
         }
-        public ErrorResult(string[] messages, string errorType) : base(false)
-        {
-            Messages = messages;
-            ErrorType = errorType;
-        }
-        public string ErrorType { get; }
-        public string[] Messages { get; set; }
     }
 }

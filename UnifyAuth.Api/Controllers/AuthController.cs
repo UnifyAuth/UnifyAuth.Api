@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using UnifyAuth.Api.Extensions;
 
 namespace UnifyAuth.Api.Controllers
 {
@@ -15,60 +16,30 @@ namespace UnifyAuth.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IEmailTokenService _emailTokenService;
-        private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthService authService, IEmailTokenService emailTokenService, ITokenService tokenService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _emailTokenService = emailTokenService;
-            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto registerDto)
+        public async Task<IResult> Register(RegisterDto registerDto)
         {
-            var registerResult = await _authService.RegisterAsync(registerDto);
-
-            if (registerResult is ErrorResult errorResult)
+            var result = await _authService.RegisterAsync(registerDto);
+            if (!result.Success)
             {
-                if (errorResult.ErrorType == "BadRequest")
-                {
-                    return BadRequest(new
-                    {
-                        message = errorResult.Message,
-                        errorType = errorResult.ErrorType,
-                        messages = errorResult.Messages
-                    });
-                }
+                return result.ToProblemDetails();
             }
-
-            return Ok(new { Message = registerResult.Message });
+            return Results.Ok();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IResult> Login(LoginDto loginDto)
         {
-            var loginResult = await _authService.LoginAsyncWithJWT(loginDto);
-            if (loginResult is ErrorDataResult<TokenResultDto> errorDataResult)
+            var result = await _authService.LoginAsyncWithJWT(loginDto);
+            if (!result.Success)
             {
-                if (errorDataResult.ErrorType == "BadRequest")
-                {
-                    return BadRequest(new
-                    {
-                        message = errorDataResult.Message,
-                        errorType = errorDataResult.ErrorType,
-                        messages = errorDataResult.Messages
-                    });
-                }
-                else if (errorDataResult.ErrorType == "NotFound")
-                {
-                    return NotFound(new { message = errorDataResult.Message });
-                }
-                else if (errorDataResult.ErrorType == "BadRequest")
-                {
-                    return BadRequest(new { message = errorDataResult.Message });
-                }
+                return result.ToProblemDetails();
             }
 
             var cookieOptions = new CookieOptions
@@ -76,63 +47,63 @@ namespace UnifyAuth.Api.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = loginResult.Data.RefreshTokenExpiration
+                Expires = result.Data.RefreshTokenExpiration
             };
-            Response.Cookies.Append("refreshToken", loginResult.Data.RefreshToken, cookieOptions);
+            Response.Cookies.Append("refreshToken", result.Data.RefreshToken, cookieOptions);
 
-            return Ok(loginResult.Data.AccessToken);
+            return Results.Ok(result.Data.AccessToken);
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IResult> RefreshToken()
         {
             var oldRefreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(oldRefreshToken))
             {
-                return Unauthorized(new { message = "Refresh token is missing." });
+                return Results.Problem(
+                    statusCode: StatusCodes.Status401Unauthorized,
+                    title: "Unauthorized",
+                    detail: "Refresh token is missing.",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7235#section-3.1",
+                    extensions: new Dictionary<string, object?>
+                    {
+                        ["error"] = "Refresh token is missing."
+                    });
             }
 
-            var refreshToken = await _authService.RefreshAccessToken(oldRefreshToken);
-            if (refreshToken is ErrorDataResult<TokenResultDto> errorDataResult)
+            var result = await _authService.RefreshAccessToken(oldRefreshToken);
+            if (!result.Success)
             {
-                if (errorDataResult.ErrorType == "Unauthorized")
-                {
-                    return Unauthorized(new { message = errorDataResult.Message });
-                }
+                return result.ToProblemDetails();
             }
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = refreshToken.Data.RefreshTokenExpiration
+                Expires = result.Data.RefreshTokenExpiration
             };
-            Response.Cookies.Append("refreshToken", refreshToken.Data.RefreshToken, cookieOptions);
+            Response.Cookies.Append("refreshToken", result.Data.RefreshToken, cookieOptions);
 
-            return Ok(refreshToken.Data.AccessToken);
+            return Results.Ok(result.Data.AccessToken);
         }
 
         [HttpGet("has-refresh-cookie")]
-        public IActionResult HasRefreshCookie()
+        public IResult HasRefreshCookie()
         {
             var cookie = Request.Cookies["refreshToken"];
-            return Ok(new { hasRefreshCookie = !string.IsNullOrEmpty(cookie) });
+            return Results.Ok(new { hasRefreshCookie = !string.IsNullOrEmpty(cookie) });
         }
 
         [HttpPost("logout")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Logout()
+        public async Task<IResult> Logout()
         {
             var refreshToken = Request.Cookies["refreshToken"];
-            if (string.IsNullOrEmpty(refreshToken))
-                return NoContent();
-
-            var logoutResult = await _authService.Logout(refreshToken);
-            if (logoutResult is ErrorResult errorResult)
-            {
-                if (errorResult.ErrorType == "NotFound")
-                    return NoContent();
-            }
+            var result = await _authService.Logout(refreshToken!);
+            if (!result.Success)
+                return result.ToProblemDetails();
+            
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
@@ -142,55 +113,50 @@ namespace UnifyAuth.Api.Controllers
             };
             Response.Cookies.Append("refreshToken", string.Empty, cookieOptions);
 
-            return NoContent();
+            return Results.NoContent();
         }
 
         [HttpPost("send-reset-password-link")]
-        public async Task<IActionResult> SendResetPasswordLink(EmailDto emailDto)
+        public async Task<IResult> SendResetPasswordLink(EmailDto emailDto)
         {
             if (string.IsNullOrEmpty(emailDto.Email))
-            {
-                return BadRequest(new { message = "Email is required." });
-            }
+                return Results.Problem(
+                    statusCode: StatusCodes.Status400BadRequest,
+                    title: "BadRequest",
+                    detail: "Email is required",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    extensions: new Dictionary<string, object?>
+                    {
+                        ["error"] = "Email is missing."
+                    });
+
             var result = await _authService.SendResetPasswordLink(emailDto.Email);
-            if (result is ErrorResult errorResult)
-            {
-                if (errorResult.ErrorType == "NotFound")
-                {
-                    return NotFound(new { message = errorResult.Message });
-                }
-                else if (errorResult.ErrorType == "TokenGenerationError")
-                {
-                    return StatusCode(500, new { message = errorResult.Message });
-                }
-                else if (errorResult.ErrorType == "EmailError")
-                {
-                    return StatusCode(500, new { message = errorResult.Message });
-                }
-            }
-            return Ok(new { message = "Reset password link sent successfully." });
+            if (!result.Success)
+                return result.ToProblemDetails();
+
+            return Results.Ok(new { message = "Reset password link sent successfully." });
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        public async Task<IResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             if (resetPasswordDto == null || string.IsNullOrEmpty(resetPasswordDto.Token) || string.IsNullOrEmpty(resetPasswordDto.NewPassword))
-            {
-                return BadRequest(new { message = "Invalid reset password data." });
-            }
+                return Results.Problem(
+                    statusCode: StatusCodes.Status400BadRequest,
+                    title: "BadRequest",
+                    detail: "New password is required",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    extensions: new Dictionary<string, object?>
+                    {
+                        ["error"] = "New password is required."
+                    }
+                    );
+            
             var result = await _authService.ResetPassword(resetPasswordDto);
-            if (result is ErrorResult errorResult)
-            {
-                if (errorResult.ErrorType == "BadRequest")
-                {
-                    return BadRequest(new { message = errorResult.Message });
-                }
-                else if (errorResult.ErrorType == "NotFound")
-                {
-                    return NotFound(new { message = errorResult.Message });
-                }
-            }
-            return Ok(new { message = "Password reset successfully." });
+            if (!result.Success)
+                return result.ToProblemDetails();
+            
+            return Results.Ok(new { message = "Password reset successfully." });
         }
     }
 }

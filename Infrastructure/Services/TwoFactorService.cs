@@ -36,13 +36,13 @@ namespace Infrastructure.Services
             if (!resetResult.Succeeded)
             {
                 _logger.LogError("Failed to reset authenticator key for user: {Email}", identityUser!.Email);
-                return new ErrorDataResult<AuthenticatorAppDto>("Failed to reset authenticator key", "SystemError");
+                throw new Exception("Failed to reset authenticator key");
             }
             var key = await _userManager.GetAuthenticatorKeyAsync(identityUser!);
             if (key == null)
             {
                 _logger.LogError("Failed to retrieve authenticator key for user: {Email}", identityUser!.Email);
-                return new ErrorDataResult<AuthenticatorAppDto>("Failed to retrieve authenticator key", "SystemError");
+                throw new Exception("Failed to retrieve authenticator key");
             }
             string issuer = "UnifyAuth";
             string email = identityUser!.Email!;
@@ -53,7 +53,7 @@ namespace Infrastructure.Services
                 SharedKey = key,
                 QrCodeUri = qrCodeUri
             };
-            return new SuccessDataResult<AuthenticatorAppDto>(authenticatorAppDto, "Authenticator key and QR code generated successfully");
+            return new SuccessDataResult<AuthenticatorAppDto>(authenticatorAppDto);
         }
 
         public async Task<IDataResult<string>> GenerateAuthenticationKey(User user, AuthenticationProviderType provider)
@@ -63,41 +63,38 @@ namespace Infrastructure.Services
             if (token == null)
             {
                 _logger.LogError("Failed to generate authentication key for Email: {Email}", user.Email);
-                return new ErrorDataResult<string>("Failed to generate authentication key", "SystemError");
+                throw new Exception("Failed to generate authentication key");
             }
-            return new SuccessDataResult<string>(token, "Authentication key generated successfully");
+            return new SuccessDataResult<string>(token);
         }
 
         public async Task<IResult> VerifyTwoFactorAuthenticationKey(string userId, VerifyTwoFactorDto verifyTwoFactorDto)
         {
             var identityUser = await _userManager.FindByIdAsync(userId);
-            var twoFaProvider = identityUser!.Preferred2FAProvider;
+            var userTwoFaProvider = identityUser!.Preferred2FAProvider; // if user has authenticator app provider and now wants to set email or sms, we need to remove the authenticator key following lines
             identityUser!.Preferred2FAProvider = verifyTwoFactorDto.Provider;
             var isVerified = await _userManager.VerifyTwoFactorTokenAsync(identityUser!, verifyTwoFactorDto.Provider.ToString(), verifyTwoFactorDto.Key);
             if (!isVerified)
             {
-                _logger.LogWarning("Two-factor authentication key verification failed for Email: {Email}", identityUser!.Email);
-                return new ErrorResult("Invalid two-factor authentication key", "InvalidToken");
+                _logger.LogInformation("Two-factor authentication key verification failed for Email: {Email}", identityUser!.Email);
+                return new ErrorResult("Invalid two-factor authentication key", AppError.BadRequest());
+            }
+            var updateUserPreferred2FAProvider = await _userManager.UpdateAsync(identityUser);
+            if (!updateUserPreferred2FAProvider.Succeeded)
+            {
+                throw new Exception("Failed to update user's preferred two-factor authentication provider");
             }
 
             if (!identityUser!.TwoFactorEnabled)
             {
-                var updateResult = await _userManager.SetTwoFactorEnabledAsync(identityUser, true);
-                if (!updateResult.Succeeded)
-                {
-                    _logger.LogError("Failed to enable two-factor authentication status for Email: {Email}", identityUser.Email);
-                    return new ErrorResult("Failed to enable two-factor authentication status", "SystemError");
-                }
+                await _userManager.SetTwoFactorEnabledAsync(identityUser, true);
             }
 
-            if (verifyTwoFactorDto.Provider != AuthenticationProviderType.Authenticator && twoFaProvider == AuthenticationProviderType.Authenticator)
+            if (verifyTwoFactorDto.Provider != AuthenticationProviderType.Authenticator && userTwoFaProvider == AuthenticationProviderType.Authenticator)
             {
-                var result = await RemoveUserAuthenticationToken(identityUser);
-                if (result is ErrorResult errorResult)
-                {
-                    return new ErrorResult(errorResult.Messages, errorResult.ErrorType);
-                }
+                await RemoveUserAuthenticationToken(identityUser);
             }
+
 
             return new SuccessResult("Two-factor authentication key verified successfully");
         }
@@ -111,16 +108,11 @@ namespace Infrastructure.Services
             if (!updateResult.Succeeded)
             {
                 _logger.LogError("Failed to disable two-factor authentication for Email: {Email}", identityUser!.Email);
-                return new ErrorResult("Failed to disable two-factor authentication", "SystemError");
+                throw new Exception("Failed to disable two-factor authentication");
             }
             if (twoFaProvider == AuthenticationProviderType.Authenticator)
-            {
-                var result = await RemoveUserAuthenticationToken(identityUser!);
-                if (result is ErrorResult errorResult)
-                {
-                    return new ErrorResult(errorResult.Messages, errorResult.ErrorType);
-                }
-            }
+                await RemoveUserAuthenticationToken(identityUser!);
+
             return new SuccessResult("Two-factor authentication disabled successfully");
         }
 
@@ -130,7 +122,7 @@ namespace Infrastructure.Services
             if (!result.Succeeded)
             {
                 _logger.LogError("Failed to remove authenticator key for user: {Email}", identityUser.Email);
-                return new ErrorResult("Failed to remove authenticator key", "SystemError");
+                throw new Exception("Failed to remove authenticator key");
             }
             return new SuccessResult("Authenticator key removed successfully");
         }

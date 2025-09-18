@@ -45,7 +45,7 @@ namespace Infrastructure.Services
                 var body = await result.Body.ReadAsStringAsync();
                 result.Headers.TryGetValues("X-Message-Id", out var ids);
                 _logger.LogError("SendGrid failed. To={To} Status={StatusCode} MsgId={MsgId} Body={Body}",to, (int)result.StatusCode, ids?.FirstOrDefault(), body);
-                throw new Exception($"Email send failed ({(int)result.StatusCode}).");
+                throw new Exception("Email send failed");
             }
             _logger.LogInformation("Email sent successfully to {To} with subject {Subject}", to, subject);
             return new SuccessResult("Email sent successfully.");

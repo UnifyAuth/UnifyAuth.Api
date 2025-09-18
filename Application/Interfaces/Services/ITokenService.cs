@@ -11,8 +11,8 @@ namespace Application.Interfaces.Services
 {
     public interface ITokenService
     {
-        Task<AccessToken> GenerateAccessToken(User user);
-        Task<IResult> ValidateRefreshTokenAsync(RefreshToken refreshToken);
+        AccessToken GenerateAccessToken(User user);
+        IResult ValidateRefreshTokenAsync(RefreshToken refreshToken);
         Task<IResult> UpdateRefreshToken(RefreshToken refreshToken, string refreshTokenString);
         string GenerateRefreshToken();
     }

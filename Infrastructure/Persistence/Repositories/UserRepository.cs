@@ -41,36 +41,48 @@ namespace Infrastructure.Persistence.Repositories
             if (!identityResult.Succeeded)
             {
                 var filteredErrors = identityResult.Errors
-                    .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase)) 
-                    .ToList(); // Exclude duplicate username errors because username same with email. This error handled duplicate email error.
+                    .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
+                    .ToList(); // Exclude duplicate username error because username same with email. This error handled duplicate email error.
 
                 if (filteredErrors.Count() == 1)
                 {
                     var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
-                    return new ErrorDataResult<User>(identityError, "BadRequest");
+                    return new ErrorDataResult<User>(identityError!, AppError.Validation());
                 }
-                return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), "BadRequest");
+                return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), AppError.Validation());
             }
             user.Id = identityUser.Id;
-            return new SuccessDataResult<User>(user, "User Created Successfully");
+            return new SuccessDataResult<User>(user);
         }
 
         public async Task<IDataResult<User>> GetUserByEmailAsync(string email)
         {
             var identityUser = await _userManager.FindByEmailAsync(email);
-            if (identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");            
+            if (identityUser == null)
+            {
+                _logger.LogInformation("User not found with Email: {Email}", email);
+                return new ErrorDataResult<User>("User not found", AppError.NotFound());
+            }
 
             var user = _mapper.Map<User>(identityUser);
-            return new SuccessDataResult<User>(user, "User retrieved successfully");
+            return new SuccessDataResult<User>(user);
         }
 
         public async Task<IDataResult<User>> CheckRegisteredUserAsync(string email, string password)
         {
             var identityUser = await _userManager.FindByEmailAsync(email);
-            if (identityUser == null) return new ErrorDataResult<User>("Email or password incorrect", "BadRequest");
+            if (identityUser == null)
+            {
+                _logger.LogInformation("User not found with Email: {Email}", email);
+                return new ErrorDataResult<User>("Email or password incorrect", AppError.BadRequest());
+            }
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(identityUser, password);
-            if(!isPasswordValid) return new ErrorDataResult<User>("Email or password incorrect", "BadRequest");
+            if (!isPasswordValid)
+            {
+                _logger.LogInformation("Invalid password attempt for Email: {Email}", email);
+                return new ErrorDataResult<User>("Email or password incorrect", AppError.BadRequest());
+            }
 
             User user = _mapper.Map<User>(identityUser);
             return new SuccessDataResult<User>(user);
@@ -78,7 +90,7 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IResult> UserExistByEmail(string email)
         {
             var identityUser = await _userManager.Users.AnyAsync(u => u.Email == email);
-            if (!identityUser) return new ErrorResult("User not found", "NotFound");
+            if (!identityUser) return new ErrorResult("User not found", AppError.BadRequest());
 
             return new SuccessResult("User exists");
         }
@@ -86,15 +98,19 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IDataResult<User>> GetUserByIdAsync(string userId)
         {
             var identityUser = await _userManager.FindByIdAsync(userId);
-            if(identityUser == null) return new ErrorDataResult<User>("User not found", "NotFound");
+            if (identityUser == null)
+            {
+                _logger.LogWarning("User not found for update with Id: {UserId}", userId);
+                return new ErrorDataResult<User>("User not found", AppError.NotFound());
+            }
 
             User user = _mapper.Map<User>(identityUser);
-            return new SuccessDataResult<User>(user, "User retrieved successfully");
+            return new SuccessDataResult<User>(user);
         }
 
         public async Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto)
         {
-            IdentityUserModel identityUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
+            var identityUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
 
             identityUser!.FirstName = userUpdateDto.FirstName;
             identityUser.LastName = userUpdateDto.LastName;
@@ -105,16 +121,19 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var filteredErrors = identityResult.Errors
                     .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
-                    .ToList(); // Exclude duplicate username errors because username same with email.
+                    .ToList(); // Exclude duplicate username errors because username same with email. This error handled duplicate email error.
 
                 if (filteredErrors.Count() == 1)
                 {
-                    var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
-                    return new ErrorResult(identityError, "BadRequest");
+                    var identityError = filteredErrors.Select(e => e.Description).FirstOrDefault();
+                    _logger.LogInformation("Failed to update user with Email: {Email}. Error: {Error}", identityUser.Email, identityError);
+                    return new ErrorResult(identityError!, AppError.Validation());
                 }
-                return new ErrorResult(filteredErrors.Select(e => e.Description).ToArray(), "BadRequest");
+                _logger.LogInformation("Failed to update user with Email: {Email}. Errors: {Errors}", identityUser.Email, string.Join(", ", filteredErrors.Select(e => e.Description)));
+                return new ErrorResult(filteredErrors.Select(e => e.Description).ToArray(), AppError.Validation());
             }
 
+            _logger.LogInformation("User updated successfully with Email: {Email}", identityUser.Email);
             return new SuccessResult("User updated successfully");
         }
     }
