@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs
 {
-    public class VerifyTwoFactorDto
+    public class VerifyTwoFactorConfigurationDto
     {
         public AuthenticationProviderType Provider { get; set; }
         public string Key { get; set; }

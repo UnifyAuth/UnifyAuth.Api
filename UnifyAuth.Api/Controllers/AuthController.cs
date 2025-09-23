@@ -42,16 +42,48 @@ namespace UnifyAuth.Api.Controllers
                 return result.ToProblemDetails();
             }
 
+            if (result.Data!.IsTowFactorRequired)
+            {
+                return Results.Ok(new
+                {
+                    userId = result.Data.UserId,
+                    isTwoFactorRequired = true,
+                    provider = result.Data.Provider,
+                    accessToken = string.Empty,
+                });
+            }
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = result.Data.RefreshTokenExpiration
+                Expires = result.Data.TokenResultDto!.RefreshTokenExpiration
             };
-            Response.Cookies.Append("refreshToken", result.Data.RefreshToken, cookieOptions);
+            Response.Cookies.Append("refreshToken", result.Data.TokenResultDto.RefreshToken, cookieOptions);
+            return Results.Ok(new {
+                isTwoFactorRequired = false,
+                provider = string.Empty,
+                accessToken = result.Data.TokenResultDto.AccessToken 
+            });
+        }
 
-            return Results.Ok(result.Data.AccessToken);
+        [HttpPost("login-2fa")]
+        public async Task<IResult> LoginWith2FA(VerifyTwoFactorAuthenticationDto verifyTwoFactorAuthenticationDto)
+        {
+            var result = await _authService.VerifyTwoFactorAuthentication(verifyTwoFactorAuthenticationDto);
+            if (!result.Success)
+            {
+                return result.ToProblemDetails();
+            }
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = result.Data!.TokenResultDto!.RefreshTokenExpiration
+            };
+            Response.Cookies.Append("refreshToken", result.Data.TokenResultDto.RefreshToken, cookieOptions);
+            return Results.Ok(result.Data.TokenResultDto.AccessToken);
         }
 
         [HttpPost("refresh-token")]
@@ -81,7 +113,7 @@ namespace UnifyAuth.Api.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = result.Data.RefreshTokenExpiration
+                Expires = result.Data!.RefreshTokenExpiration
             };
             Response.Cookies.Append("refreshToken", result.Data.RefreshToken, cookieOptions);
 
@@ -103,7 +135,7 @@ namespace UnifyAuth.Api.Controllers
             var result = await _authService.Logout(refreshToken!);
             if (!result.Success)
                 return result.ToProblemDetails();
-            
+
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
@@ -151,11 +183,11 @@ namespace UnifyAuth.Api.Controllers
                         ["error"] = "New password is required."
                     }
                     );
-            
+
             var result = await _authService.ResetPassword(resetPasswordDto);
             if (!result.Success)
                 return result.ToProblemDetails();
-            
+
             return Results.Ok(new { message = "Password reset successfully." });
         }
     }

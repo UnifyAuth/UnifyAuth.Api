@@ -6,6 +6,7 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using System;
@@ -27,10 +28,10 @@ namespace Application.Services
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IEMailService _emailService;
-        private readonly IEmailTokenService _emailTokenService;
         private readonly IPasswordService _passwordService;
+        private readonly ITwoFactorService _twoFactorService;
 
-        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository, IEMailService emailService, IEmailTokenService emailTokenService, IPasswordService passwordService, IValidator<ResetPasswordDto> resetPasswordValidator)
+        public AuthService(IValidator<RegisterDto> registerValidator, IUserRepository userRepository, IMapper mapper, ILogger<AuthService> logger, IValidator<LoginDto> loginValidator, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository, IEMailService emailService, IPasswordService passwordService, IValidator<ResetPasswordDto> resetPasswordValidator, ITwoFactorService twoFactorService)
         {
             _registerValidator = registerValidator;
             _userRepository = userRepository;
@@ -40,12 +41,12 @@ namespace Application.Services
             _tokenService = tokenService;
             _refreshTokenRepository = refreshTokenRepository;
             _emailService = emailService;
-            _emailTokenService = emailTokenService;
             _passwordService = passwordService;
             _resetPasswordValidator = resetPasswordValidator;
+            _twoFactorService = twoFactorService;
         }
 
-        public async Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto)
+        public async Task<IDataResult<LoginResponseDto>> LoginAsyncWithJWT(LoginDto loginDto)
         {
             var validationResult = _loginValidator.Validate(loginDto);
             if (!validationResult.IsValid)
@@ -53,33 +54,99 @@ namespace Application.Services
                 _logger.LogInformation("Validation failed for {Email}: {Errors}",
                     loginDto.Email,
                     validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
-                return new ErrorDataResult<TokenResultDto>(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), AppError.BadRequest());
+                return new ErrorDataResult<LoginResponseDto>(validationResult.Errors.Select(e => e.ErrorMessage).ToArray(), AppError.BadRequest());
             }
 
             var userChecking = await _userRepository.CheckRegisteredUserAsync(loginDto.Email, loginDto.Password);
             if (userChecking is ErrorDataResult<User> errorDataResult)
-                return new ErrorDataResult<TokenResultDto>(errorDataResult.Message!, errorDataResult.ErrorType!);
+                return new ErrorDataResult<LoginResponseDto>(errorDataResult.Message!, errorDataResult.ErrorType!);
 
-            AccessToken accessToken = _tokenService.GenerateAccessToken(userChecking.Data!);
+            if (userChecking.Data!.TwoFactorEnabled)
+            {
+                var provider = userChecking.Data.Preferred2FAProvider;
+                var sendResult = await GenerateAndSendTwoFactorCode(userChecking.Data, provider);
+                if (!sendResult.Success)
+                {
+                    return new ErrorDataResult<LoginResponseDto>(sendResult.Message!, sendResult.ErrorType!);
+                }
+                return new SuccessDataResult<LoginResponseDto>(new LoginResponseDto
+                {
+                    UserId = userChecking.Data.Id.ToString(),
+                    IsTowFactorRequired = true,
+                    Provider = userChecking.Data.Preferred2FAProvider.ToString(),
+                    TokenResultDto = null
+                });
+            }
+
+            var tokenResultDto = await GenerateAccessTokenAndRefreshToken(userChecking.Data);
+            var loginResponseDto = new LoginResponseDto
+            {
+                IsTowFactorRequired = false,
+                Provider = string.Empty,
+                TokenResultDto = tokenResultDto
+            };
+
+            return new SuccessDataResult<LoginResponseDto>(loginResponseDto);
+        }
+        private async Task<IResult> GenerateAndSendTwoFactorCode(User user, AuthenticationProviderType provider)
+        {
+            switch (provider)
+            {
+                case AuthenticationProviderType.Authenticator:
+                    // For authenticator app, no need to send code, user will get it from their app
+                    return new SuccessResult("Use your authenticator app to get the code");
+                case AuthenticationProviderType.Email:
+                    var emailToken = await _twoFactorService.GenerateAuthenticationKey(user, provider);
+                    var emailContent = $"Your email verification code is: {emailToken.Data}. Please use this code to complete your two-factor authentication setup.";
+                    var emailResult = await _emailService.SendAsync(user.Email, "Two-Factor Authentication Code", emailContent);
+                    return new SuccessResult("Two-factor code sent via email");
+                case AuthenticationProviderType.Phone:
+                    // Authentication via SMS is not implemented yet
+                    return new SuccessResult("SMS provider is not implemented yet");
+                default:
+                    _logger.LogWarning("Unsupported two-factor authentication provider: {Provider}", provider);
+                    return new ErrorDataResult<TwoFactorConfigurationDto>("Unsupported two-factor authentication provider", AppError.BadRequest());
+            }
+        }
+
+        public async Task<IDataResult<LoginResponseDto>> VerifyTwoFactorAuthentication(VerifyTwoFactorAuthenticationDto verifyTwoFactorAuthenticationDto)
+        {
+            var user = await _userRepository.GetUserByIdAsync(verifyTwoFactorAuthenticationDto.UserId);
+            if (user is ErrorDataResult<User> userErrorDataResult)
+                return new ErrorDataResult<LoginResponseDto>(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
+
+            var verificationResult = await _twoFactorService.VerifyTwoFactorAuthenticationKey(verifyTwoFactorAuthenticationDto);
+            if (verificationResult is ErrorResult errorResult)
+                return new ErrorDataResult<LoginResponseDto>(errorResult.Message!, errorResult.ErrorType!);
+
+            var tokenResultDto = await GenerateAccessTokenAndRefreshToken(user.Data!);
+            return new SuccessDataResult<LoginResponseDto>(new LoginResponseDto
+            {
+                IsTowFactorRequired = false,
+                Provider = string.Empty,
+                TokenResultDto = tokenResultDto
+            });
+        }
+
+        private async Task<TokenResultDto> GenerateAccessTokenAndRefreshToken(User user)
+        {
+            AccessToken accessToken = _tokenService.GenerateAccessToken(user);
             string refreshTokenString = _tokenService.GenerateRefreshToken();
             RefreshToken refreshToken = new RefreshToken
             {
                 Token = refreshTokenString,
-                UserId = userChecking.Data!.Id,
+                UserId = user.Id,
                 Expires = DateTime.UtcNow.AddDays(15), // Set expiration to 15 days
                 Created = DateTime.UtcNow
             };
             await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
-            _logger.LogInformation("Refresh token created and stored database successfully for user: {Email}", loginDto.Email);
-
-            TokenResultDto tokenResultDto = new TokenResultDto
+            _logger.LogInformation("Refresh token created and stored database successfully for user: {Email}", user.Email);
+            return new TokenResultDto
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshTokenString,
                 RefreshTokenExpiration = refreshToken.Expires
             };
-
-            return new SuccessDataResult<TokenResultDto>(tokenResultDto);
         }
 
         public async Task<IResult> RegisterAsync(RegisterDto registerDto)

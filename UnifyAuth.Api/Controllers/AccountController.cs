@@ -111,10 +111,10 @@ namespace UnifyAuth.Api.Controllers
         }
 
         [HttpPost("verify-2fa-configuration")]
-        public async Task<IResult> VerifyTwoFactorAuthentication([FromBody] VerifyTwoFactorDto verifyTwoFactorDto)
+        public async Task<IResult> VerifyTwoFactorConfiguration([FromBody] VerifyTwoFactorConfigurationDto verifyTwoFactorConfigurationDto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            var result = await _accountService.VerifyTwoFactorAuthentication(userId, verifyTwoFactorDto);
+            var result = await _accountService.VerifyTwoFactorConfiguration(userId, verifyTwoFactorConfigurationDto);
             if (!result.Success)
             {
                 return result.ToProblemDetails();

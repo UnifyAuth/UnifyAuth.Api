@@ -68,7 +68,7 @@ namespace Infrastructure.Services
             return new SuccessDataResult<string>(token);
         }
 
-        public async Task<IResult> VerifyTwoFactorAuthenticationKey(string userId, VerifyTwoFactorDto verifyTwoFactorDto)
+        public async Task<IResult> VerifyTwoFactorConfigurationKey(string userId, VerifyTwoFactorConfigurationDto verifyTwoFactorDto)
         {
             var identityUser = await _userManager.FindByIdAsync(userId);
             var userTwoFaProvider = identityUser!.Preferred2FAProvider; // if user has authenticator app provider and now wants to set email or sms, we need to remove the authenticator key following lines
@@ -94,8 +94,17 @@ namespace Infrastructure.Services
             {
                 await RemoveUserAuthenticationToken(identityUser);
             }
-
-
+            return new SuccessResult("Two-factor configuration key verified successfully");
+        }
+        public async Task<IResult> VerifyTwoFactorAuthenticationKey(VerifyTwoFactorAuthenticationDto verifyTwoFactorAuthenticationDto)
+        {
+            var identityUser = await _userManager.FindByIdAsync(verifyTwoFactorAuthenticationDto.UserId);
+            var isVerified = await _userManager.VerifyTwoFactorTokenAsync(identityUser!, verifyTwoFactorAuthenticationDto.Provider, verifyTwoFactorAuthenticationDto.Key);
+            if (!isVerified)
+            {
+                _logger.LogInformation("Two-factor authentication key verification failed for Email: {Email}", identityUser!.Email);
+                return new ErrorResult("Invalid two-factor authentication key", AppError.BadRequest());
+            }
             return new SuccessResult("Two-factor authentication key verified successfully");
         }
 

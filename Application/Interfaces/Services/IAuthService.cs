@@ -13,7 +13,8 @@ namespace Application.Interfaces.Services
     public interface IAuthService
     {
         Task<IResult> RegisterAsync(RegisterDto registerDto);
-        Task<IDataResult<TokenResultDto>> LoginAsyncWithJWT(LoginDto loginDto);
+        Task<IDataResult<LoginResponseDto>> LoginAsyncWithJWT(LoginDto loginDto);
+        Task<IDataResult<LoginResponseDto>> VerifyTwoFactorAuthentication(VerifyTwoFactorAuthenticationDto verifyTwoFactorAuthenticationDto);
         Task<IDataResult<TokenResultDto>> RefreshAccessToken(string refreshTokenString);
         Task<IResult> Logout(string refreshTokenString);
         Task<IResult> SendResetPasswordLink(string email);

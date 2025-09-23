@@ -14,7 +14,8 @@ namespace Application.Interfaces.Services
     {
         Task<IDataResult<AuthenticatorAppDto>> GenerateAuthenticatorKeyAndQrAsync(string userId);
         Task<IDataResult<string>> GenerateAuthenticationKey(User user, AuthenticationProviderType provider);
-        Task<IResult> VerifyTwoFactorAuthenticationKey(string userId, VerifyTwoFactorDto verifyTwoFactorDto);
+        Task<IResult> VerifyTwoFactorAuthenticationKey(VerifyTwoFactorAuthenticationDto verifyTwoFactorAuthenticationDto);
+        Task<IResult> VerifyTwoFactorConfigurationKey(string userId, VerifyTwoFactorConfigurationDto verifyTwoFactorConfigurationDto);
         Task<IResult> DisableUserTwoFactorAuthentication(string userId); 
     }
 }

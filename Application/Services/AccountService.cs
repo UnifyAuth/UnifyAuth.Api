@@ -138,8 +138,8 @@ namespace Application.Services
 
 
                     var emailToken = await _twoFactorService.GenerateAuthenticationKey(user.Data, provider);
-                    var emailContent = $"Your email verification code is: {emailToken.Data}. Please use this code to complete your two-factor authentication setup.";
-                    var emailResult = await _emailService.SendAsync(user.Data.Email, "Two-Factor Authentication Code", emailContent);
+                    var emailContent = $"Your email verification code is: {emailToken.Data}. Please use this code to complete your two-factor configuration setup.";
+                    var emailResult = await _emailService.SendAsync(user.Data.Email, "Two-Factor Configuration Code", emailContent);
                     var emailTwoFactorConfigurationDto = new TwoFactorConfigurationDto
                     {
                         SharedKey = "Check your email!",
@@ -169,13 +169,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<IResult> VerifyTwoFactorAuthentication(string userId, VerifyTwoFactorDto verifyTwoFactorDto)
+        public async Task<IResult> VerifyTwoFactorConfiguration(string userId, VerifyTwoFactorConfigurationDto verifyTwoFactorConfigurationDto)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user is ErrorDataResult<User> userErrorDataResult)
                 return new ErrorResult(userErrorDataResult.Message!, userErrorDataResult.ErrorType!);
 
-            var verificationResult = await _twoFactorService.VerifyTwoFactorAuthenticationKey(userId, verifyTwoFactorDto);
+            var verificationResult = await _twoFactorService.VerifyTwoFactorConfigurationKey(userId, verifyTwoFactorConfigurationDto);
             if (verificationResult is ErrorResult errorResult)
             {
                 return new ErrorResult(errorResult.Message!, errorResult.ErrorType!);

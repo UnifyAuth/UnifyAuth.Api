@@ -15,7 +15,7 @@ namespace Application.Interfaces.Services
         Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto);
         Task<IResult> SendEmailConfirmationLinkAsync(string userId, string email);
         Task<IDataResult<TwoFactorConfigurationDto>> ConfigureTwoFactorAsync(string userId, AuthenticationProviderType provider);
-        Task<IResult> VerifyTwoFactorAuthentication(string userId,VerifyTwoFactorDto verifyTwoFactorDto);
+        Task<IResult> VerifyTwoFactorConfiguration(string userId,VerifyTwoFactorConfigurationDto verifyTwoFactorConfigurationDto);
         Task<IResult> SendChangeEmailLinkAsync(string userId, string email);
     }
 }
