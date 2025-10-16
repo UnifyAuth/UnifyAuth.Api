@@ -19,5 +19,6 @@ namespace Application.Interfaces.Services
         Task<IResult> Logout(string refreshTokenString);
         Task<IResult> SendResetPasswordLink(string email);
         Task<IResult> ResetPassword(ResetPasswordDto resetPasswordDto);
+        Task<IDataResult<LoginResponseDto>> LoginWithGoogle(ExternalLoginDto externalLoginDto);
     }
 }

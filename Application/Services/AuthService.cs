@@ -88,6 +88,53 @@ namespace Application.Services
 
             return new SuccessDataResult<LoginResponseDto>(loginResponseDto);
         }
+
+        public async Task<IDataResult<LoginResponseDto>> LoginWithGoogle(ExternalLoginDto externalLoginDto)
+        {
+            User user = new User();
+            var userExist = await _userRepository.GetUserByExternalProviderAsync(externalLoginDto);
+            if (!userExist.Success)
+            {
+                var userExistEmail = await _userRepository.UserExistByEmail(externalLoginDto.Email);
+                if (userExistEmail.Success)
+                {
+                    return new ErrorDataResult<LoginResponseDto>("User with this email already exists. Please login using your email and password.", AppError.BadRequest());
+                }
+
+                var newUser = new User
+                {
+                    Email = externalLoginDto.Email,
+                    FirstName = externalLoginDto.FirstName,
+                    LastName = externalLoginDto.LastName,
+                    PhoneNumber = externalLoginDto.PhoneNumber,
+                    EmailConfirmed = true // Since it's from Google, we can consider email as confirmed
+                };
+
+                var createUserResult = await _userRepository.CreateUserWithExternalLogin(newUser, externalLoginDto);
+                if (!createUserResult.Success)
+                {
+                    if(createUserResult.Messages != null && createUserResult.Messages.Length > 1)
+                    {
+                        return new ErrorDataResult<LoginResponseDto>(createUserResult.Messages, createUserResult.ErrorType!);
+                    }
+                    return new ErrorDataResult<LoginResponseDto>(createUserResult.Message!, createUserResult.ErrorType!);
+                }
+                user = createUserResult.Data!;
+            }else
+            {
+                user = userExist.Data!;
+            }
+
+            var tokenResultDto = await GenerateAccessTokenAndRefreshToken(user);
+            var loginResponseDto = new LoginResponseDto
+            {
+                IsTowFactorRequired = false,
+                Provider = string.Empty,
+                TokenResultDto = tokenResultDto
+            };
+
+            return new SuccessDataResult<LoginResponseDto>(loginResponseDto);
+        }
         private async Task<IResult> GenerateAndSendTwoFactorCode(User user, AuthenticationProviderType provider)
         {
             switch (provider)
@@ -166,14 +213,8 @@ namespace Application.Services
             {
                 if (errorDataResult.Messages != null && errorDataResult.Messages!.Length > 1)
                 {
-                    _logger.LogInformation("User creation failed for {Email} with multiple errors: {Errors}",
-                        registerDto.Email,
-                        errorDataResult.Messages);
                     return new ErrorResult(errorDataResult.Messages, errorDataResult.ErrorType!);
                 }
-                _logger.LogInformation("User creation failed for {Email} with error: {Error}",
-                    registerDto.Email,
-                    errorDataResult.Message);
                 return new ErrorResult(errorDataResult.Message!, errorDataResult.ErrorType!);
             }
 

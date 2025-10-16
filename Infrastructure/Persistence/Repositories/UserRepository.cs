@@ -46,9 +46,11 @@ namespace Infrastructure.Persistence.Repositories
 
                 if (filteredErrors.Count() == 1)
                 {
+                    _logger.LogInformation("Failed to create user with Email: {Email}. Error: {Error}", identityUser.Email, filteredErrors.Select(e => e.Description).FirstOrDefault());
                     var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
                     return new ErrorDataResult<User>(identityError!, AppError.Validation());
                 }
+                _logger.LogInformation("Failed to create user with Email: {Email}. Errors: {Errors}", identityUser.Email, string.Join(", ", filteredErrors.Select(e => e.Description)));
                 return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), AppError.Validation());
             }
             user.Id = identityUser.Id;
@@ -105,6 +107,9 @@ namespace Infrastructure.Persistence.Repositories
             }
 
             User user = _mapper.Map<User>(identityUser);
+            var loginProvider = await _userManager.GetLoginsAsync(identityUser);
+            user.ExternalProvider = loginProvider.Select(lp => lp.LoginProvider).FirstOrDefault();
+
             return new SuccessDataResult<User>(user);
         }
 
@@ -135,6 +140,64 @@ namespace Infrastructure.Persistence.Repositories
 
             _logger.LogInformation("User updated successfully with Email: {Email}", identityUser.Email);
             return new SuccessResult("User updated successfully");
+        }
+
+        public async Task<IDataResult<User>> GetUserByExternalProviderAsync(ExternalLoginDto externalLoginDto)
+        {
+            var identityUser = await _userManager.FindByLoginAsync(externalLoginDto.Provider, externalLoginDto.ProviderKey);
+            if(identityUser == null)
+            {
+                _logger.LogInformation("User not found with External Provider: {Provider}, ProviderKey: {ProviderKey}", externalLoginDto.Provider, externalLoginDto.ProviderKey);
+                return new ErrorDataResult<User>("User not found", AppError.NotFound());
+            }
+
+            var user = _mapper.Map<User>(identityUser);
+            return new SuccessDataResult<User>(user);
+        }
+
+        public async Task<IDataResult<User>> CreateUserWithExternalLogin(User user, ExternalLoginDto externalLoginDto)
+        {
+            var identityUser = _mapper.Map<IdentityUserModel>(user);
+
+            using var tx = await _context.Database.BeginTransactionAsync();
+
+            var identityResult = await _userManager.CreateAsync(identityUser);
+            if (!identityResult.Succeeded)
+            {
+                await tx.RollbackAsync();
+
+                var filteredErrors = identityResult.Errors
+                    .Where(e => !string.Equals(e.Code, "DuplicateUserName", StringComparison.OrdinalIgnoreCase))
+                    .ToList(); // Exclude duplicate username error because username same with email. This error handled duplicate email error.
+
+                if (filteredErrors.Count() == 1)
+                {
+                    _logger.LogInformation("Failed to create user with Email: {Email}. Error: {Error}", identityUser.Email, filteredErrors.Select(e => e.Description).FirstOrDefault());
+                    var identityError = filteredErrors.Select(e => e.Description).ToArray().FirstOrDefault();
+                    return new ErrorDataResult<User>(identityError!, AppError.Validation());
+                }
+                _logger.LogInformation("Failed to create user with Email: {Email}. Errors: {Errors}", identityUser.Email, string.Join(", ", filteredErrors.Select(e => e.Description)));
+                return new ErrorDataResult<User>(filteredErrors.Select(e => e.Description).ToArray(), AppError.Validation());
+            }
+
+            var userLoginInfo = new UserLoginInfo(externalLoginDto.Provider, externalLoginDto.ProviderKey, externalLoginDto.Provider);
+            var loginResult = await _userManager.AddLoginAsync(identityUser, userLoginInfo);
+            if (!loginResult.Succeeded)
+            {
+                await tx.RollbackAsync();
+
+                if(loginResult.Errors.Count() == 1)
+                {
+                    _logger.LogInformation("Failed to add external login for user with Email: {Email}. Error: {Error}", identityUser.Email, loginResult.Errors.Select(e => e.Description).FirstOrDefault());
+                    var identityError = loginResult.Errors.Select(e => e.Description).ToArray().FirstOrDefault();
+                    return new ErrorDataResult<User>(identityError!, AppError.Validation());
+                }
+                _logger.LogInformation("Failed to add external login for user with Email: {Email}. Errors: {Errors}", identityUser.Email, string.Join(", ", loginResult.Errors.Select(e => e.Description)));
+                return new ErrorDataResult<User>(loginResult.Errors.Select(e => e.Description).ToArray(), AppError.Validation());
+            }
+            user.Id = identityUser.Id;
+            await tx.CommitAsync();
+            return new SuccessDataResult<User>(user);
         }
     }
 }

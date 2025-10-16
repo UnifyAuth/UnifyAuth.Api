@@ -14,7 +14,7 @@ namespace Domain.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public string? PasswordHash { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         public AuthenticationProviderType Preferred2FAProvider { get; set; } = AuthenticationProviderType.None;
         public bool? EmailConfirmed { get; set; }
         public bool? PhoneNumberConfirmed { get; set; }

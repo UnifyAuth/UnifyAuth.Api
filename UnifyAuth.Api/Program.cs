@@ -7,6 +7,7 @@ using Infrastructure.Common.IdentityModels;
 using Infrastructure.Common.Mappings;
 using Infrastructure.Extensions;
 using Infrastructure.Persistence.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -79,7 +80,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowDev", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(builder.Configuration["AllowedOrigin"]!)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -92,8 +93,23 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
     options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
     options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-})
-.AddJwtBearer(options =>
+
+}).AddGoogle(options =>
+{
+    var clientId = builder.Configuration["Authentication:Google:ClientId"];
+    if (clientId is null)
+        throw new ArgumentNullException(nameof(clientId));
+
+    var clientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    if (clientSecret is null)
+        throw new ArgumentNullException(nameof(clientSecret));
+
+    options.ClientId = clientId;
+    options.ClientSecret = clientSecret;
+    options.CallbackPath = "/auth/google/callback";
+    options.SignInScheme = IdentityConstants.ExternalScheme;
+
+}).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -145,6 +161,20 @@ builder.Services.AddAuthentication(options =>
             await context.Response.WriteAsJsonAsync(problem);
         }
     };
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "UnifyAuth.AuthCookie";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+});
+builder.Services.ConfigureExternalCookie(options =>
+{
+    options.Cookie.Name = "External.Google.Cookie";
 });
 
 //Exception handling

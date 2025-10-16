@@ -17,5 +17,7 @@ namespace Application.Interfaces.Repositories
         Task<IDataResult<User>> CheckRegisteredUserAsync(string email, string password);
         Task<IDataResult<User>> GetUserByIdAsync(string userId);
         Task<IResult> UpdateUserAsync(UserUpdateDto userUpdateDto);
+        Task<IDataResult<User>> GetUserByExternalProviderAsync(ExternalLoginDto externalLoginDto);
+        Task<IDataResult<User>> CreateUserWithExternalLogin(User user,ExternalLoginDto externalLoginDto);
     }
 }
