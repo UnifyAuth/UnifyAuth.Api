@@ -321,5 +321,27 @@ namespace UnifyAuth.Api.Controllers
 
             return Results.Ok(new { message = "Password reset successfully." });
         }
+
+        [HttpPost("cookie-test/set")]
+        public IResult TestCookieSet()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(5)
+            };
+            Response.Cookies.Append("testCookie", "testValue", cookieOptions);
+            return Results.Ok();
+        }
+
+        [HttpGet("cookie-test/get")]
+        public IResult TestCookieCheck()
+        {
+            var cookie = Request.Cookies["testCookie"];
+            var hasTestCookie = !string.IsNullOrEmpty(cookie);
+            return Results.Ok(new { hasTestCookie });
+        }
     }
 }
